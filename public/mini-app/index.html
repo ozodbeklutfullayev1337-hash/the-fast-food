@@ -82,9 +82,7 @@
         const ADMIN_TELEGRAM_ID = "6515742580";
         const ADMIN_SECRET_PIN = "7777";
 
-        // TO'LIQ VA KENGAYTIRILGAN MASSIV MENYU (KO'PLAB GAMBURGER VA HOT-DOGLAR)
         const MASSIVE_MENU = [
-            // 🍔 GAMBURGERLAR
             {
                 id: 1,
                 name: "Double Smash Cheeseburger",
@@ -140,8 +138,6 @@
                 badge: "SPICY 🔥",
                 prepTime: "12 daq"
             },
-
-            // 🌭 HOT-DOGLAR
             {
                 id: 6,
                 name: "New York Chili Cheese Hot-Dog",
@@ -186,8 +182,6 @@
                 badge: "CLASSIC",
                 prepTime: "7 daq"
             },
-
-            // 🌯 LAVASH & SENDVICH
             {
                 id: 10,
                 name: "Tandirli Pishloqli Lavash",
@@ -210,8 +204,6 @@
                 badge: "COMBO",
                 prepTime: "12 daq"
             },
-
-            // 🍕 PITSA
             {
                 id: 12,
                 name: "Super Pepperoni Pizza",
@@ -234,8 +226,6 @@
                 badge: "XL SIZE",
                 prepTime: "20 daq"
             },
-
-            // 🍟 FRI & SNEKLAR
             {
                 id: 14,
                 name: "Loaded Cheese & Jalapeño Fries",
@@ -258,8 +248,6 @@
                 badge: "SPICY 🔥",
                 prepTime: "12 daq"
             },
-
-            // 🥤 ICHIMLIKLAR
             {
                 id: 16,
                 name: "Coca-Cola Classic (0.5 L)",
@@ -293,9 +281,6 @@
         function App() {
             const [viewMode, setViewMode] = useState('client');
             const [isAdminAuthed, setIsAdminAuthed] = useState(false);
-            const [pinInput, setPinInput] = useState("");
-            const [pinError, setPinError] = useState(false);
-
             const [products, setProducts] = useState(MASSIVE_MENU);
             const [activeCategory, setActiveCategory] = useState("Barchasi");
             const [search, setSearch] = useState("");
@@ -715,7 +700,7 @@
                                     <button onClick={() => setIsOrdersOpen(false)} className="font-bold">✕</button>
                                 </div>
                                 <div className="mt-4 space-y-2.5">
-                                    {userOrders.length === 0 ? <p className="text-xs text-[#8c8c82] py-8 text-center">Buyurtmalar yo'q</p> : userOrders.main(o => (
+                                    {userOrders.length === 0 ? <p className="text-xs text-[#8c8c82] py-8 text-center">Buyurtmalar yo'q</p> : userOrders.map(o => (
                                         <div key={o.id} className="bg-[#d8e5d6] p-3.5 rounded-[14px]">
                                             <div className="flex justify-between font-bold text-xs mb-1 text-[#00473c]"><span>#{o.id}</span><span>{o.status}</span></div>
                                             <p className="text-[11px] text-[#0e150e]/75 mb-1">📍 {o.location}</p>
