@@ -1,274 +1,375 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="uz" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
-    <title>THE FAST FOOD — Luxury OS Edition</title>
-    
+    <title>THE FAST FOOD // Premium Luxury OS</title>
+
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <!-- React & Babel -->
+
+    <!-- React 18 & Babel -->
     <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
+
+    <!-- Luxury Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --color-deep-forest: #00473c;
-            --color-lime-glow: #e6ff55;
-            --color-sage-mist: #d8e5d6;
-            --color-warm-sand: #e8dcc6;
-            --color-cream-canvas: #f4f3e7;
-            --color-forest-shadow: #0e150e;
-            --shadow-lux: rgba(14, 21, 14, 0.25) 0px 20px 40px -12px;
-            --shadow-hover: rgba(0, 71, 60, 0.3) 0px 30px 60px -15px;
+            --void: #040406;
+            --obsidian: #0b0c10;
+            --lava: #ff3b00;
+            --amber: #ff9e00;
+            --titanium: #e2e8f0;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            background-color: var(--color-cream-canvas);
-            color: var(--color-forest-shadow);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
             user-select: none;
         }
 
-        .font-display { font-family: 'Anton', sans-serif; letter-spacing: 0.015em; text-transform: uppercase; }
+        body {
+            background-color: var(--void);
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        .font-syne { font-family: 'Syne', sans-serif; }
+        .font-serif-lux { font-family: 'Instrument Serif', serif; }
+        .font-mono-tech { font-family: 'Space Mono', monospace; }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .food-stage {
-            position: relative;
-            aspect-ratio: 1 / 1;
-            border-radius: 18px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #e8dcc6 0%, #d8e5d6 100%);
-        }
-        .food-stage img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
+        .perspective-stage {
+            perspective: 1400px;
+            transform-style: preserve-3d;
         }
 
-        .btn-lime-lux {
-            background-color: var(--color-lime-glow);
-            color: var(--color-forest-shadow);
-            border-radius: 9999px;
-            font-weight: 800;
-            box-shadow: var(--shadow-lux);
-            transition: all 0.25s ease;
+        .obsidian-slab {
+            background: linear-gradient(165deg, rgba(24, 25, 32, 0.82) 0%, rgba(9, 10, 14, 0.96) 100%);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.95), inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
-        .btn-lime-lux:active { transform: scale(0.95); }
+
+        .lava-border-glow {
+            border-color: rgba(255, 90, 0, 0.55) !important;
+            box-shadow: 0 20px 50px -10px rgba(255, 59, 0, 0.3), 0 0 25px rgba(255, 158, 0, 0.15), inset 0 1px 2px rgba(255, 200, 150, 0.35);
+        }
+
+        .btn-lava {
+            background: linear-gradient(135deg, #ff7b00 0%, #ff3b00 55%, #b81d00 100%);
+            color: #ffffff;
+            box-shadow: 0 12px 30px -6px rgba(255, 59, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-lava:active { transform: scale(0.93); }
+
+        @keyframes bunBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2.5px); }
+        }
+        @keyframes flameFlicker {
+            0%, 100% { transform: scaleY(1) rotate(-2deg); opacity: 0.9; }
+            50% { transform: scaleY(1.18) rotate(2deg); opacity: 1; }
+        }
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes bubbleFloat {
+            0% { transform: translateY(3px); opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-4px); opacity: 0; }
+        }
+
+        .anim-bun { animation: bunBounce 2.2s infinite ease-in-out; }
+        .anim-flame { animation: flameFlicker 1.4s infinite ease-in-out; transform-origin: bottom center; }
+        .anim-spin { animation: spinSlow 14s infinite linear; transform-origin: center; }
+        .anim-bubble { animation: bubbleFloat 1.8s infinite ease-in-out; }
+
+        .coverflow-card {
+            transition: all 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+        }
+
+        @keyframes cardReveal3D {
+            0% { opacity: 0; transform: perspective(900px) translateY(45px) rotateX(16deg) scale(0.92); }
+            100% { opacity: 1; transform: perspective(900px) translateY(0) rotateX(0deg) scale(1); }
+        }
+        .menu-card-anim { animation: cardReveal3D 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+
+        @keyframes flyToDock {
+            0% { transform: scale(1) translate(0, 0); opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: scale(0.2) translate(var(--tx), var(--ty)); opacity: 0; }
+        }
+        .flying-orb {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            animation: flyToDock 0.65s cubic-bezier(0.2, 0.85, 0.4, 1) forwards;
+        }
+
+        .photo-vignette {
+            background: radial-gradient(circle at 50% 35%, rgba(255, 90, 0, 0.18) 0%, rgba(8, 9, 12, 0.92) 78%);
+        }
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <canvas id="vortex-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+    <div id="root" class="relative z-10"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
+        const { useState, useEffect, useMemo, useRef } = React;
 
         const ADMIN_TELEGRAM_ID = "6515742580";
-        const ADMIN_SECRET_PIN = "7777";
+
+        const SoundFX = {
+            play(type = 'tick') {
+                try {
+                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const now = ctx.currentTime;
+                    if (type === 'tick') {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(240, now);
+                        osc.frequency.exponentialRampToValueAtTime(60, now + 0.035);
+                        gain.gain.setValueAtTime(0.1, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.04);
+                    } else if (type === 'whoosh') {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(120, now);
+                        osc.frequency.exponentialRampToValueAtTime(340, now + 0.09);
+                        gain.gain.setValueAtTime(0.08, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.11);
+                    } else if (type === 'coin') {
+                        [587.33, 880].forEach((freq, i) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(freq, now + i * 0.055);
+                            gain.gain.setValueAtTime(0.12, now + i * 0.055);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.055 + 0.18);
+                            osc.connect(gain);
+                            gain.connect(ctx.destination);
+                            osc.start(now + i * 0.055);
+                            osc.stop(now + i * 0.055 + 0.2);
+                        });
+                    }
+                } catch (e) {}
+            }
+        };
+
+        function AnimatedCategoryIcon({ category, active }) {
+            const strokeColor = active ? "#ffffff" : "#ff7b00";
+            const accentColor = active ? "#ffe600" : "#ff3b00";
+
+            switch (category) {
+                case "Barchasi":
+                    return (
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                            <path className="anim-flame" d="M12 2C12 2 7 7.5 7 12.5C7 15.5 9.2 18 12 18C14.8 18 17 15.5 17 12.5C17 7.5 12 2 12 2Z" stroke={strokeColor} strokeWidth="2" fill={accentColor} fillOpacity="0.25"/>
+                            <circle cx="12" cy="14" r="2.5" fill={strokeColor}/>
+                        </svg>
+                    );
+                case "Burgerlar":
+                    return (
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                            <path className="anim-bun" d="M4 10C4 6.5 7.5 4 12 4C16.5 4 20 6.5 20 10H4Z" stroke={strokeColor} strokeWidth="2" fill={accentColor} fillOpacity="0.2"/>
+                            <path d="M3 13.5H21" stroke={accentColor} strokeWidth="2.5" strokeLinecap="round"/>
+                            <rect x="4" y="16" width="16" height="4" rx="2" stroke={strokeColor} strokeWidth="2"/>
+                        </svg>
+                    );
+                case "Hot-Doglar":
+                    return (
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(-15 12 12)" stroke={strokeColor} strokeWidth="2" fill={accentColor} fillOpacity="0.2"/>
+                            <path className="anim-bun" d="M6 13Q9 10 12 13T18 11" stroke={accentColor} strokeWidth="2" strokeLinecap="round"/>
+                        </svg>
+                    );
+                case "Lavash":
+                    return (
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                            <path d="M7 4L17 4L15 20H9L7 4Z" stroke={strokeColor} strokeWidth="2" rx="3" fill={accentColor} fillOpacity="0.2"/>
+                            <path className="anim-bun" d="M9 8H15M9.5 12H14.5" stroke={accentColor} strokeWidth="2" strokeLinecap="round"/>
+                        </svg>
+                    );
+                case "Pitsa":
+                    return (
+                        <svg className="w-5 h-5 anim-spin" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="9" stroke={strokeColor} strokeWidth="2" strokeDasharray="4 2"/>
+                            <circle cx="9.5" cy="10" r="1.5" fill={accentColor}/>
+                            <circle cx="14.5" cy="11" r="1.5" fill={accentColor}/>
+                            <circle cx="12" cy="15" r="1.5" fill={accentColor}/>
+                        </svg>
+                    );
+                case "Sneklar":
+                    return (
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                            <path d="M6 10L7.5 20H16.5L18 10H6Z" stroke={strokeColor} strokeWidth="2" fill={accentColor} fillOpacity="0.2"/>
+                            <path className="anim-bun" d="M8 10V5M12 10V3M16 10V6" stroke={accentColor} strokeWidth="2.2" strokeLinecap="round"/>
+                        </svg>
+                    );
+                case "Ichimliklar":
+                    return (
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                            <path d="M7 7H17L15.5 20H8.5L7 7Z" stroke={strokeColor} strokeWidth="2" fill={accentColor} fillOpacity="0.15"/>
+                            <path d="M12 7V3L15 2" stroke={accentColor} strokeWidth="2" strokeLinecap="round"/>
+                            <circle className="anim-bubble" cx="10.5" cy="15" r="1.2" fill={strokeColor}/>
+                            <circle className="anim-bubble" cx="13.5" cy="12" r="1" fill={accentColor} style={{animationDelay: '0.6s'}}/>
+                        </svg>
+                    );
+                default:
+                    return null;
+            }
+        }
 
         const MASSIVE_MENU = [
             {
                 id: 1,
                 name: "Double Smash Cheeseburger",
+                code: "FF-01",
+                tagline: "Ikki qavatli marmar mol go'shti",
                 description: "Ikki qavatli marmar mol go'shti kotleti, cheddar pishlog'i, karamelizatsiya qilingan piyoz va maxsus burger sousi briosh nonida.",
-                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=85",
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=90",
                 oldPrice: 65000,
                 newPrice: 52000,
                 category: "Burgerlar",
                 badge: "BESTSELLER 🔥",
-                prepTime: "12 daq"
+                prepTime: "12 daq",
+                kcal: "740 KCAL",
+                featured: true
             },
             {
                 id: 2,
                 name: "Black Angus Truffle Burger",
+                code: "FF-02",
+                tagline: "Qora kunjutli yumshoq non",
                 description: "Qora kunjutli yumshoq non, qalin Angus kotleti, qo'ziqorinli julen va ikki hissa gouda pishlog'i.",
-                image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=1000&q=85",
+                image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=1200&q=90",
                 oldPrice: 78000,
                 newPrice: 64000,
                 category: "Burgerlar",
                 badge: "CHEF'S SPECIAL",
-                prepTime: "15 daq"
+                prepTime: "15 daq",
+                kcal: "820 KCAL",
+                featured: true
             },
             {
                 id: 3,
                 name: "Crispy Chicken & Cheese Burger",
+                code: "FF-03",
+                tagline: "Qarsildoq panirovkadagi tovuq",
                 description: "Qarsildoq panirovkadagi tovuq filesi, aysberg salati, cheddar pishlog'i va sarimsoqli ranch sousi.",
-                image: "https://images.unsplash.com/photo-1615297928064-24977384d0da?auto=format&fit=crop&w=1000&q=85",
+                image: "https://images.unsplash.com/photo-1615297928064-24977384d0da?auto=format&fit=crop&w=1200&q=90",
                 oldPrice: 55000,
                 newPrice: 44000,
                 category: "Burgerlar",
                 badge: "CRISPY",
-                prepTime: "10 daq"
+                prepTime: "10 daq",
+                kcal: "610 KCAL",
+                featured: false
             },
             {
                 id: 4,
-                name: "Mega Double Beef Burger",
-                description: "Katta hajmhdagi ikkita mol go'shti kotleti, qo'shma pishloq, tuzlangan bodring va barbekyu sousi.",
-                image: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1000&q=85",
-                oldPrice: 72000,
-                newPrice: 59000,
-                category: "Burgerlar",
-                badge: "MEGA SIZE",
-                prepTime: "14 daq"
-            },
-            {
-                id: 5,
-                name: "Jalapeño Spicy Burger",
-                description: "Mol go'shti kotleti, o'tkir xalapenyo qalampiri, habanero sousi va eritilgan cheddar.",
-                image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=1000&q=85",
-                oldPrice: 60000,
-                newPrice: 49000,
-                category: "Burgerlar",
-                badge: "SPICY 🔥",
-                prepTime: "12 daq"
-            },
-            {
-                id: 6,
                 name: "New York Chili Cheese Hot-Dog",
+                code: "FF-04",
+                tagline: "22 sm lik dudlangan kolbasa",
                 description: "Grilda qizartirilgan 22 sm lik dudlangan kolbasa, issiq cheddar pishloq sousi, mol go'shtli chili va xalapenyo.",
-                image: "https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=1000&q=85",
+                image: "https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=1200&q=90",
                 oldPrice: 45000,
                 newPrice: 36000,
                 category: "Hot-Doglar",
                 badge: "ONLINE ONLY",
-                prepTime: "8 daq"
+                prepTime: "8 daq",
+                kcal: "540 KCAL",
+                featured: true
             },
             {
-                id: 7,
-                name: "Royal Double Sausage Hot-Dog",
-                description: "Sutli baget ichida ikki dona maxsus sosiska, shirin xantal, ketchup, mayonez va mozzarella pishlog'i.",
-                image: "https://images.unsplash.com/photo-1541214113241-21578d2d9b62?auto=format&fit=crop&w=1000&q=85",
-                oldPrice: 42000,
-                newPrice: 33000,
-                category: "Hot-Doglar",
-                badge: "HOT & SPICY",
-                prepTime: "8 daq"
-            },
-            {
-                id: 8,
-                name: "BBQ Crispy Bacon Hot-Dog",
-                description: "Bavariya kolbasasi, qarsildoq halol kurka bekoni va tutunli barbekyu sousi.",
-                image: "https://images.unsplash.com/photo-1627054245708-29c06640d50f?auto=format&fit=crop&w=1000&q=85",
-                oldPrice: 48000,
-                newPrice: 39000,
-                category: "Hot-Doglar",
-                badge: "NEW",
-                prepTime: "9 daq"
-            },
-            {
-                id: 9,
-                name: "Frankfurt Jumbo Hot-Dog",
-                description: "Haqiqiy frankfurt sosiskasi, maxsus non, xantal, ketchup va qarsildoq piyoz.",
-                image: "https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=1000&q=85",
-                oldPrice: 40000,
-                newPrice: 32000,
-                category: "Hot-Doglar",
-                badge: "CLASSIC",
-                prepTime: "7 daq"
-            },
-            {
-                id: 10,
+                id: 5,
                 name: "Tandirli Pishloqli Lavash",
+                code: "FF-05",
+                tagline: "Yupqa qarsildoq xamir",
                 description: "Yupqa qarsildoq xamir ichida sersuv mol go'shti doneri, yangi pomidor, chipslar va mo'l-ko'l pishloq.",
-                image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=1000&q=85",
+                image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=1200&q=90",
                 oldPrice: 46000,
                 newPrice: 38000,
                 category: "Lavash",
                 badge: "TOP RATED",
-                prepTime: "10 daq"
+                prepTime: "10 daq",
+                kcal: "640 KCAL",
+                featured: true
             },
             {
-                id: 11,
-                name: "Triple Club Sandwich",
-                description: "Uch qavatli tost noni, grilda pishgan tovuq filesi, dudlangan kurka, pishloq va fri garniri bilan.",
-                image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1000&q=85",
-                oldPrice: 52000,
-                newPrice: 43000,
-                category: "Lavash",
-                badge: "COMBO",
-                prepTime: "12 daq"
-            },
-            {
-                id: 12,
+                id: 6,
                 name: "Super Pepperoni Pizza",
+                code: "FF-06",
+                tagline: "Mozzarella va peperoni",
                 description: "Mozzarella pishlog'i, ikki hissa dudlangan peperoni kolbasalari va oregano pomidor sousi.",
-                image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=1000&q=85",
+                image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=1200&q=90",
                 oldPrice: 95000,
                 newPrice: 79000,
                 category: "Pitsa",
-                badge: "POPULAR",
-                prepTime: "18 daq"
+                badge: "POPULAR 🔥",
+                prepTime: "18 daq",
+                kcal: "1120 KCAL",
+                featured: true
             },
             {
-                id: 13,
-                name: "Meat Lovers Pizza (4 xil go'sht)",
-                description: "Qazi, mol go'shti qiymasi, tovuq filesi va peperoni kolbasasi bilan boyitilgan to'yimli pitsa.",
-                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1000&q=85",
-                oldPrice: 115000,
-                newPrice: 94000,
-                category: "Pitsa",
-                badge: "XL SIZE",
-                prepTime: "20 daq"
-            },
-            {
-                id: 14,
+                id: 7,
                 name: "Loaded Cheese & Jalapeño Fries",
+                code: "FF-07",
+                tagline: "Oltinrang kartoshka fri",
                 description: "Oltinrang kartoshka fri, ustidan issiq cheddar pishloq sousi va xalapenyo bo'laklari.",
-                image: "https://images.unsplash.com/photo-1576107232684-1279f3908594?auto=format&fit=crop&w=1000&q=85",
+                image: "https://images.unsplash.com/photo-1576107232684-1279f3908594?auto=format&fit=crop&w=1200&q=90",
                 oldPrice: 35000,
                 newPrice: 26000,
                 category: "Sneklar",
                 badge: "CHEESY",
-                prepTime: "6 daq"
+                prepTime: "6 daq",
+                kcal: "460 KCAL",
+                featured: false
             },
             {
-                id: 15,
-                name: "Crispy Buffalo Wings (8 dona)",
-                description: "Qarsildoq panirovkadagi tovuq qanotchalari va shirin-achchiq glazur.",
-                image: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?auto=format&fit=crop&w=1000&q=85",
-                oldPrice: 54000,
-                newPrice: 45000,
-                category: "Sneklar",
-                badge: "SPICY 🔥",
-                prepTime: "12 daq"
-            },
-            {
-                id: 16,
+                id: 8,
                 name: "Coca-Cola Classic (0.5 L)",
+                code: "FF-08",
+                tagline: "Tetiklashtiruvchi ichimlik",
                 description: "Muzdek salqin va tetiklashtiruvchi klassik gazlangan ichimlik.",
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=1000&q=85",
+                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=1200&q=90",
                 oldPrice: 12000,
                 newPrice: 9000,
                 category: "Ichimliklar",
                 badge: "ICED",
-                prepTime: "1 daq"
-            },
-            {
-                id: 17,
-                name: "Fresh Strawberry Lemonade",
-                description: "Yangi uzilgan qulupnay, limon sharbati, yalpiz barglari va muz bo'laklari bilan.",
-                image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1000&q=85",
-                oldPrice: 25000,
-                newPrice: 18000,
-                category: "Ichimliklar",
-                badge: "FRESH",
-                prepTime: "3 daq"
+                prepTime: "1 daq",
+                kcal: "120 KCAL",
+                featured: false
             }
         ];
 
@@ -278,8 +379,207 @@
             { id: 'sauce', name: "Maxsus Pishloqli Sous", price: 5000 }
         ];
 
+        function BurgerLabModal({ onClose, onAddCustom, formatPrice }) {
+            const [pattyCount, setPattyCount] = useState(2);
+            const [cheeseCount, setCheeseCount] = useState(2);
+            const [hasBacon, setHasBacon] = useState(true);
+            const [hasJalapeno, setHasJalapeno] = useState(false);
+
+            const customPrice = 34000 + (pattyCount * 14000) + (cheeseCount * 5000) + (hasBacon ? 8000 : 0) + (hasJalapeno ? 4000 : 0);
+            const customKcal = 280 + (pattyCount * 210) + (cheeseCount * 85) + (hasBacon ? 95 : 0);
+
+            const handleCreate = (e) => {
+                SoundFX.play('coin');
+                const customBurger = {
+                    id: Date.now(),
+                    name: `Maxsus Burger (${pattyCount}x Kotlet)`,
+                    tagline: `${cheeseCount}x Cheddar • Maxsus sous`,
+                    description: `Maxsus yig'ilgan: ${pattyCount}x Kotlet, ${cheeseCount}x Cheddar, ${hasBacon ? "Bekon, " : ""}${hasJalapeno ? "Xalapenyo." : ""}`,
+                    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=90",
+                    newPrice: customPrice,
+                    oldPrice: customPrice + 15000,
+                    category: "Burgerlar"
+                };
+                onAddCustom(customBurger, [], e);
+                onClose();
+            };
+
+            return (
+                <div onClick={onClose} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex items-end sm:items-center justify-center p-0 sm:p-4">
+                    <div onClick={e => e.stopPropagation()} className="obsidian-slab lava-border-glow w-full max-w-lg rounded-t-[34px] sm:rounded-[34px] p-6 max-h-[92vh] overflow-y-auto">
+                        <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                            <div>
+                                <span className="font-mono-tech text-[10px] text-[#ff7b00] uppercase tracking-widest block">INTERAKTIV KONSTRUKTOR</span>
+                                <h2 className="font-syne text-2xl font-extrabold text-white">BURGER LAB</h2>
+                            </div>
+                            <button onClick={onClose} className="w-9 h-9 rounded-full bg-white/10 text-white font-bold">✕</button>
+                        </div>
+
+                        <div className="my-5 py-6 rounded-3xl bg-gradient-to-b from-[#161215] to-[#070709] border border-white/10 flex flex-col items-center justify-center relative overflow-hidden">
+                            <div className="absolute inset-0 photo-vignette pointer-events-none" />
+                            <div className="relative z-10 flex flex-col items-center space-y-1.5 w-56">
+                                <div className="w-44 h-9 rounded-t-full bg-gradient-to-b from-[#e08e36] to-[#a85c15] border-t border-yellow-200/50 shadow-lg flex items-center justify-center text-[9px] font-mono-tech font-bold text-black/80">
+                                    BRIOSH NONI
+                                </div>
+                                <div className="w-40 h-2.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-amber-300 shadow-md" />
+                                {hasJalapeno && (
+                                    <div className="w-36 h-3 rounded-full bg-emerald-600 border border-emerald-300/40 flex items-center justify-center text-[8px] font-bold uppercase tracking-widest">
+                                        🌶️ Xalapenyo
+                                    </div>
+                                )}
+                                {hasBacon && (
+                                    <div className="w-44 h-3.5 rounded-full bg-gradient-to-r from-rose-800 via-red-600 to-rose-800 border border-rose-300/30 flex items-center justify-center text-[8px] font-bold uppercase tracking-widest">
+                                        🥓 Bekon
+                                    </div>
+                                )}
+                                {Array.from({ length: pattyCount }).map((_, idx) => (
+                                    <React.Fragment key={idx}>
+                                        {idx < cheeseCount && (
+                                            <div className="w-48 h-2.5 rounded-full bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-300 shadow-[0_4px_12px_rgba(245,158,11,0.5)]" />
+                                        )}
+                                        <div className="w-44 h-7 rounded-2xl bg-gradient-to-b from-[#4a2014] to-[#260e07] border border-[#ff5500]/40 shadow-xl flex items-center justify-center text-[9px] font-mono-tech font-bold text-amber-200">
+                                            KOTLET #{idx + 1}
+                                        </div>
+                                    </React.Fragment>
+                                ))}
+                                <div className="w-44 h-6 rounded-b-2xl bg-gradient-to-b from-[#c97622] to-[#8a490c] shadow-lg" />
+                            </div>
+
+                            <div className="mt-4 flex items-center gap-4 text-[11px] font-mono-tech text-white/70 z-10">
+                                <span>🔥 {customKcal} KCAL</span>
+                                <span>•</span>
+                                <span className="text-[#ff9e00] font-bold">{pattyCount * 110 + 160}g</span>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3 mb-6">
+                            <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.04] border border-white/10">
+                                <div>
+                                    <span className="text-xs font-bold text-white block">Kotletlar</span>
+                                    <span className="text-[10px] text-white/45">+14,000 so'm / har biri</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <button onClick={() => { SoundFX.play('tick'); setPattyCount(Math.max(1, pattyCount - 1)); }} className="w-8 h-8 rounded-xl bg-white/10 font-bold">−</button>
+                                    <span className="font-mono-tech text-sm font-bold w-4 text-center">{pattyCount}</span>
+                                    <button onClick={() => { SoundFX.play('tick'); setPattyCount(Math.min(4, pattyCount + 1)); }} className="w-8 h-8 rounded-xl btn-lava font-bold">+</button>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.04] border border-white/10">
+                                <div>
+                                    <span className="text-xs font-bold text-white block">Cheddar Pishlog'i</span>
+                                    <span className="text-[10px] text-white/45">+5,000 so'm / qatlam</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <button onClick={() => { SoundFX.play('tick'); setCheeseCount(Math.max(0, cheeseCount - 1)); }} className="w-8 h-8 rounded-xl bg-white/10 font-bold">−</button>
+                                    <span className="font-mono-tech text-sm font-bold w-4 text-center">{cheeseCount}</span>
+                                    <button onClick={() => { SoundFX.play('tick'); setCheeseCount(Math.min(4, cheeseCount + 1)); }} className="w-8 h-8 rounded-xl btn-lava font-bold">+</button>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2.5">
+                                <button onClick={() => { SoundFX.play('tick'); setHasBacon(!hasBacon); }} className={`p-3 rounded-2xl border text-left transition ${hasBacon ? 'border-[#ff5500] bg-[#ff5500]/15' : 'border-white/10 bg-white/[0.03]'}`}>
+                                    <span className="text-xs font-bold block">🥓 Bekon</span>
+                                    <span className="text-[10px] text-white/50">+8,000 so'm</span>
+                                </button>
+                                <button onClick={() => { SoundFX.play('tick'); setHasJalapeno(!hasJalapeno); }} className={`p-3 rounded-2xl border text-left transition ${hasJalapeno ? 'border-[#ff5500] bg-[#ff5500]/15' : 'border-white/10 bg-white/[0.03]'}`}>
+                                    <span className="text-xs font-bold block">🌶️ Xalapenyo</span>
+                                    <span className="text-[10px] text-white/50">+4,000 so'm</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                            <div>
+                                <span className="text-[10px] font-mono-tech text-white/45 uppercase block">Narxi</span>
+                                <span className="font-syne text-xl font-extrabold text-white">{formatPrice(customPrice)}</span>
+                            </div>
+                            <button onClick={handleCreate} className="btn-lava px-6 py-4 rounded-2xl text-xs font-extrabold uppercase tracking-wider">
+                                Savatga Qo'shish 🔥
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function SpatialDishSlab({ product, index, qty, onSelect, onQuickAdd, formatPrice }) {
+            const slabRef = useRef(null);
+            const [tilt, setTilt] = useState("perspective(900px) rotateX(0deg) rotateY(0deg)");
+            const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
+
+            const handlePointerMove = (e) => {
+                if (!slabRef.current) return;
+                const rect = slabRef.current.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
+                const rx = ((y - rect.height / 2) / (rect.height / 2)) * -10;
+                const ry = ((x - rect.width / 2) / (rect.width / 2)) * 10;
+                setTilt(`perspective(900px) rotateX(${rx.toFixed(1)}deg) rotateY(${ry.toFixed(1)}deg) scale3d(1.02, 1.02, 1.02)`);
+                setGlare({ x: (x / rect.width) * 100, y: (y / rect.height) * 100, opacity: 1 });
+            };
+
+            const handlePointerLeave = () => {
+                setTilt("perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)");
+                setGlare(prev => ({ ...prev, opacity: 0 }));
+            };
+
+            return (
+                <div
+                    ref={slabRef}
+                    onMouseMove={handlePointerMove}
+                    onMouseLeave={handlePointerLeave}
+                    onTouchMove={handlePointerMove}
+                    onTouchEnd={handlePointerLeave}
+                    onClick={() => { SoundFX.play('tick'); onSelect(product); }}
+                    style={{ transform: tilt, animationDelay: `${index * 45}ms` }}
+                    className={`menu-card-anim obsidian-slab rounded-[28px] p-3 cursor-pointer flex flex-col justify-between relative group overflow-hidden transition-transform duration-200 ${qty > 0 ? 'lava-border-glow' : ''}`}
+                >
+                    <div style={{ opacity: glare.opacity, background: `radial-gradient(260px circle at ${glare.x}% ${glare.y}%, rgba(255, 130, 50, 0.18), transparent 65%)` }} className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-300" />
+                    <div>
+                        <div className="relative aspect-[1/0.92] rounded-[22px] overflow-hidden bg-[#070709] mb-3 border border-white/[0.07]">
+                            <div className="absolute inset-0 photo-vignette" />
+                            <img src={product.image} alt={product.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#090a0e] via-transparent to-black/25" />
+                            <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between">
+                                <span className="bg-black/75 backdrop-blur-md border border-[#ff5500]/50 text-[#ff9e00] text-[9px] font-extrabold uppercase px-2.5 py-1 rounded-full tracking-wider">
+                                    {product.badge}
+                                </span>
+                                <span className="font-mono-tech text-[9px] text-white/60 bg-black/60 px-2 py-0.5 rounded-full">
+                                    {product.code || `FF-0${product.id}`}
+                                </span>
+                            </div>
+                            <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-[10px] font-mono-tech text-white/80">
+                                <span className="bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/10">⏱ {product.prepTime}</span>
+                                <span className="text-[#ff9e00] font-bold">{product.kcal || "680 KCAL"}</span>
+                            </div>
+                        </div>
+                        <div className="px-1">
+                            <p className="font-mono-tech text-[9px] text-[#ff7b00] uppercase tracking-wider truncate">{product.tagline || product.category}</p>
+                            <h3 className="font-syne text-[14.5px] font-extrabold text-white group-hover:text-[#ff9e00] transition-colors leading-tight line-clamp-1 mt-0.5">{product.name}</h3>
+                            <p className="text-[11px] text-white/50 mt-1 line-clamp-2 leading-relaxed">{product.description}</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-between pt-3 mt-3 border-t border-white/[0.07] px-1">
+                        <div>
+                            {product.oldPrice > product.newPrice && (
+                                <span className="block font-mono-tech text-[9.5px] text-white/30 line-through">{formatPrice(product.oldPrice)}</span>
+                            )}
+                            <span className="font-syne text-[14px] sm:text-[15.5px] font-extrabold text-white">{formatPrice(product.newPrice)}</span>
+                        </div>
+                        <button onClick={(e) => onQuickAdd(product, [], e)} className={`h-10 px-3.5 rounded-2xl flex items-center justify-center font-mono-tech font-bold text-xs transition-all ${qty > 0 ? 'btn-lava scale-105' : 'bg-white/[0.08] hover:bg-[#ff5500] text-white border border-white/15'}`}>
+                            {qty > 0 ? `${qty}x` : '+ QO\'SHISH'}
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
         function App() {
             const [viewMode, setViewMode] = useState('client');
+            const [adminTab, setAdminTab] = useState('orders');
             const [isAdminAuthed, setIsAdminAuthed] = useState(false);
             const [products, setProducts] = useState(MASSIVE_MENU);
             const [activeCategory, setActiveCategory] = useState("Barchasi");
@@ -289,9 +589,14 @@
             const [selectedExtras, setSelectedExtras] = useState([]);
             const [isCartOpen, setIsCartOpen] = useState(false);
             const [isOrdersOpen, setIsOrdersOpen] = useState(false);
+            const [isBurgerLabOpen, setIsBurgerLabOpen] = useState(false);
             const [userOrders, setUserOrders] = useState([]);
             const [adminOrders, setAdminOrders] = useState([]);
-            
+
+            const [heroIndex, setHeroIndex] = useState(0);
+            const [flyingOrbs, setFlyingOrbs] = useState([]);
+            const [locatingGps, setLocatingGps] = useState(false);
+
             const [customerPhone, setCustomerPhone] = useState("+998 ");
             const [customerLocation, setCustomerLocation] = useState("");
 
@@ -306,30 +611,82 @@
             const tg = window.Telegram?.WebApp;
             const tgUser = tg?.initDataUnsafe?.user || { id: ADMIN_TELEGRAM_ID, first_name: "Ozodbek" };
 
+            const featuredItems = useMemo(() => products.filter(p => p.featured).slice(0, 5), [products]);
+
+            useEffect(() => {
+                if (featuredItems.length === 0) return;
+                const timer = setInterval(() => {
+                    setHeroIndex(prev => (prev + 1) % featuredItems.length);
+                }, 4800);
+                return () => clearInterval(timer);
+            }, [featuredItems.length]);
+
+            useEffect(() => {
+                const canvas = document.getElementById('vortex-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let w = canvas.width = window.innerWidth;
+                let h = canvas.height = window.innerHeight;
+
+                const embers = Array.from({ length: 28 }, () => ({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 2.2 + 0.5,
+                    vy: -(Math.random() * 0.6 + 0.2),
+                    vx: (Math.random() - 0.5) * 0.4,
+                    alpha: Math.random() * 0.55 + 0.15,
+                    hue: Math.random() > 0.5 ? '#ff3b00' : '#ff9e00'
+                }));
+
+                let raf;
+                const draw = () => {
+                    ctx.clearRect(0, 0, w, h);
+                    embers.forEach(e => {
+                        e.x += e.vx;
+                        e.y += e.vy;
+                        if (e.y < -10) {
+                            e.y = h + 10;
+                            e.x = Math.random() * w;
+                        }
+                        ctx.beginPath();
+                        ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+                        ctx.fillStyle = e.hue;
+                        ctx.globalAlpha = e.alpha;
+                        ctx.shadowBlur = 14;
+                        ctx.shadowColor = e.hue;
+                        ctx.fill();
+                    });
+                    raf = requestAnimationFrame(draw);
+                };
+                draw();
+                return () => cancelAnimationFrame(raf);
+            }, []);
+
             useEffect(() => {
                 if (tg) {
                     tg.ready();
                     tg.expand();
+                    try {
+                        tg.setHeaderColor('#040406');
+                        tg.setBackgroundColor('#040406');
+                    } catch (e) {}
                 }
                 fetchProducts();
-
                 if (tgUser && String(tgUser.id) === ADMIN_TELEGRAM_ID) {
-                    setIsAdminAuthed(true);
-                } else if (localStorage.getItem('admin_auth') === 'true') {
                     setIsAdminAuthed(true);
                 }
             }, []);
 
             const showToast = (msg) => {
                 setToast(msg);
-                setTimeout(() => setToast(null), 2000);
+                setTimeout(() => setToast(null), 2200);
             };
 
             const fetchProducts = async () => {
                 try {
                     const res = await fetch('/api/products');
                     const data = await res.json();
-                    if (Array.isArray(data) && data.length >= 6) {
+                    if (Array.isArray(data) && data.length >= 4) {
                         setProducts(data);
                     }
                 } catch (e) {}
@@ -348,21 +705,65 @@
                 } catch (e) {}
             };
 
+            const detectGpsAddress = () => {
+                SoundFX.play('tick');
+                if (!navigator.geolocation) {
+                    showToast("Qurilmada GPS qo'llab-quvvatlanmaydi");
+                    return;
+                }
+                setLocatingGps(true);
+                navigator.geolocation.getCurrentPosition(
+                    async (pos) => {
+                        const { latitude, longitude } = pos.coords;
+                        try {
+                            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=uz`);
+                            const data = await res.json();
+                            if (data?.display_name) {
+                                setCustomerLocation(data.display_name);
+                                showToast("📍 GPS manzil aniqlandi!");
+                            } else {
+                                setCustomerLocation(`GPS: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
+                            }
+                        } catch (err) {
+                            setCustomerLocation(`GPS: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
+                        } finally {
+                            setLocatingGps(false);
+                        }
+                    },
+                    () => {
+                        setLocatingGps(false);
+                        showToast("GPS ruxsati berilmadi");
+                    }
+                );
+            };
+
             const categories = useMemo(() => {
-                return ["Barchasi", ...new Set(products.map(p => p.category || "Fast Food"))];
+                return ["Barchasi", ...new Set(products.map(p => p.category || "Burgerlar"))];
             }, [products]);
 
             const filtered = useMemo(() => {
                 return products.filter(p => {
-                    const matchCat = activeCategory === "Barchasi" || (p.category || "Fast Food") === activeCategory;
+                    const matchCat = activeCategory === "Barchasi" || (p.category || "Burgerlar") === activeCategory;
                     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase());
                     return matchCat && matchSearch;
                 });
             }, [products, activeCategory, search]);
 
             const addToCart = (product, extras = [], e) => {
-                if (e) e.stopPropagation();
-                if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+                if (e) {
+                    e.stopPropagation();
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const tx = (window.innerWidth / 2) - rect.left;
+                    const ty = window.innerHeight - rect.top - 40;
+                    const orbId = Date.now() + Math.random();
+                    setFlyingOrbs(prev => [...prev, { id: orbId, x: rect.left, y: rect.top, tx: `${tx}px`, ty: `${ty}px`, img: product.image }]);
+                    setTimeout(() => {
+                        setFlyingOrbs(prev => prev.filter(o => o.id !== orbId));
+                    }, 650);
+                }
+
+                SoundFX.play('coin');
+                if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
 
                 const extrasPrice = extras.reduce((s, x) => s + x.price, 0);
                 const extrasText = extras.length > 0 ? ` (+ ${extras.map(x => x.name).join(', ')})` : '';
@@ -380,6 +781,7 @@
             };
 
             const updateQty = (cartItemId, delta) => {
+                SoundFX.play('tick');
                 if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
                 setCart(prev => prev.map(i => {
                     if (i.cartItemId === cartItemId) {
@@ -391,6 +793,7 @@
             };
 
             const toggleExtra = (ex) => {
+                SoundFX.play('tick');
                 setSelectedExtras(prev => prev.some(e => e.id === ex.id) ? prev.filter(e => e.id !== ex.id) : [...prev, ex]);
             };
 
@@ -401,63 +804,85 @@
                 e.preventDefault();
                 if (!customerLocation.trim() || cart.length === 0) return;
                 setSubmitting(true);
+                const orderObj = {
+                    id: Math.floor(1000 + Math.random() * 9000),
+                    telegramId: String(tgUser.id),
+                    name: tgUser.first_name,
+                    phone: customerPhone,
+                    location: customerLocation,
+                    totalAmount,
+                    status: "Kutilmoqda",
+                    items: cart.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.newPrice }))
+                };
+
                 try {
-                    const res = await fetch('/api/orders', {
+                    await fetch('/api/orders', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({
-                            telegramId: String(tgUser.id),
-                            name: tgUser.first_name,
-                            phone: customerPhone,
-                            location: customerLocation,
-                            totalAmount,
-                            items: cart.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.newPrice }))
-                        })
+                        body: JSON.stringify(orderObj)
                     });
-                    if (res.ok) {
-                        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                        setCart([]);
-                        setSuccessOrder(true);
-                        setTimeout(() => { setSuccessOrder(false); setIsCartOpen(false); }, 3000);
-                    }
-                } catch (err) {
-                    alert("Xatolik yuz berdi");
-                } finally {
-                    setSubmitting(false);
-                }
+                } catch (err) {}
+
+                SoundFX.play('coin');
+                if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                setUserOrders(prev => [orderObj, ...prev]);
+                setAdminOrders(prev => [orderObj, ...prev]);
+                setCart([]);
+                setSubmitting(false);
+                setSuccessOrder(true);
+                setTimeout(() => { setSuccessOrder(false); setIsCartOpen(false); }, 2800);
             };
 
             const formatPrice = (p) => Number(p).toLocaleString('uz-UZ') + " so'm";
 
-            // ADMIN PANEL
             if (viewMode === 'admin') {
                 return (
-                    <div className="min-h-screen flex flex-col lg:flex-row bg-[#f4f3e7]">
-                        {toast && <div className="fixed top-4 right-4 z-50 bg-[#00473c] text-[#e6ff55] px-5 py-2.5 rounded-full text-xs font-bold shadow-xl">✓ {toast}</div>}
-                        <aside className="w-full lg:w-72 bg-[#00473c] text-[#f4f3e7] p-5 flex flex-col justify-between shrink-0">
+                    <div className="min-h-screen bg-[#040406] text-white p-4 sm:p-8 max-w-[1150px] mx-auto">
+                        <div className="obsidian-slab rounded-3xl p-6 mb-6 flex flex-wrap items-center justify-between gap-4">
                             <div>
-                                <span className="text-[10px] font-extrabold uppercase text-[#e6ff55]">ADMIN OS</span>
-                                <h1 className="font-display text-2xl text-[#f4f3e7] mb-6 mt-1">THE FAST FOOD.</h1>
-                                <button onClick={() => setViewMode('client')} className="w-full text-left px-4 py-3 rounded-full font-bold text-xs bg-white/10 text-white">🛍️ Mijoz Rejimi</button>
+                                <span className="font-mono-tech text-[10px] text-[#ff7b00] uppercase tracking-widest block">ADMIN PANEL</span>
+                                <h1 className="font-syne text-2xl font-extrabold">THE FAST FOOD // OS</h1>
                             </div>
-                        </aside>
-                        <main className="flex-1 p-4 md:p-8 max-w-[1200px] mx-auto w-full overflow-y-auto">
-                            <h2 className="font-display text-3xl text-[#0e150e] mb-4">TAOM QO'SHISH</h2>
-                            <div className="bg-[#d8e5d6] p-5 rounded-[20px] mb-8">
+                            <div className="flex items-center gap-2">
+                                <button onClick={() => setAdminTab('orders')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'orders' ? 'btn-lava' : 'bg-white/5'}`}>
+                                    Buyurtmalar ({adminOrders.length})
+                                </button>
+                                <button onClick={() => setAdminTab('add')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'add' ? 'btn-lava' : 'bg-white/5'}`}>
+                                    + Yangi Taom
+                                </button>
+                                <button onClick={() => setViewMode('client')} className="px-4 py-2.5 rounded-xl text-xs font-bold bg-white/10">
+                                    ← Vitrinaga
+                                </button>
+                            </div>
+                        </div>
+
+                        {adminTab === 'add' ? (
+                            <div className="obsidian-slab rounded-3xl p-6">
+                                <h2 className="font-syne text-xl font-bold mb-4">Yangi Taom Qo'shish</h2>
                                 <form onSubmit={async (e) => {
                                     e.preventDefault();
-                                    await fetch('/api/admin/products', {
-                                        method: 'POST',
-                                        headers: {'Content-Type': 'application/json'},
-                                        body: JSON.stringify({ ...newProd, oldPrice: Number(newProd.oldPrice), newPrice: Number(newProd.newPrice) })
-                                    });
+                                    const created = {
+                                        ...newProd,
+                                        id: Date.now(),
+                                        oldPrice: Number(newProd.oldPrice),
+                                        newPrice: Number(newProd.newPrice),
+                                        badge: "YANGI 🔥",
+                                        prepTime: "12 daq",
+                                        kcal: "720 KCAL"
+                                    };
+                                    try {
+                                        await fetch('/api/admin/products', {
+                                            method: 'POST',
+                                            headers: {'Content-Type': 'application/json'},
+                                            body: JSON.stringify(created)
+                                        });
+                                    } catch (err) {}
+                                    setProducts(prev => [created, ...prev]);
                                     setNewProd({ name: '', description: '', image: '', oldPrice: '', newPrice: '', category: 'Burgerlar' });
-                                    showToast("Qo'shildi!");
-                                    fetchAdminData();
-                                    fetchProducts();
-                                }} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <input type="text" placeholder="Taom Nomi" value={newProd.name} onChange={e => setNewProd({...newProd, name: e.target.value})} className="p-3 bg-[#f4f3e7] border rounded-lg text-xs font-semibold" required />
-                                    <select value={newProd.category} onChange={e => setNewProd({...newProd, category: e.target.value})} className="p-3 bg-[#f4f3e7] border rounded-lg text-xs font-bold">
+                                    showToast("Taom muvaffaqiyatli qo'shildi!");
+                                }} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <input type="text" placeholder="Taom Nomi" value={newProd.name} onChange={e => setNewProd({...newProd, name: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-white" required />
+                                    <select value={newProd.category} onChange={e => setNewProd({...newProd, category: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-[#ff9e00] font-bold">
                                         <option value="Burgerlar">Burgerlar</option>
                                         <option value="Hot-Doglar">Hot-Doglar</option>
                                         <option value="Lavash">Lavash</option>
@@ -465,92 +890,135 @@
                                         <option value="Sneklar">Sneklar</option>
                                         <option value="Ichimliklar">Ichimliklar</option>
                                     </select>
-                                    <input type="number" placeholder="Eski Narx" value={newProd.oldPrice} onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} className="p-3 bg-[#f4f3e7] border rounded-lg text-xs" required />
-                                    <input type="number" placeholder="Yangi Narx" value={newProd.newPrice} onChange={e => setNewProd({...newProd, newPrice: e.target.value})} className="p-3 bg-[#f4f3e7] border rounded-lg text-xs" required />
-                                    <input type="url" placeholder="Rasm URL" value={newProd.image} onChange={e => setNewProd({...newProd, image: e.target.value})} className="sm:col-span-2 p-3 bg-[#f4f3e7] border rounded-lg text-xs" required />
-                                    <textarea placeholder="Ta'rifi..." value={newProd.description} onChange={e => setNewProd({...newProd, description: e.target.value})} className="sm:col-span-2 p-3 bg-[#f4f3e7] border rounded-lg text-xs" rows="2" required></textarea>
-                                    <button type="submit" className="sm:col-span-2 btn-lime-lux py-3 text-xs">Qo'shish</button>
+                                    <input type="number" placeholder="Eski Narxi" value={newProd.oldPrice} onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-white" required />
+                                    <input type="number" placeholder="Yangi Narxi" value={newProd.newPrice} onChange={e => setNewProd({...newProd, newPrice: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-white" required />
+                                    <input type="url" placeholder="Rasm URL" value={newProd.image} onChange={e => setNewProd({...newProd, image: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-white" required />
+                                    <textarea placeholder="Ta'rifi..." value={newProd.description} onChange={e => setNewProd({...newProd, description: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-white" rows="3" required />
+                                    <button type="submit" className="sm:col-span-2 btn-lava py-4 rounded-xl text-xs font-extrabold uppercase">Saqlash</button>
                                 </form>
                             </div>
-                        </main>
+                        ) : (
+                            <div className="space-y-3">
+                                {adminOrders.length === 0 ? (
+                                    <div className="obsidian-slab rounded-3xl p-12 text-center text-white/40 text-xs">Buyurtmalar yo'q</div>
+                                ) : adminOrders.map(o => (
+                                    <div key={o.id} className="obsidian-slab rounded-2xl p-5 flex items-center justify-between">
+                                        <div>
+                                            <span className="font-mono-tech text-xs text-[#ff9e00] font-bold">#{o.id} — {o.name} ({o.phone})</span>
+                                            <p className="text-xs text-white/70 mt-1">📍 {o.location}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <span className="font-syne text-base font-extrabold">{formatPrice(o.totalAmount)}</span>
+                                            <span className="block text-[10px] text-emerald-400">{o.status}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 );
             }
 
-            // MIJOZ QISMI
             return (
-                <div className="min-h-screen pb-40 relative">
+                <div className="min-h-screen pb-36 relative">
+                    {flyingOrbs.map(orb => (
+                        <img key={orb.id} src={orb.img} style={{ left: orb.x, top: orb.y, '--tx': orb.tx, '--ty': orb.ty }} className="flying-orb w-14 h-14 rounded-full object-cover border-2 border-[#ff5500] shadow-[0_0_25px_#ff3b00]" />
+                    ))}
+
                     {toast && (
-                        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-[#00473c] text-[#e6ff55] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase shadow-xl flex items-center gap-1.5">
-                            <span>✓</span><span>{toast}</span>
+                        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 btn-lava px-5 py-2.5 rounded-full text-xs font-extrabold shadow-2xl flex items-center gap-2">
+                            <span>⚡</span><span>{toast}</span>
                         </div>
                     )}
 
-                    <header className="sticky top-0 z-30 bg-[#f4f3e7]/95 backdrop-blur-md border-b border-[#0e150e]/10">
-                        <div className="max-w-[1200px] mx-auto px-4 h-16 flex items-center justify-between gap-2">
-                            <span className="text-[18px] font-extrabold text-[#00473c] font-display tracking-tight shrink-0">
-                                the fast food.
-                            </span>
+                    <header className="sticky top-0 z-30 bg-[#040406]/80 backdrop-blur-2xl border-b border-white/[0.07]">
+                        <div className="max-w-[1240px] mx-auto px-4 h-16 flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-3">
+                                <div className="relative w-10 h-10 rounded-2xl btn-lava flex items-center justify-center font-syne font-extrabold text-lg shadow-lg">
+                                    FF
+                                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#040406]" />
+                                </div>
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-syne text-sm font-extrabold tracking-wider text-white">THE FAST FOOD</span>
+                                    </div>
+                                    <span className="font-mono-tech text-[10px] text-white/45 block">100% MARMAR MOL GO'SHTI</span>
+                                </div>
+                            </div>
 
-                            <div className="flex items-center gap-2 shrink-0">
-                                {String(tgUser.id) === ADMIN_TELEGRAM_ID && (
-                                    <button 
-                                        onClick={() => { setViewMode('admin'); fetchAdminData(); }}
-                                        className="bg-[#00473c] text-[#e6ff55] px-3 py-1.5 rounded-full text-[11px] font-extrabold uppercase tracking-tight shadow-sm"
-                                    >
-                                        ⚙️ Admin
+                            <div className="flex items-center gap-2">
+                                <button onClick={() => { SoundFX.play('whoosh'); setIsBurgerLabOpen(true); }} className="px-3.5 py-2 rounded-2xl bg-white/[0.07] hover:bg-white/[0.14] border border-[#ff5500]/40 text-[11px] font-extrabold text-[#ff9e00] flex items-center gap-1.5 transition">
+                                    <span>🧬</span>
+                                    <span>Burger Lab</span>
+                                </button>
+
+                                {(String(tgUser.id) === ADMIN_TELEGRAM_ID || isAdminAuthed) && (
+                                    <button onClick={() => { SoundFX.play('tick'); setViewMode('admin'); fetchAdminData(); }} className="btn-lava px-3 py-2 rounded-2xl text-[11px] font-extrabold">
+                                        ⚙️ OS
                                     </button>
                                 )}
                             </div>
                         </div>
                     </header>
 
-                    <section className="relative w-full h-[360px] bg-[#0e150e] overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=80" className="w-full h-full object-cover opacity-85" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0e150e]/85 via-transparent to-transparent"></div>
-                        <div className="absolute bottom-4 left-3 right-3 bg-[#f4f3e7]/95 backdrop-blur-md p-5 rounded-[20px] shadow-xl">
-                            <span className="bg-[#e6ff55] text-[#0e150e] text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full inline-block mb-2">100% MARMAR MOL GO'SHTI</span>
-                            <h1 className="font-display text-[28px] text-[#0e150e] mb-2 leading-[0.9]">ENG SERSUV BURGER VA HOT-DOGLAR</h1>
-                            <p className="text-xs text-[#0e150e]/80 mb-4">Ochiq olovda tayyorlangan gril taomlari. Issiq holda yetkazamiz.</p>
-                            <button onClick={() => document.getElementById('menu-section').scrollIntoView({ behavior: 'smooth' })} className="btn-lime-lux px-5 py-3 text-xs w-full text-center">
-                                Menyuni ko'rish →
-                            </button>
+                    {/* 3D CAROUSEL STAGE */}
+                    <section className="max-w-[1240px] mx-auto px-3 pt-5 pb-2 overflow-hidden">
+                        <div className="flex items-center justify-between px-2 mb-3">
+                            <div>
+                                <span className="font-mono-tech text-[10px] text-[#ff5500] uppercase tracking-widest block">● HIT TAVSIVALAR</span>
+                                <h2 className="font-syne text-xl sm:text-2xl font-extrabold text-white">ENG SERSUV BURGERLAR</h2>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <button onClick={() => { SoundFX.play('whoosh'); setHeroIndex(prev => (prev - 1 + featuredItems.length) % featuredItems.length); }} className="w-9 h-9 rounded-xl obsidian-slab flex items-center justify-center text-white hover:border-[#ff5500]">←</button>
+                                <button onClick={() => { SoundFX.play('whoosh'); setHeroIndex(prev => (prev + 1) % featuredItems.length); }} className="w-9 h-9 rounded-xl obsidian-slab flex items-center justify-center text-white hover:border-[#ff5500]">→</button>
+                            </div>
                         </div>
-                    </section>
 
-                    <section id="menu-section" className="max-w-[1200px] mx-auto px-3 pt-8">
-                        <div className="flex items-baseline gap-5 overflow-x-auto no-scrollbar pb-3 border-b border-[#0e150e]/15">
-                            {categories.map(cat => {
-                                const isActive = activeCategory === cat;
-                                return (
-                                    <button key={cat} onClick={() => setActiveCategory(cat)} className="group relative flex flex-col items-center shrink-0">
-                                        <span className={`font-display text-[22px] transition ${isActive ? 'text-[#0e150e]' : 'text-[#8c8c82]'}`}>{cat}</span>
-                                        <span className={`mt-1 w-2 h-2 rounded-full bg-[#00473c] transition ${isActive ? 'opacity-100' : 'opacity-0'}`}></span>
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </section>
+                        <div className="perspective-stage relative h-[330px] sm:h-[360px] flex items-center justify-center">
+                            {featuredItems.map((item, idx) => {
+                                const total = featuredItems.length;
+                                let offset = idx - heroIndex;
+                                if (offset > total / 2) offset -= total;
+                                if (offset < -total / 2) offset += total;
+                                const isCenter = offset === 0;
+                                const absOffset = Math.abs(offset);
+                                const translateX = offset * 62;
+                                const translateZ = isCenter ? 0 : -150 * absOffset;
+                                const rotateY = offset * -28;
+                                const opacity = absOffset > 1 ? 0 : isCenter ? 1 : 0.42;
+                                const zIndex = 20 - absOffset * 5;
 
-                    <section className="max-w-[1200px] mx-auto px-3 py-6">
-                        <div className="grid grid-cols-2 gap-3 sm:gap-6">
-                            {filtered.map((product) => {
-                                const qty = cart.filter(i => i.id === product.id).reduce((s, i) => s + i.qty, 0);
                                 return (
-                                    <div key={product.id} onClick={() => { setSelectedProduct(product); setSelectedExtras([]); }} className="food-item-card cursor-pointer group bg-white/40 p-2.5 rounded-[18px] border border-[#0e150e]/10 flex flex-col justify-between">
-                                        <div>
-                                            <div className="food-stage shadow-sm mb-2.5">
-                                                <img src={product.image} alt={product.name} />
-                                                {product.badge && <span className="absolute top-2 left-2 bg-[#e6ff55] text-[#0e150e] text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full shadow">{product.badge}</span>}
-                                            </div>
-                                            <h3 className="text-[14px] font-extrabold text-[#0e150e] leading-tight line-clamp-1">{product.name}</h3>
-                                            <p className="text-[11px] text-[#0e150e]/75 mt-1 line-clamp-2 leading-tight">{product.description}</p>
+                                    <div
+                                        key={item.id}
+                                        onClick={() => {
+                                            SoundFX.play('whoosh');
+                                            if (isCenter) {
+                                                setSelectedProduct(item);
+                                                setSelectedExtras([]);
+                                            } else {
+                                                setHeroIndex(idx);
+                                            }
+                                        }}
+                                        style={{ transform: `translateX(${translateX}%) translateZ(${translateZ}px) rotateY(${rotateY}deg)`, opacity, zIndex }}
+                                        className={`coverflow-card absolute w-[84%] sm:w-[460px] h-[305px] sm:h-[330px] rounded-[32px] obsidian-slab overflow-hidden cursor-pointer ${isCenter ? 'lava-border-glow' : ''}`}
+                                    >
+                                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-[#040406] via-[#040406]/45 to-transparent" />
+                                        <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+                                            <span className="btn-lava text-[10px] font-mono-tech font-bold uppercase px-3 py-1 rounded-full">{item.badge}</span>
+                                            <span className="bg-black/70 backdrop-blur-md border border-white/15 text-white font-mono-tech text-[10px] px-2.5 py-1 rounded-full">🔥 {item.kcal}</span>
                                         </div>
-                                        <div className="flex items-center justify-between pt-3 mt-2 border-t border-[#0e150e]/10">
-                                            <span className="text-[13px] font-extrabold text-[#00473c]">{formatPrice(product.newPrice)}</span>
-                                            <button onClick={(e) => addToCart(product, [], e)} className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition ${qty > 0 ? 'bg-[#e6ff55] text-[#0e150e]' : 'bg-[#00473c] text-[#f4f3e7]'}`}>
-                                                {qty > 0 ? qty : '+'}
-                                            </button>
+                                        <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-3">
+                                            <div>
+                                                <p className="font-mono-tech text-[10px] text-[#ff9e00] uppercase">{item.tagline}</p>
+                                                <h3 className="font-syne text-xl sm:text-2xl font-extrabold text-white leading-tight mt-0.5">{item.name}</h3>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                    <span className="font-syne text-lg font-extrabold text-[#ff9e00]">{formatPrice(item.newPrice)}</span>
+                                                    <span className="font-mono-tech text-xs text-white/35 line-through">{formatPrice(item.oldPrice)}</span>
+                                                </div>
+                                            </div>
+                                            <button onClick={(e) => addToCart(item, [], e)} className="btn-lava px-5 py-3.5 rounded-2xl font-mono-tech text-xs font-bold shrink-0">+ BUYURTMA</button>
                                         </div>
                                     </div>
                                 );
@@ -558,103 +1026,177 @@
                         </div>
                     </section>
 
-                    {/* ======================================================== */}
-                    {/* DOIMIY KATTA VA QULAY PASTGI PANELI (BUYURTMALAR VA SAVAT) */}
-                    {/* ======================================================== */}
-                    <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#f4f3e7]/95 backdrop-blur-xl border-t border-[#0e150e]/15 p-4 shadow-2xl">
-                        <div className="max-w-[1200px] mx-auto flex items-center gap-3">
-                            <button 
-                                onClick={() => {
-                                    fetch(`/api/orders/${tgUser.id}`).then(r=>r.json()).then(d=>setUserOrders(Array.isArray(d)?d:[])).catch(()=>{});
-                                    setIsOrdersOpen(true);
-                                }}
-                                className="flex-1 bg-[#d8e5d6] hover:bg-[#c5d8c3] text-[#0e150e] py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 border border-[#0e150e]/10 shadow-sm active:scale-95 transition"
-                            >
-                                <span className="text-lg">📦</span>
-                                <span className="text-xs font-extrabold uppercase">Buyurtmalar</span>
+                    {/* CATEGORY DOCK & SEARCH */}
+                    <section className="max-w-[1240px] mx-auto px-3 pt-4 sticky top-16 z-20 bg-gradient-to-b from-[#040406] via-[#040406]/95 to-transparent pb-3">
+                        <div className="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center justify-between">
+                            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                                {categories.map(cat => {
+                                    const active = activeCategory === cat;
+                                    return (
+                                        <button key={cat} onClick={() => { SoundFX.play('tick'); setActiveCategory(cat); }} className={`px-4 py-2.5 rounded-2xl text-xs font-syne font-bold shrink-0 flex items-center gap-2 transition-all duration-300 ${active ? 'btn-lava scale-105' : 'obsidian-slab text-white/70 hover:text-white'}`}>
+                                            <AnimatedCategoryIcon category={cat} active={active} />
+                                            <span>{cat}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="relative sm:w-64">
+                                <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Taom nomi..." className="w-full obsidian-slab rounded-2xl py-2.5 pl-9 pr-4 text-xs text-white placeholder-white/35 focus:outline-none focus:border-[#ff5500]" />
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-xs">⌕</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* MENU GRID */}
+                    <section className="max-w-[1240px] mx-auto px-3 py-3">
+                        <div key={activeCategory} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
+                            {filtered.map((product, idx) => {
+                                const qty = cart.filter(i => i.id === product.id).reduce((s, i) => s + i.qty, 0);
+                                return (
+                                    <SpatialDishSlab
+                                        key={product.id}
+                                        index={idx}
+                                        product={product}
+                                        qty={qty}
+                                        onSelect={(p) => { setSelectedProduct(p); setSelectedExtras([]); }}
+                                        onQuickAdd={addToCart}
+                                        formatPrice={formatPrice}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </section>
+
+                    {/* DOIMIY QULAY VA KATTA PASTGI PANELI (BUYURTMALAR VA SAVAT) */}
+                    <div className="fixed bottom-3 left-3 right-3 z-40 max-w-[820px] mx-auto">
+                        <div className="obsidian-slab lava-border-glow rounded-[26px] p-2.5 flex items-center gap-2.5">
+                            <button onClick={() => { SoundFX.play('tick'); fetch(`/api/orders/${tgUser.id}`).then(r=>r.json()).then(d=>setUserOrders(Array.isArray(d)?d:[])).catch(()=>{}); setIsOrdersOpen(true); }} className="px-4 py-3.5 rounded-[20px] bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs font-bold text-white flex items-center gap-2 shrink-0">
+                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                                <span>📦 Buyurtmalar</span>
                             </button>
 
-                            <button 
-                                onClick={() => setIsCartOpen(true)}
-                                className="flex-1 bg-[#00473c] hover:bg-[#003830] text-[#e6ff55] py-3.5 px-4 rounded-2xl flex items-center justify-between shadow-lg active:scale-95 transition px-5"
-                            >
-                                <div className="flex items-center gap-2">
+                            <button onClick={() => { SoundFX.play('whoosh'); setIsCartOpen(true); }} className="flex-1 btn-lava py-3.5 px-5 rounded-[20px] flex items-center justify-between">
+                                <div className="flex items-center gap-2.5">
                                     <span className="text-lg">🛒</span>
-                                    <span className="text-xs font-extrabold uppercase">Savat</span>
+                                    <span className="font-syne text-xs sm:text-sm font-extrabold uppercase tracking-wider">SAVAT</span>
                                     {totalItems > 0 && (
-                                        <span className="bg-[#e6ff55] text-[#0e150e] px-2 py-0.5 rounded-full text-[10px] font-extrabold">
-                                            {totalItems}
-                                        </span>
+                                        <span className="bg-black text-[#ff9e00] font-mono-tech px-2.5 py-0.5 rounded-full text-xs font-bold">{totalItems}</span>
                                     )}
                                 </div>
-                                <span className="text-xs font-extrabold">{formatPrice(totalAmount)}</span>
+                                <span className="font-syne text-xs sm:text-sm font-extrabold">{formatPrice(totalAmount)}</span>
                             </button>
                         </div>
                     </div>
 
-                    {/* SAVATCHA VA FORMA */}
+                    {isBurgerLabOpen && (
+                        <BurgerLabModal onClose={() => setIsBurgerLabOpen(false)} onAddCustom={addToCart} formatPrice={formatPrice} />
+                    )}
+
+                    {/* DISH CUSTOMIZATION SHEET */}
+                    {selectedProduct && (
+                        <div onClick={() => setSelectedProduct(null)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex items-end sm:items-center justify-center p-0 sm:p-4">
+                            <div onClick={e => e.stopPropagation()} className="obsidian-slab lava-border-glow w-full max-w-lg rounded-t-[34px] sm:rounded-[34px] overflow-hidden p-5 max-h-[90vh] overflow-y-auto">
+                                <div className="relative h-60 w-full rounded-[24px] overflow-hidden mb-4 border border-white/15">
+                                    <img src={selectedProduct.image} className="w-full h-full object-cover" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#090a0e] via-transparent to-black/30" />
+                                    <button onClick={() => setSelectedProduct(null)} className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/70 text-white font-bold border border-white/20">✕</button>
+                                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+                                        <span className="btn-lava text-[10px] font-mono-tech font-bold px-3 py-1 rounded-full">{selectedProduct.badge}</span>
+                                        <span className="bg-black/75 backdrop-blur-md text-white font-mono-tech text-[10px] px-3 py-1 rounded-full border border-white/15">⏱ {selectedProduct.prepTime}</span>
+                                    </div>
+                                </div>
+
+                                <h3 className="font-syne text-2xl font-extrabold text-white mt-0.5 mb-1.5">{selectedProduct.name}</h3>
+                                <p className="text-xs text-white/65 mb-5 leading-relaxed">{selectedProduct.description}</p>
+
+                                <div className="space-y-2 mb-6">
+                                    <span className="font-mono-tech text-[10px] text-white/45 uppercase block mb-2">+ QO'SHIMCHALAR:</span>
+                                    {EXTRAS.map(ex => {
+                                        const checked = selectedExtras.some(e => e.id === ex.id);
+                                        return (
+                                            <div key={ex.id} onClick={() => toggleExtra(ex)} className={`p-3.5 rounded-2xl border cursor-pointer flex items-center justify-between transition ${checked ? 'border-[#ff5500] bg-[#ff5500]/15' : 'border-white/10 bg-white/[0.03]'}`}>
+                                                <span className="text-xs font-bold text-white">{ex.name}</span>
+                                                <span className="font-mono-tech text-xs font-bold text-[#ff9e00]">+{formatPrice(ex.price)}</span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                                    <div>
+                                        <span className="font-mono-tech text-[10px] text-white/45 block">JAMI NARX</span>
+                                        <span className="font-syne text-xl font-extrabold text-white">{formatPrice(Number(selectedProduct.newPrice) + selectedExtras.reduce((s, e) => s + e.price, 0))}</span>
+                                    </div>
+                                    <button onClick={(e) => { addToCart(selectedProduct, selectedExtras, e); setSelectedProduct(null); }} className="btn-lava px-7 py-4 rounded-2xl text-xs font-extrabold uppercase tracking-wider">
+                                        + Savatga Qo'shish
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* CHECKOUT VAULT */}
                     {isCartOpen && (
-                        <div onClick={() => setIsCartOpen(false)} className="fixed inset-0 z-50 bg-[#0e150e]/70 backdrop-blur-sm flex justify-end">
-                            <div onClick={e => e.stopPropagation()} className="bg-[#f4f3e7] w-full max-w-md h-full flex flex-col justify-between p-5 overflow-y-auto">
+                        <div onClick={() => setIsCartOpen(false)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex justify-end">
+                            <div onClick={e => e.stopPropagation()} className="obsidian-slab w-full max-w-md h-full p-5 flex flex-col justify-between overflow-y-auto border-l border-[#ff5500]/30">
                                 <div>
-                                    <div className="flex justify-between pb-3 border-b border-[#0e150e]/15">
-                                        <h2 className="font-display text-2xl text-[#0e150e]">SAVATCHA</h2>
-                                        <button onClick={() => setIsCartOpen(false)} className="font-bold">✕</button>
+                                    <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                                        <div>
+                                            <span className="font-mono-tech text-[10px] text-[#ff7b00] block">TEZKOR RASMIYLASHTIRISH</span>
+                                            <h2 className="font-syne text-xl font-extrabold text-white">SAVATCHA</h2>
+                                        </div>
+                                        <button onClick={() => setIsCartOpen(false)} className="w-9 h-9 rounded-full bg-white/10 text-white">✕</button>
                                     </div>
 
                                     {successOrder ? (
-                                        <div className="py-12 text-center">
-                                            <div className="w-14 h-14 rounded-full bg-[#e6ff55] text-[#0e150e] flex items-center justify-center text-2xl mx-auto mb-3 font-bold">✓</div>
-                                            <h3 className="font-display text-xl text-[#00473c] mb-1">BUYURTMA QABUL QILINDI!</h3>
-                                            <p className="text-xs text-[#0e150e]/80">Kuryerimiz tez orada siz bilan bog'lanadi.</p>
+                                        <div className="py-20 text-center space-y-3">
+                                            <div className="w-20 h-20 rounded-full btn-lava flex items-center justify-center text-3xl mx-auto font-black">✓</div>
+                                            <h3 className="font-syne text-2xl font-extrabold text-white">BUYURTMA QABUL QILINDI!</h3>
+                                            <p className="text-xs text-white/60 max-w-xs mx-auto">Kuryerimiz tez orada siz bilan bog'lanadi.</p>
                                         </div>
                                     ) : cart.length === 0 ? (
-                                        <p className="text-center py-12 text-xs text-[#8c8c82]">Savatchangiz bo'sh</p>
+                                        <p className="text-center py-20 text-xs text-white/40 font-mono-tech">SAVATCHANGIZ BO'SH</p>
                                     ) : (
                                         <div className="mt-4 space-y-3">
                                             {cart.map(item => (
-                                                <div key={item.cartItemId} className="flex items-center gap-2 pb-2.5 border-b border-[#0e150e]/10">
-                                                    <img src={item.image} className="w-12 h-12 rounded-[10px] object-cover bg-[#e8dcc6]" />
+                                                <div key={item.cartItemId} className="flex items-center gap-3 p-2.5 rounded-2xl bg-white/[0.04] border border-white/10">
+                                                    <img src={item.image} className="w-14 h-14 rounded-xl object-cover shrink-0" />
                                                     <div className="flex-1 min-w-0">
-                                                        <h4 className="font-bold text-xs text-[#0e150e] truncate">{item.name}</h4>
-                                                        <p className="text-[11px] font-extrabold text-[#00473c]">{formatPrice(item.newPrice)}</p>
+                                                        <h4 className="text-xs font-bold text-white truncate">{item.name}</h4>
+                                                        <p className="font-mono-tech text-xs text-[#ff9e00] font-bold mt-0.5">{formatPrice(item.newPrice)}</p>
                                                     </div>
-                                                    <div className="flex items-center gap-1.5 bg-[#d8e5d6] px-2.5 py-1 rounded-full shrink-0">
-                                                        <button onClick={() => updateQty(item.cartItemId, -1)} className="font-bold text-xs">−</button>
-                                                        <span className="text-[11px] font-extrabold w-3 text-center">{item.qty}</span>
-                                                        <button onClick={() => updateQty(item.cartItemId, 1)} className="font-bold text-xs">+</button>
+                                                    <div className="flex items-center gap-2 bg-black/60 border border-white/15 px-2.5 py-1 rounded-xl">
+                                                        <button onClick={() => updateQty(item.cartItemId, -1)} className="text-white font-bold">−</button>
+                                                        <span className="font-mono-tech text-xs font-bold w-4 text-center">{item.qty}</span>
+                                                        <button onClick={() => updateQty(item.cartItemId, 1)} className="text-white font-bold">+</button>
                                                     </div>
                                                 </div>
                                             ))}
 
-                                            <form onSubmit={submitOrder} className="pt-2 space-y-2.5">
+                                            <form onSubmit={submitOrder} className="pt-4 space-y-3.5">
                                                 <div>
-                                                    <label className="block text-[10px] font-extrabold uppercase text-[#0e150e] mb-1">Telefon raqam</label>
-                                                    <input 
-                                                        type="tel" 
-                                                        required 
-                                                        value={customerPhone} 
-                                                        onChange={e => setCustomerPhone(e.target.value)} 
-                                                        className="w-full bg-white border rounded-[8px] p-2.5 text-xs font-semibold focus:outline-none focus:border-[#00473c]" 
-                                                    />
+                                                    <label className="block font-mono-tech text-[10px] uppercase text-white/60 mb-1">Telefon raqam</label>
+                                                    <input type="tel" required value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="w-full bg-black/60 border border-white/15 rounded-xl p-3.5 text-xs font-bold text-white focus:outline-none focus:border-[#ff5500]" />
                                                 </div>
+
                                                 <div>
-                                                    <label className="block text-[10px] font-extrabold uppercase text-[#0e150e] mb-1">Yetkazib berish manzili</label>
-                                                    <textarea 
-                                                        required 
-                                                        rows="2" 
-                                                        value={customerLocation} 
-                                                        onChange={e => setCustomerLocation(e.target.value)} 
-                                                        placeholder="Masalan: Yunusobod, 4-kvartal..." 
-                                                        className="w-full bg-white border rounded-[8px] p-2.5 text-xs font-medium focus:outline-none focus:border-[#00473c]"
-                                                    ></textarea>
+                                                    <div className="flex items-center justify-between mb-1">
+                                                        <label className="font-mono-tech text-[10px] uppercase text-white/60">Yetkazib berish manzili</label>
+                                                        <button type="button" onClick={detectGpsAddress} className="text-[10px] font-mono-tech font-bold text-[#ff9e00] hover:underline flex items-center gap-1">
+                                                            {locatingGps ? "Aniqlanmoqda..." : "📍 GPS orqali aniqlash"}
+                                                        </button>
+                                                    </div>
+                                                    <textarea required rows="2" value={customerLocation} onChange={e => setCustomerLocation(e.target.value)} placeholder="Masalan: Yunusobod, 4-kvartal..." className="w-full bg-black/60 border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#ff5500]" />
                                                 </div>
-                                                <div className="bg-[#d8e5d6] p-2.5 rounded-[10px] flex justify-between font-extrabold text-xs">
-                                                    <span>Jami to'lov:</span>
-                                                    <span>{formatPrice(totalAmount)}</span>
+
+                                                <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 flex justify-between items-center">
+                                                    <span className="text-xs text-white/70">Jami to'lov:</span>
+                                                    <span className="font-syne text-lg font-extrabold text-[#ff9e00]">{formatPrice(totalAmount)}</span>
                                                 </div>
-                                                <button type="submit" disabled={submitting} className="w-full btn-lime-lux py-3 text-xs">
-                                                    {submitting ? "Yuborilmoqda..." : "Buyurtmani tasdiqlash →"}
+
+                                                <button type="submit" disabled={submitting} className="w-full btn-lava py-4 rounded-2xl text-xs font-extrabold uppercase tracking-widest">
+                                                    {submitting ? "Yuborilmoqda..." : "Buyurtmani Tasdiqlash 🔥"}
                                                 </button>
                                             </form>
                                         </div>
@@ -664,51 +1206,25 @@
                         </div>
                     )}
 
-                    {/* MODAL */}
-                    {selectedProduct && (
-                        <div onClick={() => setSelectedProduct(null)} className="fixed inset-0 z-50 bg-[#0e150e]/70 backdrop-blur-sm flex items-end justify-center p-0">
-                            <div onClick={e => e.stopPropagation()} className="bg-[#f4f3e7] w-full max-w-lg rounded-t-[28px] overflow-hidden p-5 max-h-[85vh] overflow-y-auto">
-                                <div className="relative h-48 w-full bg-[#e8dcc6] rounded-[16px] overflow-hidden mb-3">
-                                    <img src={selectedProduct.image} className="w-full h-full object-cover" />
-                                </div>
-                                <h3 className="font-display text-2xl text-[#0e150e] mb-1">{selectedProduct.name}</h3>
-                                <p className="text-xs text-[#0e150e]/80 mb-4">{selectedProduct.description}</p>
-                                
-                                <div className="mb-5 space-y-2">
-                                    <p className="text-[11px] font-extrabold uppercase text-[#0e150e] mb-1">QO'SHIMCHALAR:</p>
-                                    {EXTRAS.map(ex => {
-                                        const checked = selectedExtras.some(e => e.id === ex.id);
-                                        return (
-                                            <div key={ex.id} onClick={() => toggleExtra(ex)} className={`p-2.5 rounded-[10px] border-2 cursor-pointer flex justify-between items-center text-xs ${checked ? 'border-[#00473c] bg-[#d8e5d6]' : 'border-[#0e150e]/15'}`}>
-                                                <span className="font-bold">{ex.name}</span>
-                                                <span className="font-extrabold text-[#00473c]">+{formatPrice(ex.price)}</span>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-
-                                <div className="flex items-center justify-between pt-3 border-t border-[#0e150e]/15">
-                                    <span className="text-xl font-extrabold text-[#00473c]">{formatPrice(Number(selectedProduct.newPrice) + selectedExtras.reduce((s,e)=>s+e.price,0))}</span>
-                                    <button onClick={() => { addToCart(selectedProduct, selectedExtras); setSelectedProduct(null); }} className="btn-lime-lux px-6 py-3 text-xs">Savatga qo'shish</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
                     {/* BUYURTMALAR TARIXI */}
                     {isOrdersOpen && (
-                        <div onClick={() => setIsOrdersOpen(false)} className="fixed inset-0 z-50 bg-[#0e150e]/70 backdrop-blur-sm flex justify-start">
-                            <div onClick={e => e.stopPropagation()} className="bg-[#f4f3e7] w-full max-w-md h-full p-5 overflow-y-auto">
-                                <div className="flex justify-between pb-3 border-b border-[#0e150e]/15">
-                                    <h2 className="font-display text-2xl text-[#0e150e]">BUYURTMALAR</h2>
-                                    <button onClick={() => setIsOrdersOpen(false)} className="font-bold">✕</button>
+                        <div onClick={() => setIsOrdersOpen(false)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex justify-start">
+                            <div onClick={e => e.stopPropagation()} className="obsidian-slab w-full max-w-md h-full p-5 overflow-y-auto border-r border-[#ff5500]/30">
+                                <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                                    <h2 className="font-syne text-xl font-extrabold text-white">BUYURTMALARIM</h2>
+                                    <button onClick={() => setIsOrdersOpen(false)} className="w-9 h-9 rounded-full bg-white/10 text-white">✕</button>
                                 </div>
-                                <div className="mt-4 space-y-2.5">
-                                    {userOrders.length === 0 ? <p className="text-xs text-[#8c8c82] py-8 text-center">Buyurtmalar yo'q</p> : userOrders.map(o => (
-                                        <div key={o.id} className="bg-[#d8e5d6] p-3.5 rounded-[14px]">
-                                            <div className="flex justify-between font-bold text-xs mb-1 text-[#00473c]"><span>#{o.id}</span><span>{o.status}</span></div>
-                                            <p className="text-[11px] text-[#0e150e]/75 mb-1">📍 {o.location}</p>
-                                            <div className="font-extrabold text-xs">{formatPrice(o.totalAmount)}</div>
+                                <div className="mt-4 space-y-3">
+                                    {userOrders.length === 0 ? (
+                                        <p className="text-center py-20 text-xs text-white/40 font-mono-tech">FAOL BUYURTMALAR YO'Q</p>
+                                    ) : userOrders.map(o => (
+                                        <div key={o.id} className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 space-y-1.5">
+                                            <div className="flex justify-between items-center">
+                                                <span className="font-mono-tech text-xs font-bold text-[#ff9e00]">#{o.id}</span>
+                                                <span className="text-[10px] font-bold text-emerald-400">{o.status}</span>
+                                            </div>
+                                            <p className="text-xs text-white/70">📍 {o.location}</p>
+                                            <p className="font-syne text-sm font-extrabold text-white pt-1">{formatPrice(o.totalAmount)}</p>
                                         </div>
                                     ))}
                                 </div>
