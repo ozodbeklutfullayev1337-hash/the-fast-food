@@ -460,9 +460,9 @@
                                     <select value={newProd.category} onChange={e => setNewProd({...newProd, category: e.target.value})} className="p-3 bg-[#f4f3e7] border rounded-lg text-xs font-bold">
                                         <option value="Burgerlar">Burgerlar</option>
                                         <option value="Hot-Doglar">Hot-Doglar</option>
-                                        <option value="Lavash & Sendvich">Lavash</option>
+                                        <option value="Lavash">Lavash</option>
                                         <option value="Pitsa">Pitsa</option>
-                                        <option value="Fri & Sneklar">Sneklar</option>
+                                        <option value="Sneklar">Sneklar</option>
                                         <option value="Ichimliklar">Ichimliklar</option>
                                     </select>
                                     <input type="number" placeholder="Eski Narx" value={newProd.oldPrice} onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} className="p-3 bg-[#f4f3e7] border rounded-lg text-xs" required />
@@ -479,7 +479,7 @@
 
             // MIJOZ QISMI
             return (
-                <div className="min-h-screen pb-32 relative">
+                <div className="min-h-screen pb-40 relative">
                     {toast && (
                         <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-[#00473c] text-[#e6ff55] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase shadow-xl flex items-center gap-1.5">
                             <span>✓</span><span>{toast}</span>
@@ -487,38 +487,20 @@
                     )}
 
                     <header className="sticky top-0 z-30 bg-[#f4f3e7]/95 backdrop-blur-md border-b border-[#0e150e]/10">
-                        <div className="max-w-[1200px] mx-auto px-3 h-16 flex items-center justify-between gap-1">
-                            <button 
-                                onClick={() => {
-                                    fetch(`/api/orders/${tgUser.id}`).then(r=>r.json()).then(d=>setUserOrders(Array.isArray(d)?d:[])).catch(()=>{});
-                                    setIsOrdersOpen(true);
-                                }}
-                                className="text-[10px] font-extrabold uppercase text-[#0e150e] tracking-tight shrink-0 py-1 px-2 bg-[#d8e5d6]/70 rounded-full"
-                            >
-                                📦 Buyurtmalar
-                            </button>
-
-                            <a href="#" className="text-[17px] font-extrabold text-[#00473c] font-display tracking-tight shrink-0">
+                        <div className="max-w-[1200px] mx-auto px-4 h-16 flex items-center justify-between gap-2">
+                            <span className="text-[18px] font-extrabold text-[#00473c] font-display tracking-tight shrink-0">
                                 the fast food.
-                            </a>
+                            </span>
 
-                            <div className="flex items-center gap-1 shrink-0">
+                            <div className="flex items-center gap-2 shrink-0">
                                 {String(tgUser.id) === ADMIN_TELEGRAM_ID && (
                                     <button 
                                         onClick={() => { setViewMode('admin'); fetchAdminData(); }}
-                                        className="bg-[#00473c] text-[#e6ff55] px-2.5 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-tight shadow-sm"
+                                        className="bg-[#00473c] text-[#e6ff55] px-3 py-1.5 rounded-full text-[11px] font-extrabold uppercase tracking-tight shadow-sm"
                                     >
                                         ⚙️ Admin
                                     </button>
                                 )}
-
-                                <button 
-                                    onClick={() => setIsCartOpen(true)}
-                                    className="bg-[#e6ff55] text-[#0e150e] border border-[#0e150e]/20 px-3 py-1.5 rounded-full text-[11px] font-extrabold uppercase tracking-tight flex items-center gap-1"
-                                >
-                                    <span>Savat</span>
-                                    {totalItems > 0 && <span className="bg-[#0e150e] text-[#e6ff55] px-1.5 py-0.2 rounded-full text-[10px]">{totalItems}</span>}
-                                </button>
                             </div>
                         </div>
                     </header>
@@ -552,7 +534,7 @@
 
                     <section className="max-w-[1200px] mx-auto px-3 py-6">
                         <div className="grid grid-cols-2 gap-3 sm:gap-6">
-                            {filtered.map((product, index) => {
+                            {filtered.map((product) => {
                                 const qty = cart.filter(i => i.id === product.id).reduce((s, i) => s + i.qty, 0);
                                 return (
                                     <div key={product.id} onClick={() => { setSelectedProduct(product); setSelectedExtras([]); }} className="food-item-card cursor-pointer group bg-white/40 p-2.5 rounded-[18px] border border-[#0e150e]/10 flex flex-col justify-between">
@@ -576,17 +558,39 @@
                         </div>
                     </section>
 
-                    {totalItems > 0 && !isCartOpen && (
-                        <div className="fixed bottom-4 left-3 right-3 z-40">
-                            <button onClick={() => setIsCartOpen(true)} className="w-full bg-[#00473c] text-[#f4f3e7] p-2 pl-4 rounded-full flex items-center justify-between shadow-xl border border-[#e6ff55]">
+                    {/* ======================================================== */}
+                    {/* DOIMIY KATTA VA QULAY PASTGI PANELI (BUYURTMALAR VA SAVAT) */}
+                    {/* ======================================================== */}
+                    <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#f4f3e7]/95 backdrop-blur-xl border-t border-[#0e150e]/15 p-4 shadow-2xl">
+                        <div className="max-w-[1200px] mx-auto flex items-center gap-3">
+                            <button 
+                                onClick={() => {
+                                    fetch(`/api/orders/${tgUser.id}`).then(r=>r.json()).then(d=>setUserOrders(Array.isArray(d)?d:[])).catch(()=>{});
+                                    setIsOrdersOpen(true);
+                                }}
+                                className="flex-1 bg-[#d8e5d6] hover:bg-[#c5d8c3] text-[#0e150e] py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 border border-[#0e150e]/10 shadow-sm active:scale-95 transition"
+                            >
+                                <span className="text-lg">📦</span>
+                                <span className="text-xs font-extrabold uppercase">Buyurtmalar</span>
+                            </button>
+
+                            <button 
+                                onClick={() => setIsCartOpen(true)}
+                                className="flex-1 bg-[#00473c] hover:bg-[#003830] text-[#e6ff55] py-3.5 px-4 rounded-2xl flex items-center justify-between shadow-lg active:scale-95 transition px-5"
+                            >
                                 <div className="flex items-center gap-2">
-                                    <span className="bg-[#e6ff55] text-[#0e150e] w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-extrabold">{totalItems}</span>
-                                    <span className="text-sm font-extrabold">{formatPrice(totalAmount)}</span>
+                                    <span className="text-lg">🛒</span>
+                                    <span className="text-xs font-extrabold uppercase">Savat</span>
+                                    {totalItems > 0 && (
+                                        <span className="bg-[#e6ff55] text-[#0e150e] px-2 py-0.5 rounded-full text-[10px] font-extrabold">
+                                            {totalItems}
+                                        </span>
+                                    )}
                                 </div>
-                                <div className="bg-[#e6ff55] text-[#0e150e] px-4 py-2.5 rounded-full font-extrabold text-xs">Savatga o'tish →</div>
+                                <span className="text-xs font-extrabold">{formatPrice(totalAmount)}</span>
                             </button>
                         </div>
-                    )}
+                    </div>
 
                     {/* SAVATCHA VA FORMA */}
                     {isCartOpen && (
