@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="uz" class="dark">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
-    <title>THE FAST FOOD // Premium Luxury OS</title>
+    <title>THE FAST FOOD // Ultra-Luxury Edition</title>
 
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -17,18 +17,20 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Luxury Typography -->
+    <!-- Luxury Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --void: #040406;
-            --obsidian: #0b0c10;
-            --lava: #ff3b00;
-            --amber: #ff9e00;
-            --titanium: #e2e8f0;
+            --bg-marble: #fcfbf9;
+            --gold-primary: #c5a059;
+            --gold-light: #f3e5ab;
+            --gold-dark: #8c6d33;
+            --rich-black: #111111;
+            --card-bg: #ffffff;
+            --shadow-lux: 0 20px 40px -15px rgba(197, 160, 89, 0.15);
         }
 
         * {
@@ -38,101 +40,56 @@
         }
 
         body {
-            background-color: var(--void);
-            color: #f8fafc;
+            background-color: var(--bg-marble);
+            color: var(--rich-black);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             margin: 0;
         }
 
-        .font-syne { font-family: 'Syne', sans-serif; }
-        .font-serif-lux { font-family: 'Instrument Serif', serif; }
-        .font-mono-tech { font-family: 'Space Mono', monospace; }
+        .font-serif-lux { font-family: 'Cormorant Garamond', serif; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .perspective-stage {
-            perspective: 1400px;
-            transform-style: preserve-3d;
+        /* Ultra-Luxury Gold Gradient & Borders */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #8c6d33 0%, #c5a059 50%, #e6ca65 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .obsidian-slab {
-            background: linear-gradient(165deg, rgba(24, 25, 32, 0.82) 0%, rgba(9, 10, 14, 0.96) 100%);
-            backdrop-filter: blur(28px) saturate(190%);
-            -webkit-backdrop-filter: blur(28px) saturate(190%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.95), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        .gold-card {
+            background: #ffffff;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(197, 160, 89, 0.08);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gold-card:hover {
+            border-color: rgba(197, 160, 89, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 25px 50px -12px rgba(197, 160, 89, 0.25);
         }
 
-        .lava-border-glow {
-            border-color: rgba(255, 90, 0, 0.55) !important;
-            box-shadow: 0 20px 50px -10px rgba(255, 59, 0, 0.3), 0 0 25px rgba(255, 158, 0, 0.15), inset 0 1px 2px rgba(255, 200, 150, 0.35);
-        }
-
-        .btn-lava {
-            background: linear-gradient(135deg, #ff7b00 0%, #ff3b00 55%, #b81d00 100%);
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #c5a059 50%, #997a36 100%);
             color: #ffffff;
-            box-shadow: 0 12px 30px -6px rgba(255, 59, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(197, 160, 89, 0.4);
+            transition: all 0.25s ease;
         }
-        .btn-lava:active { transform: scale(0.93); }
+        .btn-gold:active {
+            transform: scale(0.95);
+        }
 
-        @keyframes bunBounce {
+        @keyframes floatSlow {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-2.5px); }
+            50% { transform: translateY(-6px); }
         }
-        @keyframes flameFlicker {
-            0%, 100% { transform: scaleY(1) rotate(-2deg); opacity: 0.9; }
-            50% { transform: scaleY(1.18) rotate(2deg); opacity: 1; }
-        }
-        @keyframes spinSlow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        @keyframes bubbleFloat {
-            0% { transform: translateY(3px); opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { transform: translateY(-4px); opacity: 0; }
-        }
-
-        .anim-bun { animation: bunBounce 2.2s infinite ease-in-out; }
-        .anim-flame { animation: flameFlicker 1.4s infinite ease-in-out; transform-origin: bottom center; }
-        .anim-spin { animation: spinSlow 14s infinite linear; transform-origin: center; }
-        .anim-bubble { animation: bubbleFloat 1.8s infinite ease-in-out; }
-
-        .coverflow-card {
-            transition: all 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-            transform-style: preserve-3d;
-            will-change: transform, opacity;
-        }
-
-        @keyframes cardReveal3D {
-            0% { opacity: 0; transform: perspective(900px) translateY(45px) rotateX(16deg) scale(0.92); }
-            100% { opacity: 1; transform: perspective(900px) translateY(0) rotateX(0deg) scale(1); }
-        }
-        .menu-card-anim { animation: cardReveal3D 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
-
-        @keyframes flyToDock {
-            0% { transform: scale(1) translate(0, 0); opacity: 1; }
-            70% { opacity: 1; }
-            100% { transform: scale(0.2) translate(var(--tx), var(--ty)); opacity: 0; }
-        }
-        .flying-orb {
-            position: fixed;
-            z-index: 9999;
-            pointer-events: none;
-            animation: flyToDock 0.65s cubic-bezier(0.2, 0.85, 0.4, 1) forwards;
-        }
-
-        .photo-vignette {
-            background: radial-gradient(circle at 50% 35%, rgba(255, 90, 0, 0.18) 0%, rgba(8, 9, 12, 0.92) 78%);
-        }
+        .anim-float { animation: floatSlow 4s infinite ease-in-out; }
     </style>
 </head>
 <body>
-    <canvas id="vortex-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
-    <div id="root" class="relative z-10"></div>
+    <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef } = React;
@@ -144,438 +101,150 @@
                 try {
                     const ctx = new (window.AudioContext || window.webkitAudioContext)();
                     const now = ctx.currentTime;
-                    if (type === 'tick') {
-                        const osc = ctx.createOscillator();
-                        const gain = ctx.createGain();
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(240, now);
-                        osc.frequency.exponentialRampToValueAtTime(60, now + 0.035);
-                        gain.gain.setValueAtTime(0.1, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
-                        osc.connect(gain);
-                        gain.connect(ctx.destination);
-                        osc.start(now);
-                        osc.stop(now + 0.04);
-                    } else if (type === 'whoosh') {
-                        const osc = ctx.createOscillator();
-                        const gain = ctx.createGain();
-                        osc.type = 'triangle';
-                        osc.frequency.setValueAtTime(120, now);
-                        osc.frequency.exponentialRampToValueAtTime(340, now + 0.09);
-                        gain.gain.setValueAtTime(0.08, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-                        osc.connect(gain);
-                        gain.connect(ctx.destination);
-                        osc.start(now);
-                        osc.stop(now + 0.11);
-                    } else if (type === 'coin') {
-                        [587.33, 880].forEach((freq, i) => {
-                            const osc = ctx.createOscillator();
-                            const gain = ctx.createGain();
-                            osc.type = 'sine';
-                            osc.frequency.setValueAtTime(freq, now + i * 0.055);
-                            gain.gain.setValueAtTime(0.12, now + i * 0.055);
-                            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.055 + 0.18);
-                            osc.connect(gain);
-                            gain.connect(ctx.destination);
-                            osc.start(now + i * 0.055);
-                            osc.stop(now + i * 0.055 + 0.2);
-                        });
-                    }
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(100, now + 0.04);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
                 } catch (e) {}
             }
         };
 
-        function AnimatedCategoryIcon({ category, active }) {
-            const strokeColor = active ? "#ffffff" : "#ff7b00";
-            const accentColor = active ? "#ffe600" : "#ff3b00";
-
-            switch (category) {
-                case "Barchasi":
-                    return (
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                            <path className="anim-flame" d="M12 2C12 2 7 7.5 7 12.5C7 15.5 9.2 18 12 18C14.8 18 17 15.5 17 12.5C17 7.5 12 2 12 2Z" stroke={strokeColor} strokeWidth="2" fill={accentColor} fillOpacity="0.25"/>
-                            <circle cx="12" cy="14" r="2.5" fill={strokeColor}/>
-                        </svg>
-                    );
-                case "Burgerlar":
-                    return (
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                            <path className="anim-bun" d="M4 10C4 6.5 7.5 4 12 4C16.5 4 20 6.5 20 10H4Z" stroke={strokeColor} strokeWidth="2" fill={accentColor} fillOpacity="0.2"/>
-                            <path d="M3 13.5H21" stroke={accentColor} strokeWidth="2.5" strokeLinecap="round"/>
-                            <rect x="4" y="16" width="16" height="4" rx="2" stroke={strokeColor} strokeWidth="2"/>
-                        </svg>
-                    );
-                case "Hot-Doglar":
-                    return (
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                            <rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(-15 12 12)" stroke={strokeColor} strokeWidth="2" fill={accentColor} fillOpacity="0.2"/>
-                            <path className="anim-bun" d="M6 13Q9 10 12 13T18 11" stroke={accentColor} strokeWidth="2" strokeLinecap="round"/>
-                        </svg>
-                    );
-                case "Lavash":
-                    return (
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                            <path d="M7 4L17 4L15 20H9L7 4Z" stroke={strokeColor} strokeWidth="2" rx="3" fill={accentColor} fillOpacity="0.2"/>
-                            <path className="anim-bun" d="M9 8H15M9.5 12H14.5" stroke={accentColor} strokeWidth="2" strokeLinecap="round"/>
-                        </svg>
-                    );
-                case "Pitsa":
-                    return (
-                        <svg className="w-5 h-5 anim-spin" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="9" stroke={strokeColor} strokeWidth="2" strokeDasharray="4 2"/>
-                            <circle cx="9.5" cy="10" r="1.5" fill={accentColor}/>
-                            <circle cx="14.5" cy="11" r="1.5" fill={accentColor}/>
-                            <circle cx="12" cy="15" r="1.5" fill={accentColor}/>
-                        </svg>
-                    );
-                case "Sneklar":
-                    return (
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 10L7.5 20H16.5L18 10H6Z" stroke={strokeColor} strokeWidth="2" fill={accentColor} fillOpacity="0.2"/>
-                            <path className="anim-bun" d="M8 10V5M12 10V3M16 10V6" stroke={accentColor} strokeWidth="2.2" strokeLinecap="round"/>
-                        </svg>
-                    );
-                case "Ichimliklar":
-                    return (
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                            <path d="M7 7H17L15.5 20H8.5L7 7Z" stroke={strokeColor} strokeWidth="2" fill={accentColor} fillOpacity="0.15"/>
-                            <path d="M12 7V3L15 2" stroke={accentColor} strokeWidth="2" strokeLinecap="round"/>
-                            <circle className="anim-bubble" cx="10.5" cy="15" r="1.2" fill={strokeColor}/>
-                            <circle className="anim-bubble" cx="13.5" cy="12" r="1" fill={accentColor} style={{animationDelay: '0.6s'}}/>
-                        </svg>
-                    );
-                default:
-                    return null;
-            }
-        }
-
         const MASSIVE_MENU = [
             {
                 id: 1,
-                name: "Double Smash Cheeseburger",
-                code: "FF-01",
-                tagline: "Ikki qavatli marmar mol go'shti",
-                description: "Ikki qavatli marmar mol go'shti kotleti, cheddar pishlog'i, karamelizatsiya qilingan piyoz va maxsus burger sousi briosh nonida.",
+                name: "Royal Wagyu Gold Burger",
+                code: "VIP-01",
+                tagline: "A5 Marmar mol go'shti • Tilla barglari",
+                description: "A5 darajadagi Wagyu go'shti kotleti, 24 karatli edible tilla bargi, 36 oy yetilgan parmesan va truffel sousi.",
                 image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=90",
-                oldPrice: 65000,
-                newPrice: 52000,
+                oldPrice: 95000,
+                newPrice: 78000,
                 category: "Burgerlar",
-                badge: "BESTSELLER 🔥",
-                prepTime: "12 daq",
-                kcal: "740 KCAL",
+                badge: "CHEF'S SIGNATURE 👑",
+                prepTime: "14 daq",
+                kcal: "780 KCAL",
                 featured: true
             },
             {
                 id: 2,
-                name: "Black Angus Truffle Burger",
-                code: "FF-02",
-                tagline: "Qora kunjutli yumshoq non",
-                description: "Qora kunjutli yumshoq non, qalin Angus kotleti, qo'ziqorinli julen va ikki hissa gouda pishlog'i.",
+                name: "Black Diamond Angus Burger",
+                code: "VIP-02",
+                tagline: "Qora ko'mir briosh • Dudlangan Gouda",
+                description: "Qora bambuk ko'mirli premium non, qalin Black Angus kotleti, qo'ziqorinli julen va erigan gouda pishlog'i.",
                 image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=1200&q=90",
-                oldPrice: 78000,
-                newPrice: 64000,
+                oldPrice: 85000,
+                newPrice: 69000,
                 category: "Burgerlar",
-                badge: "CHEF'S SPECIAL",
-                prepTime: "15 daq",
+                badge: "LIMITED",
+                prepTime: "12 daq",
                 kcal: "820 KCAL",
                 featured: true
             },
             {
                 id: 3,
-                name: "Crispy Chicken & Cheese Burger",
-                code: "FF-03",
-                tagline: "Qarsildoq panirovkadagi tovuq",
-                description: "Qarsildoq panirovkadagi tovuq filesi, aysberg salati, cheddar pishlog'i va sarimsoqli ranch sousi.",
+                name: "Imperial Crispy Chicken Burger",
+                code: "VIP-03",
+                tagline: "Tokyo Panko • Sarimsoqli Truffle Ranch",
+                description: "Qarsildoq panirovkadagi tanlab olingan tovuq filesi, aysberg, cheddar va maxsus mualliflik sousi.",
                 image: "https://images.unsplash.com/photo-1615297928064-24977384d0da?auto=format&fit=crop&w=1200&q=90",
-                oldPrice: 55000,
-                newPrice: 44000,
+                oldPrice: 62000,
+                newPrice: 49000,
                 category: "Burgerlar",
-                badge: "CRISPY",
+                badge: "CRUNCHY",
                 prepTime: "10 daq",
-                kcal: "610 KCAL",
+                kcal: "640 KCAL",
                 featured: false
             },
             {
                 id: 4,
-                name: "New York Chili Cheese Hot-Dog",
-                code: "FF-04",
-                tagline: "22 sm lik dudlangan kolbasa",
-                description: "Grilda qizartirilgan 22 sm lik dudlangan kolbasa, issiq cheddar pishloq sousi, mol go'shtli chili va xalapenyo.",
+                name: "New York Royal Hot-Dog",
+                code: "VIP-04",
+                tagline: "Dudlangan bratwurst • Cheddar fondyu",
+                description: "Grilda pishirilgan maxsus kolbasa, issiq cheddar fondyu sousi, mol go'shtli chili va xalapenyo bo'laklari.",
                 image: "https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=1200&q=90",
-                oldPrice: 45000,
-                newPrice: 36000,
+                oldPrice: 50000,
+                newPrice: 39000,
                 category: "Hot-Doglar",
-                badge: "ONLINE ONLY",
+                badge: "BESTSELLER",
                 prepTime: "8 daq",
-                kcal: "540 KCAL",
+                kcal: "560 KCAL",
                 featured: true
             },
             {
                 id: 5,
-                name: "Tandirli Pishloqli Lavash",
-                code: "FF-05",
-                tagline: "Yupqa qarsildoq xamir",
-                description: "Yupqa qarsildoq xamir ichida sersuv mol go'shti doneri, yangi pomidor, chipslar va mo'l-ko'l pishloq.",
+                name: "Elite Ribeye Doner Lavash",
+                code: "VIP-05",
+                tagline: "Tandir lavash • Marmar mol go'shti",
+                description: "Tandirda yopilgan qarsildoq lavash ichida sersuv mol go'shti doneri, pomidor, chipslar va mozzarella.",
                 image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=1200&q=90",
-                oldPrice: 46000,
-                newPrice: 38000,
+                oldPrice: 52000,
+                newPrice: 42000,
                 category: "Lavash",
                 badge: "TOP RATED",
                 prepTime: "10 daq",
-                kcal: "640 KCAL",
+                kcal: "680 KCAL",
                 featured: true
             },
             {
                 id: 6,
-                name: "Super Pepperoni Pizza",
-                code: "FF-06",
-                tagline: "Mozzarella va peperoni",
-                description: "Mozzarella pishlog'i, ikki hissa dudlangan peperoni kolbasalari va oregano pomidor sousi.",
+                name: "Gold Truffle Pepperoni Pitsa",
+                code: "VIP-06",
+                tagline: "Wood-Fired • Fior di Latte • Peperoni",
+                description: "48 soat yetilgan xamir, Fior di Latte mozzarella, ikki hissa qarsildoq peperoni va truffel yog'i.",
                 image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=1200&q=90",
-                oldPrice: 95000,
-                newPrice: 79000,
+                oldPrice: 105000,
+                newPrice: 89000,
                 category: "Pitsa",
-                badge: "POPULAR 🔥",
-                prepTime: "18 daq",
-                kcal: "1120 KCAL",
+                badge: "WOOD OVEN 🔥",
+                prepTime: "16 daq",
+                kcal: "1150 KCAL",
                 featured: true
             },
             {
                 id: 7,
-                name: "Loaded Cheese & Jalapeño Fries",
-                code: "FF-07",
-                tagline: "Oltinrang kartoshka fri",
-                description: "Oltinrang kartoshka fri, ustidan issiq cheddar pishloq sousi va xalapenyo bo'laklari.",
+                name: "Belgian Gold Fries & Cheese",
+                code: "VIP-07",
+                tagline: "Ikki marta qovurilgan • Suyuq Cheddar",
+                description: "Oltinrang kartoshka fri, ustidan issiq cheddar pishloq fondyusi va sarimsoqli ko'katlar.",
                 image: "https://images.unsplash.com/photo-1576107232684-1279f3908594?auto=format&fit=crop&w=1200&q=90",
-                oldPrice: 35000,
-                newPrice: 26000,
+                oldPrice: 38000,
+                newPrice: 29000,
                 category: "Sneklar",
                 badge: "CHEESY",
                 prepTime: "6 daq",
-                kcal: "460 KCAL",
+                kcal: "480 KCAL",
                 featured: false
             },
             {
                 id: 8,
-                name: "Coca-Cola Classic (0.5 L)",
-                code: "FF-08",
-                tagline: "Tetiklashtiruvchi ichimlik",
-                description: "Muzdek salqin va tetiklashtiruvchi klassik gazlangan ichimlik.",
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=1200&q=90",
-                oldPrice: 12000,
-                newPrice: 9000,
+                name: "Chateau Sparkling Lemonade",
+                code: "VIP-08",
+                tagline: "Qulupnay • Fresh Laym • Mint",
+                description: "Yangi uzilgan tog' qulupnayi, laym sharbati, yalpiz barglari va salqin mineral gazli suv.",
+                image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=90",
+                oldPrice: 28000,
+                newPrice: 20000,
                 category: "Ichimliklar",
-                badge: "ICED",
-                prepTime: "1 daq",
-                kcal: "120 KCAL",
+                badge: "REFRESHING",
+                prepTime: "3 daq",
+                kcal: "130 KCAL",
                 featured: false
             }
         ];
 
         const EXTRAS = [
-            { id: 'cheese', name: "Qo'shimcha Cheddar Pishloq", price: 6000 },
-            { id: 'jalapeno', name: "Achchiq Xalapenyo", price: 4000 },
-            { id: 'sauce', name: "Maxsus Pishloqli Sous", price: 5000 }
+            { id: 'wagyu', name: "Qo'shimcha Wagyu Kotleti", price: 18000 },
+            { id: 'cheddar', name: "Qo'shimcha Cheddar Pishloq", price: 7000 },
+            { id: 'truffle', name: "Qora Truffel Sousi", price: 6000 },
+            { id: 'jalapeno', name: "Achchiq Xalapenyo", price: 4000 }
         ];
-
-        function BurgerLabModal({ onClose, onAddCustom, formatPrice }) {
-            const [pattyCount, setPattyCount] = useState(2);
-            const [cheeseCount, setCheeseCount] = useState(2);
-            const [hasBacon, setHasBacon] = useState(true);
-            const [hasJalapeno, setHasJalapeno] = useState(false);
-
-            const customPrice = 34000 + (pattyCount * 14000) + (cheeseCount * 5000) + (hasBacon ? 8000 : 0) + (hasJalapeno ? 4000 : 0);
-            const customKcal = 280 + (pattyCount * 210) + (cheeseCount * 85) + (hasBacon ? 95 : 0);
-
-            const handleCreate = (e) => {
-                SoundFX.play('coin');
-                const customBurger = {
-                    id: Date.now(),
-                    name: `Maxsus Burger (${pattyCount}x Kotlet)`,
-                    tagline: `${cheeseCount}x Cheddar • Maxsus sous`,
-                    description: `Maxsus yig'ilgan: ${pattyCount}x Kotlet, ${cheeseCount}x Cheddar, ${hasBacon ? "Bekon, " : ""}${hasJalapeno ? "Xalapenyo." : ""}`,
-                    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=90",
-                    newPrice: customPrice,
-                    oldPrice: customPrice + 15000,
-                    category: "Burgerlar"
-                };
-                onAddCustom(customBurger, [], e);
-                onClose();
-            };
-
-            return (
-                <div onClick={onClose} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex items-end sm:items-center justify-center p-0 sm:p-4">
-                    <div onClick={e => e.stopPropagation()} className="obsidian-slab lava-border-glow w-full max-w-lg rounded-t-[34px] sm:rounded-[34px] p-6 max-h-[92vh] overflow-y-auto">
-                        <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                            <div>
-                                <span className="font-mono-tech text-[10px] text-[#ff7b00] uppercase tracking-widest block">INTERAKTIV KONSTRUKTOR</span>
-                                <h2 className="font-syne text-2xl font-extrabold text-white">BURGER LAB</h2>
-                            </div>
-                            <button onClick={onClose} className="w-9 h-9 rounded-full bg-white/10 text-white font-bold">✕</button>
-                        </div>
-
-                        <div className="my-5 py-6 rounded-3xl bg-gradient-to-b from-[#161215] to-[#070709] border border-white/10 flex flex-col items-center justify-center relative overflow-hidden">
-                            <div className="absolute inset-0 photo-vignette pointer-events-none" />
-                            <div className="relative z-10 flex flex-col items-center space-y-1.5 w-56">
-                                <div className="w-44 h-9 rounded-t-full bg-gradient-to-b from-[#e08e36] to-[#a85c15] border-t border-yellow-200/50 shadow-lg flex items-center justify-center text-[9px] font-mono-tech font-bold text-black/80">
-                                    BRIOSH NONI
-                                </div>
-                                <div className="w-40 h-2.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-amber-300 shadow-md" />
-                                {hasJalapeno && (
-                                    <div className="w-36 h-3 rounded-full bg-emerald-600 border border-emerald-300/40 flex items-center justify-center text-[8px] font-bold uppercase tracking-widest">
-                                        🌶️ Xalapenyo
-                                    </div>
-                                )}
-                                {hasBacon && (
-                                    <div className="w-44 h-3.5 rounded-full bg-gradient-to-r from-rose-800 via-red-600 to-rose-800 border border-rose-300/30 flex items-center justify-center text-[8px] font-bold uppercase tracking-widest">
-                                        🥓 Bekon
-                                    </div>
-                                )}
-                                {Array.from({ length: pattyCount }).map((_, idx) => (
-                                    <React.Fragment key={idx}>
-                                        {idx < cheeseCount && (
-                                            <div className="w-48 h-2.5 rounded-full bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-300 shadow-[0_4px_12px_rgba(245,158,11,0.5)]" />
-                                        )}
-                                        <div className="w-44 h-7 rounded-2xl bg-gradient-to-b from-[#4a2014] to-[#260e07] border border-[#ff5500]/40 shadow-xl flex items-center justify-center text-[9px] font-mono-tech font-bold text-amber-200">
-                                            KOTLET #{idx + 1}
-                                        </div>
-                                    </React.Fragment>
-                                ))}
-                                <div className="w-44 h-6 rounded-b-2xl bg-gradient-to-b from-[#c97622] to-[#8a490c] shadow-lg" />
-                            </div>
-
-                            <div className="mt-4 flex items-center gap-4 text-[11px] font-mono-tech text-white/70 z-10">
-                                <span>🔥 {customKcal} KCAL</span>
-                                <span>•</span>
-                                <span className="text-[#ff9e00] font-bold">{pattyCount * 110 + 160}g</span>
-                            </div>
-                        </div>
-
-                        <div className="space-y-3 mb-6">
-                            <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.04] border border-white/10">
-                                <div>
-                                    <span className="text-xs font-bold text-white block">Kotletlar</span>
-                                    <span className="text-[10px] text-white/45">+14,000 so'm / har biri</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <button onClick={() => { SoundFX.play('tick'); setPattyCount(Math.max(1, pattyCount - 1)); }} className="w-8 h-8 rounded-xl bg-white/10 font-bold">−</button>
-                                    <span className="font-mono-tech text-sm font-bold w-4 text-center">{pattyCount}</span>
-                                    <button onClick={() => { SoundFX.play('tick'); setPattyCount(Math.min(4, pattyCount + 1)); }} className="w-8 h-8 rounded-xl btn-lava font-bold">+</button>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.04] border border-white/10">
-                                <div>
-                                    <span className="text-xs font-bold text-white block">Cheddar Pishlog'i</span>
-                                    <span className="text-[10px] text-white/45">+5,000 so'm / qatlam</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <button onClick={() => { SoundFX.play('tick'); setCheeseCount(Math.max(0, cheeseCount - 1)); }} className="w-8 h-8 rounded-xl bg-white/10 font-bold">−</button>
-                                    <span className="font-mono-tech text-sm font-bold w-4 text-center">{cheeseCount}</span>
-                                    <button onClick={() => { SoundFX.play('tick'); setCheeseCount(Math.min(4, cheeseCount + 1)); }} className="w-8 h-8 rounded-xl btn-lava font-bold">+</button>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-2.5">
-                                <button onClick={() => { SoundFX.play('tick'); setHasBacon(!hasBacon); }} className={`p-3 rounded-2xl border text-left transition ${hasBacon ? 'border-[#ff5500] bg-[#ff5500]/15' : 'border-white/10 bg-white/[0.03]'}`}>
-                                    <span className="text-xs font-bold block">🥓 Bekon</span>
-                                    <span className="text-[10px] text-white/50">+8,000 so'm</span>
-                                </button>
-                                <button onClick={() => { SoundFX.play('tick'); setHasJalapeno(!hasJalapeno); }} className={`p-3 rounded-2xl border text-left transition ${hasJalapeno ? 'border-[#ff5500] bg-[#ff5500]/15' : 'border-white/10 bg-white/[0.03]'}`}>
-                                    <span className="text-xs font-bold block">🌶️ Xalapenyo</span>
-                                    <span className="text-[10px] text-white/50">+4,000 so'm</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                            <div>
-                                <span className="text-[10px] font-mono-tech text-white/45 uppercase block">Narxi</span>
-                                <span className="font-syne text-xl font-extrabold text-white">{formatPrice(customPrice)}</span>
-                            </div>
-                            <button onClick={handleCreate} className="btn-lava px-6 py-4 rounded-2xl text-xs font-extrabold uppercase tracking-wider">
-                                Savatga Qo'shish 🔥
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        function SpatialDishSlab({ product, index, qty, onSelect, onQuickAdd, formatPrice }) {
-            const slabRef = useRef(null);
-            const [tilt, setTilt] = useState("perspective(900px) rotateX(0deg) rotateY(0deg)");
-            const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
-
-            const handlePointerMove = (e) => {
-                if (!slabRef.current) return;
-                const rect = slabRef.current.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                const x = clientX - rect.left;
-                const y = clientY - rect.top;
-                const rx = ((y - rect.height / 2) / (rect.height / 2)) * -10;
-                const ry = ((x - rect.width / 2) / (rect.width / 2)) * 10;
-                setTilt(`perspective(900px) rotateX(${rx.toFixed(1)}deg) rotateY(${ry.toFixed(1)}deg) scale3d(1.02, 1.02, 1.02)`);
-                setGlare({ x: (x / rect.width) * 100, y: (y / rect.height) * 100, opacity: 1 });
-            };
-
-            const handlePointerLeave = () => {
-                setTilt("perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)");
-                setGlare(prev => ({ ...prev, opacity: 0 }));
-            };
-
-            return (
-                <div
-                    ref={slabRef}
-                    onMouseMove={handlePointerMove}
-                    onMouseLeave={handlePointerLeave}
-                    onTouchMove={handlePointerMove}
-                    onTouchEnd={handlePointerLeave}
-                    onClick={() => { SoundFX.play('tick'); onSelect(product); }}
-                    style={{ transform: tilt, animationDelay: `${index * 45}ms` }}
-                    className={`menu-card-anim obsidian-slab rounded-[28px] p-3 cursor-pointer flex flex-col justify-between relative group overflow-hidden transition-transform duration-200 ${qty > 0 ? 'lava-border-glow' : ''}`}
-                >
-                    <div style={{ opacity: glare.opacity, background: `radial-gradient(260px circle at ${glare.x}% ${glare.y}%, rgba(255, 130, 50, 0.18), transparent 65%)` }} className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-300" />
-                    <div>
-                        <div className="relative aspect-[1/0.92] rounded-[22px] overflow-hidden bg-[#070709] mb-3 border border-white/[0.07]">
-                            <div className="absolute inset-0 photo-vignette" />
-                            <img src={product.image} alt={product.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#090a0e] via-transparent to-black/25" />
-                            <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between">
-                                <span className="bg-black/75 backdrop-blur-md border border-[#ff5500]/50 text-[#ff9e00] text-[9px] font-extrabold uppercase px-2.5 py-1 rounded-full tracking-wider">
-                                    {product.badge}
-                                </span>
-                                <span className="font-mono-tech text-[9px] text-white/60 bg-black/60 px-2 py-0.5 rounded-full">
-                                    {product.code || `FF-0${product.id}`}
-                                </span>
-                            </div>
-                            <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-[10px] font-mono-tech text-white/80">
-                                <span className="bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/10">⏱ {product.prepTime}</span>
-                                <span className="text-[#ff9e00] font-bold">{product.kcal || "680 KCAL"}</span>
-                            </div>
-                        </div>
-                        <div className="px-1">
-                            <p className="font-mono-tech text-[9px] text-[#ff7b00] uppercase tracking-wider truncate">{product.tagline || product.category}</p>
-                            <h3 className="font-syne text-[14.5px] font-extrabold text-white group-hover:text-[#ff9e00] transition-colors leading-tight line-clamp-1 mt-0.5">{product.name}</h3>
-                            <p className="text-[11px] text-white/50 mt-1 line-clamp-2 leading-relaxed">{product.description}</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-between pt-3 mt-3 border-t border-white/[0.07] px-1">
-                        <div>
-                            {product.oldPrice > product.newPrice && (
-                                <span className="block font-mono-tech text-[9.5px] text-white/30 line-through">{formatPrice(product.oldPrice)}</span>
-                            )}
-                            <span className="font-syne text-[14px] sm:text-[15.5px] font-extrabold text-white">{formatPrice(product.newPrice)}</span>
-                        </div>
-                        <button onClick={(e) => onQuickAdd(product, [], e)} className={`h-10 px-3.5 rounded-2xl flex items-center justify-center font-mono-tech font-bold text-xs transition-all ${qty > 0 ? 'btn-lava scale-105' : 'bg-white/[0.08] hover:bg-[#ff5500] text-white border border-white/15'}`}>
-                            {qty > 0 ? `${qty}x` : '+ QO\'SHISH'}
-                        </button>
-                    </div>
-                </div>
-            );
-        }
 
         function App() {
             const [viewMode, setViewMode] = useState('client');
@@ -589,13 +258,8 @@
             const [selectedExtras, setSelectedExtras] = useState([]);
             const [isCartOpen, setIsCartOpen] = useState(false);
             const [isOrdersOpen, setIsOrdersOpen] = useState(false);
-            const [isBurgerLabOpen, setIsBurgerLabOpen] = useState(false);
             const [userOrders, setUserOrders] = useState([]);
             const [adminOrders, setAdminOrders] = useState([]);
-
-            const [heroIndex, setHeroIndex] = useState(0);
-            const [flyingOrbs, setFlyingOrbs] = useState([]);
-            const [locatingGps, setLocatingGps] = useState(false);
 
             const [customerPhone, setCustomerPhone] = useState("+998 ");
             const [customerLocation, setCustomerLocation] = useState("");
@@ -611,64 +275,13 @@
             const tg = window.Telegram?.WebApp;
             const tgUser = tg?.initDataUnsafe?.user || { id: ADMIN_TELEGRAM_ID, first_name: "Ozodbek" };
 
-            const featuredItems = useMemo(() => products.filter(p => p.featured).slice(0, 5), [products]);
-
-            useEffect(() => {
-                if (featuredItems.length === 0) return;
-                const timer = setInterval(() => {
-                    setHeroIndex(prev => (prev + 1) % featuredItems.length);
-                }, 4800);
-                return () => clearInterval(timer);
-            }, [featuredItems.length]);
-
-            useEffect(() => {
-                const canvas = document.getElementById('vortex-canvas');
-                if (!canvas) return;
-                const ctx = canvas.getContext('2d');
-                let w = canvas.width = window.innerWidth;
-                let h = canvas.height = window.innerHeight;
-
-                const embers = Array.from({ length: 28 }, () => ({
-                    x: Math.random() * w,
-                    y: Math.random() * h,
-                    r: Math.random() * 2.2 + 0.5,
-                    vy: -(Math.random() * 0.6 + 0.2),
-                    vx: (Math.random() - 0.5) * 0.4,
-                    alpha: Math.random() * 0.55 + 0.15,
-                    hue: Math.random() > 0.5 ? '#ff3b00' : '#ff9e00'
-                }));
-
-                let raf;
-                const draw = () => {
-                    ctx.clearRect(0, 0, w, h);
-                    embers.forEach(e => {
-                        e.x += e.vx;
-                        e.y += e.vy;
-                        if (e.y < -10) {
-                            e.y = h + 10;
-                            e.x = Math.random() * w;
-                        }
-                        ctx.beginPath();
-                        ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
-                        ctx.fillStyle = e.hue;
-                        ctx.globalAlpha = e.alpha;
-                        ctx.shadowBlur = 14;
-                        ctx.shadowColor = e.hue;
-                        ctx.fill();
-                    });
-                    raf = requestAnimationFrame(draw);
-                };
-                draw();
-                return () => cancelAnimationFrame(raf);
-            }, []);
-
             useEffect(() => {
                 if (tg) {
                     tg.ready();
                     tg.expand();
                     try {
-                        tg.setHeaderColor('#040406');
-                        tg.setBackgroundColor('#040406');
+                        tg.setHeaderColor('#fcfbf9');
+                        tg.setBackgroundColor('#fcfbf9');
                     } catch (e) {}
                 }
                 fetchProducts();
@@ -708,10 +321,9 @@
             const detectGpsAddress = () => {
                 SoundFX.play('tick');
                 if (!navigator.geolocation) {
-                    showToast("Qurilmada GPS qo'llab-quvvatlanmaydi");
+                    showToast("GPS mavjud emas");
                     return;
                 }
-                setLocatingGps(true);
                 navigator.geolocation.getCurrentPosition(
                     async (pos) => {
                         const { latitude, longitude } = pos.coords;
@@ -726,14 +338,9 @@
                             }
                         } catch (err) {
                             setCustomerLocation(`GPS: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
-                        } finally {
-                            setLocatingGps(false);
                         }
                     },
-                    () => {
-                        setLocatingGps(false);
-                        showToast("GPS ruxsati berilmadi");
-                    }
+                    () => showToast("GPS ruxsati berilmadi")
                 );
             };
 
@@ -750,20 +357,9 @@
             }, [products, activeCategory, search]);
 
             const addToCart = (product, extras = [], e) => {
-                if (e) {
-                    e.stopPropagation();
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const tx = (window.innerWidth / 2) - rect.left;
-                    const ty = window.innerHeight - rect.top - 40;
-                    const orbId = Date.now() + Math.random();
-                    setFlyingOrbs(prev => [...prev, { id: orbId, x: rect.left, y: rect.top, tx: `${tx}px`, ty: `${ty}px`, img: product.image }]);
-                    setTimeout(() => {
-                        setFlyingOrbs(prev => prev.filter(o => o.id !== orbId));
-                    }, 650);
-                }
-
-                SoundFX.play('coin');
-                if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+                if (e) e.stopPropagation();
+                SoundFX.play('tick');
+                if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
                 const extrasPrice = extras.reduce((s, x) => s + x.price, 0);
                 const extrasText = extras.length > 0 ? ` (+ ${extras.map(x => x.name).join(', ')})` : '';
@@ -823,7 +419,7 @@
                     });
                 } catch (err) {}
 
-                SoundFX.play('coin');
+                SoundFX.play('tick');
                 if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
                 setUserOrders(prev => [orderObj, ...prev]);
                 setAdminOrders(prev => [orderObj, ...prev]);
@@ -837,28 +433,28 @@
 
             if (viewMode === 'admin') {
                 return (
-                    <div className="min-h-screen bg-[#040406] text-white p-4 sm:p-8 max-w-[1150px] mx-auto">
-                        <div className="obsidian-slab rounded-3xl p-6 mb-6 flex flex-wrap items-center justify-between gap-4">
+                    <div className="min-h-screen bg-[#fcfbf9] text-[#111] p-4 sm:p-8 max-w-[1150px] mx-auto">
+                        <div className="gold-card rounded-3xl p-6 mb-6 flex flex-wrap items-center justify-between gap-4">
                             <div>
-                                <span className="font-mono-tech text-[10px] text-[#ff7b00] uppercase tracking-widest block">ADMIN PANEL</span>
-                                <h1 className="font-syne text-2xl font-extrabold">THE FAST FOOD // OS</h1>
+                                <span className="text-[10px] text-[#c5a059] font-bold uppercase tracking-widest block">LUXURY ADMIN PANEL</span>
+                                <h1 className="font-serif-lux text-3xl font-bold">THE FAST FOOD // OS</h1>
                             </div>
                             <div className="flex items-center gap-2">
-                                <button onClick={() => setAdminTab('orders')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'orders' ? 'btn-lava' : 'bg-white/5'}`}>
+                                <button onClick={() => setAdminTab('orders')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'orders' ? 'btn-gold text-white' : 'bg-gray-100'}`}>
                                     Buyurtmalar ({adminOrders.length})
                                 </button>
-                                <button onClick={() => setAdminTab('add')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'add' ? 'btn-lava' : 'bg-white/5'}`}>
+                                <button onClick={() => setAdminTab('add')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'add' ? 'btn-gold text-white' : 'bg-gray-100'}`}>
                                     + Yangi Taom
                                 </button>
-                                <button onClick={() => setViewMode('client')} className="px-4 py-2.5 rounded-xl text-xs font-bold bg-white/10">
+                                <button onClick={() => setViewMode('client')} className="px-4 py-2.5 rounded-xl text-xs font-bold bg-gray-200">
                                     ← Vitrinaga
                                 </button>
                             </div>
                         </div>
 
                         {adminTab === 'add' ? (
-                            <div className="obsidian-slab rounded-3xl p-6">
-                                <h2 className="font-syne text-xl font-bold mb-4">Yangi Taom Qo'shish</h2>
+                            <div className="gold-card rounded-3xl p-6">
+                                <h2 className="font-serif-lux text-2xl font-bold mb-4">Yangi Taom Qo'shish</h2>
                                 <form onSubmit={async (e) => {
                                     e.preventDefault();
                                     const created = {
@@ -879,10 +475,10 @@
                                     } catch (err) {}
                                     setProducts(prev => [created, ...prev]);
                                     setNewProd({ name: '', description: '', image: '', oldPrice: '', newPrice: '', category: 'Burgerlar' });
-                                    showToast("Taom muvaffaqiyatli qo'shildi!");
+                                    showToast("Taom qo'shildi!");
                                 }} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <input type="text" placeholder="Taom Nomi" value={newProd.name} onChange={e => setNewProd({...newProd, name: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-white" required />
-                                    <select value={newProd.category} onChange={e => setNewProd({...newProd, category: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-[#ff9e00] font-bold">
+                                    <input type="text" placeholder="Taom Nomi" value={newProd.name} onChange={e => setNewProd({...newProd, name: e.target.value})} className="p-3.5 rounded-xl border border-[#c5a059]/30 text-xs bg-white" required />
+                                    <select value={newProd.category} onChange={e => setNewProd({...newProd, category: e.target.value})} className="p-3.5 rounded-xl border border-[#c5a059]/30 text-xs font-bold bg-white">
                                         <option value="Burgerlar">Burgerlar</option>
                                         <option value="Hot-Doglar">Hot-Doglar</option>
                                         <option value="Lavash">Lavash</option>
@@ -890,26 +486,26 @@
                                         <option value="Sneklar">Sneklar</option>
                                         <option value="Ichimliklar">Ichimliklar</option>
                                     </select>
-                                    <input type="number" placeholder="Eski Narxi" value={newProd.oldPrice} onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-white" required />
-                                    <input type="number" placeholder="Yangi Narxi" value={newProd.newPrice} onChange={e => setNewProd({...newProd, newPrice: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-white" required />
-                                    <input type="url" placeholder="Rasm URL" value={newProd.image} onChange={e => setNewProd({...newProd, image: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-white" required />
-                                    <textarea placeholder="Ta'rifi..." value={newProd.description} onChange={e => setNewProd({...newProd, description: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl bg-black/60 border border-white/15 text-xs text-white" rows="3" required />
-                                    <button type="submit" className="sm:col-span-2 btn-lava py-4 rounded-xl text-xs font-extrabold uppercase">Saqlash</button>
+                                    <input type="number" placeholder="Eski Narxi" value={newProd.oldPrice} onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} className="p-3.5 rounded-xl border border-[#c5a059]/30 text-xs bg-white" required />
+                                    <input type="number" placeholder="Yangi Narxi" value={newProd.newPrice} onChange={e => setNewProd({...newProd, newPrice: e.target.value})} className="p-3.5 rounded-xl border border-[#c5a059]/30 text-xs bg-white" required />
+                                    <input type="url" placeholder="Rasm URL" value={newProd.image} onChange={e => setNewProd({...newProd, image: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl border border-[#c5a059]/30 text-xs bg-white" required />
+                                    <textarea placeholder="Ta'rifi..." value={newProd.description} onChange={e => setNewProd({...newProd, description: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl border border-[#c5a059]/30 text-xs bg-white" rows="3" required />
+                                    <button type="submit" className="sm:col-span-2 btn-gold py-4 rounded-xl text-xs font-extrabold uppercase">Saqlash</button>
                                 </form>
                             </div>
                         ) : (
                             <div className="space-y-3">
                                 {adminOrders.length === 0 ? (
-                                    <div className="obsidian-slab rounded-3xl p-12 text-center text-white/40 text-xs">Buyurtmalar yo'q</div>
+                                    <div className="gold-card rounded-3xl p-12 text-center text-gray-400 text-xs">Buyurtmalar yo'q</div>
                                 ) : adminOrders.map(o => (
-                                    <div key={o.id} className="obsidian-slab rounded-2xl p-5 flex items-center justify-between">
+                                    <div key={o.id} className="gold-card rounded-2xl p-5 flex items-center justify-between">
                                         <div>
-                                            <span className="font-mono-tech text-xs text-[#ff9e00] font-bold">#{o.id} — {o.name} ({o.phone})</span>
-                                            <p className="text-xs text-white/70 mt-1">📍 {o.location}</p>
+                                            <span className="text-xs text-[#c5a059] font-bold">#{o.id} — {o.name} ({o.phone})</span>
+                                            <p className="text-xs text-gray-600 mt-1">📍 {o.location}</p>
                                         </div>
                                         <div className="text-right">
-                                            <span className="font-syne text-base font-extrabold">{formatPrice(o.totalAmount)}</span>
-                                            <span className="block text-[10px] text-emerald-400">{o.status}</span>
+                                            <span className="font-serif-lux text-lg font-bold">{formatPrice(o.totalAmount)}</span>
+                                            <span className="block text-[10px] text-emerald-600 font-bold">{o.status}</span>
                                         </div>
                                     </div>
                                 ))}
@@ -921,214 +517,183 @@
 
             return (
                 <div className="min-h-screen pb-36 relative">
-                    {flyingOrbs.map(orb => (
-                        <img key={orb.id} src={orb.img} style={{ left: orb.x, top: orb.y, '--tx': orb.tx, '--ty': orb.ty }} className="flying-orb w-14 h-14 rounded-full object-cover border-2 border-[#ff5500] shadow-[0_0_25px_#ff3b00]" />
-                    ))}
-
                     {toast && (
-                        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 btn-lava px-5 py-2.5 rounded-full text-xs font-extrabold shadow-2xl flex items-center gap-2">
-                            <span>⚡</span><span>{toast}</span>
+                        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 btn-gold px-6 py-3 rounded-full text-xs font-extrabold shadow-2xl flex items-center gap-2">
+                            <span>✨</span><span>{toast}</span>
                         </div>
                     )}
 
-                    <header className="sticky top-0 z-30 bg-[#040406]/80 backdrop-blur-2xl border-b border-white/[0.07]">
-                        <div className="max-w-[1240px] mx-auto px-4 h-16 flex items-center justify-between gap-2">
+                    {/* LUXURY HEADER */}
+                    <header className="sticky top-0 z-30 bg-[#fcfbf9]/90 backdrop-blur-xl border-b border-[#c5a059]/20">
+                        <div className="max-w-[1240px] mx-auto px-4 h-20 flex items-center justify-between gap-2">
                             <div className="flex items-center gap-3">
-                                <div className="relative w-10 h-10 rounded-2xl btn-lava flex items-center justify-center font-syne font-extrabold text-lg shadow-lg">
+                                <div className="w-11 h-11 rounded-2xl btn-gold flex items-center justify-center font-serif-lux font-bold text-xl shadow-lg">
                                     FF
-                                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#040406]" />
                                 </div>
                                 <div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="font-syne text-sm font-extrabold tracking-wider text-white">THE FAST FOOD</span>
-                                    </div>
-                                    <span className="font-mono-tech text-[10px] text-white/45 block">100% MARMAR MOL GO'SHTI</span>
+                                    <span className="font-serif-lux text-2xl font-bold tracking-wide gold-gradient-text block">THE FAST FOOD</span>
+                                    <span className="text-[10px] text-gray-500 font-semibold tracking-widest uppercase">PREMIUM GOURMET OS</span>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-2">
-                                <button onClick={() => { SoundFX.play('whoosh'); setIsBurgerLabOpen(true); }} className="px-3.5 py-2 rounded-2xl bg-white/[0.07] hover:bg-white/[0.14] border border-[#ff5500]/40 text-[11px] font-extrabold text-[#ff9e00] flex items-center gap-1.5 transition">
-                                    <span>🧬</span>
-                                    <span>Burger Lab</span>
-                                </button>
-
                                 {(String(tgUser.id) === ADMIN_TELEGRAM_ID || isAdminAuthed) && (
-                                    <button onClick={() => { SoundFX.play('tick'); setViewMode('admin'); fetchAdminData(); }} className="btn-lava px-3 py-2 rounded-2xl text-[11px] font-extrabold">
-                                        ⚙️ OS
+                                    <button onClick={() => { SoundFX.play('tick'); setViewMode('admin'); fetchAdminData(); }} className="btn-gold px-4 py-2.5 rounded-2xl text-xs font-extrabold uppercase">
+                                        ⚙️ Admin OS
                                     </button>
                                 )}
                             </div>
                         </div>
                     </header>
 
-                    {/* 3D CAROUSEL STAGE */}
-                    <section className="max-w-[1240px] mx-auto px-3 pt-5 pb-2 overflow-hidden">
-                        <div className="flex items-center justify-between px-2 mb-3">
-                            <div>
-                                <span className="font-mono-tech text-[10px] text-[#ff5500] uppercase tracking-widest block">● HIT TAVSIVALAR</span>
-                                <h2 className="font-syne text-xl sm:text-2xl font-extrabold text-white">ENG SERSUV BURGERLAR</h2>
+                    {/* HERO BANNER */}
+                    <section className="max-w-[1240px] mx-auto px-4 pt-6 pb-2">
+                        <div className="relative w-full h-[340px] rounded-[32px] overflow-hidden gold-card flex items-end p-8">
+                            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=90" className="absolute inset-0 w-full h-full object-cover brightness-90" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+                            <div className="relative z-10 text-white space-y-2 max-w-lg">
+                                <span className="bg-[#c5a059] text-white text-[10px] font-extrabold uppercase px-3 py-1 rounded-full tracking-wider">100% MARMAR MOL GO'SHTI</span>
+                                <h1 className="font-serif-lux text-3xl sm:text-4xl font-bold leading-tight">Eng Sersuv Burgerlar & Gril Taomlari</h1>
+                                <p className="text-xs text-gray-200">Hashamatli retseptlar asosida tayyorlangan eksklyuziv ta'm.</p>
                             </div>
-                            <div className="flex items-center gap-1.5">
-                                <button onClick={() => { SoundFX.play('whoosh'); setHeroIndex(prev => (prev - 1 + featuredItems.length) % featuredItems.length); }} className="w-9 h-9 rounded-xl obsidian-slab flex items-center justify-center text-white hover:border-[#ff5500]">←</button>
-                                <button onClick={() => { SoundFX.play('whoosh'); setHeroIndex(prev => (prev + 1) % featuredItems.length); }} className="w-9 h-9 rounded-xl obsidian-slab flex items-center justify-center text-white hover:border-[#ff5500]">→</button>
-                            </div>
-                        </div>
-
-                        <div className="perspective-stage relative h-[330px] sm:h-[360px] flex items-center justify-center">
-                            {featuredItems.map((item, idx) => {
-                                const total = featuredItems.length;
-                                let offset = idx - heroIndex;
-                                if (offset > total / 2) offset -= total;
-                                if (offset < -total / 2) offset += total;
-                                const isCenter = offset === 0;
-                                const absOffset = Math.abs(offset);
-                                const translateX = offset * 62;
-                                const translateZ = isCenter ? 0 : -150 * absOffset;
-                                const rotateY = offset * -28;
-                                const opacity = absOffset > 1 ? 0 : isCenter ? 1 : 0.42;
-                                const zIndex = 20 - absOffset * 5;
-
-                                return (
-                                    <div
-                                        key={item.id}
-                                        onClick={() => {
-                                            SoundFX.play('whoosh');
-                                            if (isCenter) {
-                                                setSelectedProduct(item);
-                                                setSelectedExtras([]);
-                                            } else {
-                                                setHeroIndex(idx);
-                                            }
-                                        }}
-                                        style={{ transform: `translateX(${translateX}%) translateZ(${translateZ}px) rotateY(${rotateY}deg)`, opacity, zIndex }}
-                                        className={`coverflow-card absolute w-[84%] sm:w-[460px] h-[305px] sm:h-[330px] rounded-[32px] obsidian-slab overflow-hidden cursor-pointer ${isCenter ? 'lava-border-glow' : ''}`}
-                                    >
-                                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-[#040406] via-[#040406]/45 to-transparent" />
-                                        <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-                                            <span className="btn-lava text-[10px] font-mono-tech font-bold uppercase px-3 py-1 rounded-full">{item.badge}</span>
-                                            <span className="bg-black/70 backdrop-blur-md border border-white/15 text-white font-mono-tech text-[10px] px-2.5 py-1 rounded-full">🔥 {item.kcal}</span>
-                                        </div>
-                                        <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-3">
-                                            <div>
-                                                <p className="font-mono-tech text-[10px] text-[#ff9e00] uppercase">{item.tagline}</p>
-                                                <h3 className="font-syne text-xl sm:text-2xl font-extrabold text-white leading-tight mt-0.5">{item.name}</h3>
-                                                <div className="flex items-center gap-2 mt-1">
-                                                    <span className="font-syne text-lg font-extrabold text-[#ff9e00]">{formatPrice(item.newPrice)}</span>
-                                                    <span className="font-mono-tech text-xs text-white/35 line-through">{formatPrice(item.oldPrice)}</span>
-                                                </div>
-                                            </div>
-                                            <button onClick={(e) => addToCart(item, [], e)} className="btn-lava px-5 py-3.5 rounded-2xl font-mono-tech text-xs font-bold shrink-0">+ BUYURTMA</button>
-                                        </div>
-                                    </div>
-                                );
-                            })}
                         </div>
                     </section>
 
-                    {/* CATEGORY DOCK & SEARCH */}
-                    <section className="max-w-[1240px] mx-auto px-3 pt-4 sticky top-16 z-20 bg-gradient-to-b from-[#040406] via-[#040406]/95 to-transparent pb-3">
-                        <div className="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center justify-between">
-                            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-                                {categories.map(cat => {
-                                    const active = activeCategory === cat;
-                                    return (
-                                        <button key={cat} onClick={() => { SoundFX.play('tick'); setActiveCategory(cat); }} className={`px-4 py-2.5 rounded-2xl text-xs font-syne font-bold shrink-0 flex items-center gap-2 transition-all duration-300 ${active ? 'btn-lava scale-105' : 'obsidian-slab text-white/70 hover:text-white'}`}>
-                                            <AnimatedCategoryIcon category={cat} active={active} />
-                                            <span>{cat}</span>
-                                        </button>
-                                    );
-                                })}
-                            </div>
-
-                            <div className="relative sm:w-64">
-                                <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Taom nomi..." className="w-full obsidian-slab rounded-2xl py-2.5 pl-9 pr-4 text-xs text-white placeholder-white/35 focus:outline-none focus:border-[#ff5500]" />
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-xs">⌕</span>
-                            </div>
+                    {/* CATEGORY TABS */}
+                    <section className="max-w-[1240px] mx-auto px-4 pt-6 sticky top-20 z-20 bg-[#fcfbf9]/95 backdrop-blur-md pb-4">
+                        <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1">
+                            {categories.map(cat => {
+                                const active = activeCategory === cat;
+                                return (
+                                    <button
+                                        key={cat}
+                                        onClick={() => { SoundFX.play('tick'); setActiveCategory(cat); }}
+                                        className={`px-5 py-3 rounded-2xl text-xs font-bold shrink-0 transition-all ${
+                                            active
+                                                ? 'btn-gold shadow-lg scale-105'
+                                                : 'gold-card text-gray-700 hover:text-black'
+                                        }`}
+                                    >
+                                        {cat}
+                                    </button>
+                                );
+                            })}
                         </div>
                     </section>
 
                     {/* MENU GRID */}
-                    <section className="max-w-[1240px] mx-auto px-3 py-3">
-                        <div key={activeCategory} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
-                            {filtered.map((product, idx) => {
+                    <section className="max-w-[1240px] mx-auto px-4 py-6">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                            {filtered.map((product) => {
                                 const qty = cart.filter(i => i.id === product.id).reduce((s, i) => s + i.qty, 0);
                                 return (
-                                    <SpatialDishSlab
+                                    <div
                                         key={product.id}
-                                        index={idx}
-                                        product={product}
-                                        qty={qty}
-                                        onSelect={(p) => { setSelectedProduct(p); setSelectedExtras([]); }}
-                                        onQuickAdd={addToCart}
-                                        formatPrice={formatPrice}
-                                    />
+                                        onClick={() => { SoundFX.play('tick'); setSelectedProduct(product); setSelectedExtras([]); }}
+                                        className="gold-card rounded-[28px] p-3.5 cursor-pointer flex flex-col justify-between group"
+                                    >
+                                        <div>
+                                            <div className="relative aspect-[1/0.95] rounded-[20px] overflow-hidden bg-gray-100 mb-3">
+                                                <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                <span className="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md text-[#f3e5ab] text-[9px] font-bold uppercase px-2.5 py-1 rounded-full border border-[#c5a059]/40">
+                                                    {product.badge}
+                                                </span>
+                                            </div>
+                                            <h3 className="font-serif-lux text-lg font-bold text-gray-900 group-hover:text-[#8c6d33] transition-colors line-clamp-1">{product.name}</h3>
+                                            <p className="text-[11px] text-gray-500 mt-1 line-clamp-2 leading-relaxed">{product.description}</p>
+                                        </div>
+
+                                        <div className="flex items-center justify-between pt-4 mt-3 border-t border-[#c5a059]/15">
+                                            <span className="font-serif-lux text-base font-bold text-gray-900">{formatPrice(product.newPrice)}</span>
+                                            <button
+                                                onClick={(e) => addToCart(product, [], e)}
+                                                className={`h-9 px-4 rounded-xl font-bold text-xs transition-all ${
+                                                    qty > 0 ? 'btn-gold' : 'bg-gray-100 hover:bg-[#c5a059] hover:text-white text-gray-800'
+                                                }`}
+                                            >
+                                                {qty > 0 ? `${qty}x qo'shildi` : '+ QO\'SHISH'}
+                                            </button>
+                                        </div>
+                                    </div>
                                 );
                             })}
                         </div>
                     </section>
 
-                    {/* DOIMIY QULAY VA KATTA PASTGI PANELI (BUYURTMALAR VA SAVAT) */}
-                    <div className="fixed bottom-3 left-3 right-3 z-40 max-w-[820px] mx-auto">
-                        <div className="obsidian-slab lava-border-glow rounded-[26px] p-2.5 flex items-center gap-2.5">
-                            <button onClick={() => { SoundFX.play('tick'); fetch(`/api/orders/${tgUser.id}`).then(r=>r.json()).then(d=>setUserOrders(Array.isArray(d)?d:[])).catch(()=>{}); setIsOrdersOpen(true); }} className="px-4 py-3.5 rounded-[20px] bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs font-bold text-white flex items-center gap-2 shrink-0">
-                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                                <span>📦 Buyurtmalar</span>
+                    {/* FIXED BOTTOM DOCK (BUYURTMALAR & SAVAT) */}
+                    <div className="fixed bottom-4 left-4 right-4 z-40 max-w-[820px] mx-auto">
+                        <div className="gold-card rounded-[28px] p-3 flex items-center gap-3 backdrop-blur-xl bg-white/95">
+                            <button
+                                onClick={() => { SoundFX.play('tick'); fetch(`/api/orders/${tgUser.id}`).then(r=>r.json()).then(d=>setUserOrders(Array.isArray(d)?d:[])).catch(()=>{}); setIsOrdersOpen(true); }}
+                                className="px-5 py-4 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs font-bold flex items-center gap-2 shrink-0 border border-[#c5a059]/20"
+                            >
+                                <span>📦</span>
+                                <span>Buyurtmalar</span>
                             </button>
 
-                            <button onClick={() => { SoundFX.play('whoosh'); setIsCartOpen(true); }} className="flex-1 btn-lava py-3.5 px-5 rounded-[20px] flex items-center justify-between">
-                                <div className="flex items-center gap-2.5">
-                                    <span className="text-lg">🛒</span>
-                                    <span className="font-syne text-xs sm:text-sm font-extrabold uppercase tracking-wider">SAVAT</span>
+                            <button
+                                onClick={() => { SoundFX.play('tick'); setIsCartOpen(true); }}
+                                className="flex-1 btn-gold py-4 px-6 rounded-2xl flex items-center justify-between shadow-xl"
+                            >
+                                <div className="flex items-center gap-2">
+                                    <span className="text-base">🛒</span>
+                                    <span className="text-xs font-extrabold uppercase tracking-wider">SAVAT</span>
                                     {totalItems > 0 && (
-                                        <span className="bg-black text-[#ff9e00] font-mono-tech px-2.5 py-0.5 rounded-full text-xs font-bold">{totalItems}</span>
+                                        <span className="bg-white text-[#8c6d33] px-2 py-0.5 rounded-full text-[10px] font-bold">
+                                            {totalItems}
+                                        </span>
                                     )}
                                 </div>
-                                <span className="font-syne text-xs sm:text-sm font-extrabold">{formatPrice(totalAmount)}</span>
+                                <span className="font-serif-lux text-base font-bold">{formatPrice(totalAmount)}</span>
                             </button>
                         </div>
                     </div>
 
-                    {isBurgerLabOpen && (
-                        <BurgerLabModal onClose={() => setIsBurgerLabOpen(false)} onAddCustom={addToCart} formatPrice={formatPrice} />
-                    )}
-
-                    {/* DISH CUSTOMIZATION SHEET */}
+                    {/* DISH CUSTOMIZATION MODAL */}
                     {selectedProduct && (
-                        <div onClick={() => setSelectedProduct(null)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex items-end sm:items-center justify-center p-0 sm:p-4">
-                            <div onClick={e => e.stopPropagation()} className="obsidian-slab lava-border-glow w-full max-w-lg rounded-t-[34px] sm:rounded-[34px] overflow-hidden p-5 max-h-[90vh] overflow-y-auto">
-                                <div className="relative h-60 w-full rounded-[24px] overflow-hidden mb-4 border border-white/15">
+                        <div onClick={() => setSelectedProduct(null)} className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4">
+                            <div onClick={e => e.stopPropagation()} className="bg-white w-full max-w-lg rounded-t-[34px] sm:rounded-[34px] p-6 max-h-[90vh] overflow-y-auto border border-[#c5a059]/30 shadow-2xl">
+                                <div className="relative h-56 w-full rounded-[24px] overflow-hidden mb-4 bg-gray-100">
                                     <img src={selectedProduct.image} className="w-full h-full object-cover" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[#090a0e] via-transparent to-black/30" />
-                                    <button onClick={() => setSelectedProduct(null)} className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/70 text-white font-bold border border-white/20">✕</button>
-                                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                                        <span className="btn-lava text-[10px] font-mono-tech font-bold px-3 py-1 rounded-full">{selectedProduct.badge}</span>
-                                        <span className="bg-black/75 backdrop-blur-md text-white font-mono-tech text-[10px] px-3 py-1 rounded-full border border-white/15">⏱ {selectedProduct.prepTime}</span>
-                                    </div>
+                                    <button onClick={() => setSelectedProduct(null)} className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/70 text-white font-bold">✕</button>
                                 </div>
 
-                                <h3 className="font-syne text-2xl font-extrabold text-white mt-0.5 mb-1.5">{selectedProduct.name}</h3>
-                                <p className="text-xs text-white/65 mb-5 leading-relaxed">{selectedProduct.description}</p>
+                                <h3 className="font-serif-lux text-2xl font-bold text-gray-900 mb-1">{selectedProduct.name}</h3>
+                                <p className="text-xs text-gray-600 mb-5 leading-relaxed">{selectedProduct.description}</p>
 
                                 <div className="space-y-2 mb-6">
-                                    <span className="font-mono-tech text-[10px] text-white/45 uppercase block mb-2">+ QO'SHIMCHALAR:</span>
+                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">+ QO'SHIMCHALAR:</span>
                                     {EXTRAS.map(ex => {
                                         const checked = selectedExtras.some(e => e.id === ex.id);
                                         return (
-                                            <div key={ex.id} onClick={() => toggleExtra(ex)} className={`p-3.5 rounded-2xl border cursor-pointer flex items-center justify-between transition ${checked ? 'border-[#ff5500] bg-[#ff5500]/15' : 'border-white/10 bg-white/[0.03]'}`}>
-                                                <span className="text-xs font-bold text-white">{ex.name}</span>
-                                                <span className="font-mono-tech text-xs font-bold text-[#ff9e00]">+{formatPrice(ex.price)}</span>
+                                            <div
+                                                key={ex.id}
+                                                onClick={() => toggleExtra(ex)}
+                                                className={`p-3.5 rounded-2xl border cursor-pointer flex items-center justify-between transition ${
+                                                    checked ? 'border-[#c5a059] bg-[#f3e5ab]/20' : 'border-gray-200 bg-gray-50'
+                                                }`}
+                                            >
+                                                <span className="text-xs font-bold text-gray-800">{ex.name}</span>
+                                                <span className="text-xs font-bold text-[#8c6d33]">+{formatPrice(ex.price)}</span>
                                             </div>
                                         );
                                     })}
                                 </div>
 
-                                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                                     <div>
-                                        <span className="font-mono-tech text-[10px] text-white/45 block">JAMI NARX</span>
-                                        <span className="font-syne text-xl font-extrabold text-white">{formatPrice(Number(selectedProduct.newPrice) + selectedExtras.reduce((s, e) => s + e.price, 0))}</span>
+                                        <span className="text-[10px] text-gray-400 uppercase block font-semibold">Jami Narx</span>
+                                        <span className="font-serif-lux text-xl font-bold text-gray-900">
+                                            {formatPrice(Number(selectedProduct.newPrice) + selectedExtras.reduce((s, e) => s + e.price, 0))}
+                                        </span>
                                     </div>
-                                    <button onClick={(e) => { addToCart(selectedProduct, selectedExtras, e); setSelectedProduct(null); }} className="btn-lava px-7 py-4 rounded-2xl text-xs font-extrabold uppercase tracking-wider">
+                                    <button
+                                        onClick={(e) => {
+                                            addToCart(selectedProduct, selectedExtras, e);
+                                            setSelectedProduct(null);
+                                        }}
+                                        className="btn-gold px-7 py-4 rounded-2xl text-xs font-extrabold uppercase tracking-wider shadow-lg"
+                                    >
                                         + Savatga Qo'shish
                                     </button>
                                 </div>
@@ -1136,66 +701,66 @@
                         </div>
                     )}
 
-                    {/* CHECKOUT VAULT */}
+                    {/* CHECKOUT VAULT (SAVAT) */}
                     {isCartOpen && (
-                        <div onClick={() => setIsCartOpen(false)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex justify-end">
-                            <div onClick={e => e.stopPropagation()} className="obsidian-slab w-full max-w-md h-full p-5 flex flex-col justify-between overflow-y-auto border-l border-[#ff5500]/30">
+                        <div onClick={() => setIsCartOpen(false)} className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex justify-end">
+                            <div onClick={e => e.stopPropagation()} className="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between overflow-y-auto shadow-2xl border-l border-[#c5a059]/30">
                                 <div>
-                                    <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                                    <div className="flex items-center justify-between pb-4 border-b border-gray-100">
                                         <div>
-                                            <span className="font-mono-tech text-[10px] text-[#ff7b00] block">TEZKOR RASMIYLASHTIRISH</span>
-                                            <h2 className="font-syne text-xl font-extrabold text-white">SAVATCHA</h2>
+                                            <span className="text-[10px] text-[#c5a059] font-bold uppercase tracking-widest">RASMIYLASHTIRISH</span>
+                                            <h2 className="font-serif-lux text-2xl font-bold">SAVATCHA</h2>
                                         </div>
-                                        <button onClick={() => setIsCartOpen(false)} className="w-9 h-9 rounded-full bg-white/10 text-white">✕</button>
+                                        <button onClick={() => setIsCartOpen(false)} className="w-9 h-9 rounded-full bg-gray-100 text-gray-800 font-bold">✕</button>
                                     </div>
 
                                     {successOrder ? (
                                         <div className="py-20 text-center space-y-3">
-                                            <div className="w-20 h-20 rounded-full btn-lava flex items-center justify-center text-3xl mx-auto font-black">✓</div>
-                                            <h3 className="font-syne text-2xl font-extrabold text-white">BUYURTMA QABUL QILINDI!</h3>
-                                            <p className="text-xs text-white/60 max-w-xs mx-auto">Kuryerimiz tez orada siz bilan bog'lanadi.</p>
+                                            <div className="w-20 h-20 rounded-full btn-gold flex items-center justify-center text-3xl mx-auto text-white font-bold shadow-xl">✓</div>
+                                            <h3 className="font-serif-lux text-2xl font-bold">BUYURTMA QABUL QILINDI!</h3>
+                                            <p className="text-xs text-gray-500">Kuryerimiz tez orada siz bilan bog'lanadi.</p>
                                         </div>
                                     ) : cart.length === 0 ? (
-                                        <p className="text-center py-20 text-xs text-white/40 font-mono-tech">SAVATCHANGIZ BO'SH</p>
+                                        <p className="text-center py-20 text-xs text-gray-400 font-semibold">SAVATCHANGIZ BO'SH</p>
                                     ) : (
                                         <div className="mt-4 space-y-3">
                                             {cart.map(item => (
-                                                <div key={item.cartItemId} className="flex items-center gap-3 p-2.5 rounded-2xl bg-white/[0.04] border border-white/10">
+                                                <div key={item.cartItemId} className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 border border-gray-100">
                                                     <img src={item.image} className="w-14 h-14 rounded-xl object-cover shrink-0" />
                                                     <div className="flex-1 min-w-0">
-                                                        <h4 className="text-xs font-bold text-white truncate">{item.name}</h4>
-                                                        <p className="font-mono-tech text-xs text-[#ff9e00] font-bold mt-0.5">{formatPrice(item.newPrice)}</p>
+                                                        <h4 className="text-xs font-bold text-gray-900 truncate">{item.name}</h4>
+                                                        <p className="font-serif-lux text-sm font-bold text-[#8c6d33] mt-0.5">{formatPrice(item.newPrice)}</p>
                                                     </div>
-                                                    <div className="flex items-center gap-2 bg-black/60 border border-white/15 px-2.5 py-1 rounded-xl">
-                                                        <button onClick={() => updateQty(item.cartItemId, -1)} className="text-white font-bold">−</button>
-                                                        <span className="font-mono-tech text-xs font-bold w-4 text-center">{item.qty}</span>
-                                                        <button onClick={() => updateQty(item.cartItemId, 1)} className="text-white font-bold">+</button>
+                                                    <div className="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1 rounded-xl shadow-sm">
+                                                        <button onClick={() => updateQty(item.cartItemId, -1)} className="font-bold text-sm">−</button>
+                                                        <span className="text-xs font-bold w-4 text-center">{item.qty}</span>
+                                                        <button onClick={() => updateQty(item.cartItemId, 1)} className="font-bold text-sm">+</button>
                                                     </div>
                                                 </div>
                                             ))}
 
-                                            <form onSubmit={submitOrder} className="pt-4 space-y-3.5">
+                                            <form onSubmit={submitOrder} className="pt-4 space-y-4">
                                                 <div>
-                                                    <label className="block font-mono-tech text-[10px] uppercase text-white/60 mb-1">Telefon raqam</label>
-                                                    <input type="tel" required value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="w-full bg-black/60 border border-white/15 rounded-xl p-3.5 text-xs font-bold text-white focus:outline-none focus:border-[#ff5500]" />
+                                                    <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Telefon raqam</label>
+                                                    <input type="tel" required value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-xs font-semibold focus:outline-none focus:border-[#c5a059]" />
                                                 </div>
 
                                                 <div>
                                                     <div className="flex items-center justify-between mb-1">
-                                                        <label className="font-mono-tech text-[10px] uppercase text-white/60">Yetkazib berish manzili</label>
-                                                        <button type="button" onClick={detectGpsAddress} className="text-[10px] font-mono-tech font-bold text-[#ff9e00] hover:underline flex items-center gap-1">
-                                                            {locatingGps ? "Aniqlanmoqda..." : "📍 GPS orqali aniqlash"}
+                                                        <label className="text-[10px] font-bold text-gray-500 uppercase">Yetkazib berish manzili</label>
+                                                        <button type="button" onClick={detectGpsAddress} className="text-[10px] font-bold text-[#8c6d33] hover:underline">
+                                                            📍 GPS orqali aniqlash
                                                         </button>
                                                     </div>
-                                                    <textarea required rows="2" value={customerLocation} onChange={e => setCustomerLocation(e.target.value)} placeholder="Masalan: Yunusobod, 4-kvartal..." className="w-full bg-black/60 border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#ff5500]" />
+                                                    <textarea required rows="2" value={customerLocation} onChange={e => setCustomerLocation(e.target.value)} placeholder="Toshkent sh., ko'cha, uy..." className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-xs focus:outline-none focus:border-[#c5a059]" />
                                                 </div>
 
-                                                <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 flex justify-between items-center">
-                                                    <span className="text-xs text-white/70">Jami to'lov:</span>
-                                                    <span className="font-syne text-lg font-extrabold text-[#ff9e00]">{formatPrice(totalAmount)}</span>
+                                                <div className="p-4 rounded-2xl bg-[#f3e5ab]/15 border border-[#c5a059]/30 flex justify-between items-center">
+                                                    <span className="text-xs font-semibold text-gray-700">Jami to'lov:</span>
+                                                    <span className="font-serif-lux text-xl font-bold text-[#8c6d33]">{formatPrice(totalAmount)}</span>
                                                 </div>
 
-                                                <button type="submit" disabled={submitting} className="w-full btn-lava py-4 rounded-2xl text-xs font-extrabold uppercase tracking-widest">
+                                                <button type="submit" disabled={submitting} className="w-full btn-gold py-4 rounded-2xl text-xs font-extrabold uppercase tracking-widest shadow-xl">
                                                     {submitting ? "Yuborilmoqda..." : "Buyurtmani Tasdiqlash 🔥"}
                                                 </button>
                                             </form>
@@ -1208,23 +773,23 @@
 
                     {/* BUYURTMALAR TARIXI */}
                     {isOrdersOpen && (
-                        <div onClick={() => setIsOrdersOpen(false)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex justify-start">
-                            <div onClick={e => e.stopPropagation()} className="obsidian-slab w-full max-w-md h-full p-5 overflow-y-auto border-r border-[#ff5500]/30">
-                                <div className="flex items-center justify-between pb-4 border-b border-white/10">
-                                    <h2 className="font-syne text-xl font-extrabold text-white">BUYURTMALARIM</h2>
-                                    <button onClick={() => setIsOrdersOpen(false)} className="w-9 h-9 rounded-full bg-white/10 text-white">✕</button>
+                        <div onClick={() => setIsOrdersOpen(false)} className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex justify-start">
+                            <div onClick={e => e.stopPropagation()} className="bg-white w-full max-w-md h-full p-6 overflow-y-auto shadow-2xl border-r border-[#c5a059]/30">
+                                <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+                                    <h2 className="font-serif-lux text-2xl font-bold">BUYURTMALARIM</h2>
+                                    <button onClick={() => setIsOrdersOpen(false)} className="w-9 h-9 rounded-full bg-gray-100 text-gray-800 font-bold">✕</button>
                                 </div>
                                 <div className="mt-4 space-y-3">
                                     {userOrders.length === 0 ? (
-                                        <p className="text-center py-20 text-xs text-white/40 font-mono-tech">FAOL BUYURTMALAR YO'Q</p>
+                                        <p className="text-center py-20 text-xs text-gray-400 font-semibold">FAOL BUYURTMALAR YO'Q</p>
                                     ) : userOrders.map(o => (
-                                        <div key={o.id} className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 space-y-1.5">
+                                        <div key={o.id} className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-1">
                                             <div className="flex justify-between items-center">
-                                                <span className="font-mono-tech text-xs font-bold text-[#ff9e00]">#{o.id}</span>
-                                                <span className="text-[10px] font-bold text-emerald-400">{o.status}</span>
+                                                <span className="text-xs font-bold text-[#8c6d33]">#{o.id}</span>
+                                                <span className="text-[10px] font-bold text-emerald-600">{o.status}</span>
                                             </div>
-                                            <p className="text-xs text-white/70">📍 {o.location}</p>
-                                            <p className="font-syne text-sm font-extrabold text-white pt-1">{formatPrice(o.totalAmount)}</p>
+                                            <p className="text-xs text-gray-600">📍 {o.location}</p>
+                                            <p className="font-serif-lux text-base font-bold text-gray-900 pt-1">{formatPrice(o.totalAmount)}</p>
                                         </div>
                                     ))}
                                 </div>
