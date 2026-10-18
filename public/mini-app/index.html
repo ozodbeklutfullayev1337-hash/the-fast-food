@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="uz" class="dark">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
-    <title>THE FAST FOOD // Ultimate Luxury Edition</title>
+    <title>THE FAST FOOD // Elite Champagne Edition</title>
 
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -17,17 +17,18 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Luxury Typography -->
+    <!-- Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syncopate:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-deep: #050507;
-            --gold-base: #f3e5ab;
-            --gold-accent: #d4af37;
-            --gold-dark: #aa7c11;
+            --pearl-bg: #f8f7f4;
+            --card-pure: #ffffff;
+            --champagne-gold: #c5a059;
+            --champagne-light: #f3e5ab;
+            --dark-el: #1a1a1a;
         }
 
         * {
@@ -37,49 +38,39 @@
         }
 
         body {
-            background-color: var(--bg-deep);
-            color: #ffffff;
+            background-color: var(--pearl-bg);
+            color: var(--dark-el);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             margin: 0;
         }
 
-        .font-sync { font-family: 'Syncopate', sans-serif; }
-        .font-serif-lux { font-family: 'Instrument Serif', serif; }
-        .font-mono-tech { font-family: 'Space Mono', monospace; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Ultimate Luxury Glassmorphism & Gold Glow */
-        .lux-glass {
-            background: linear-gradient(135deg, rgba(20, 20, 26, 0.85) 0%, rgba(8, 8, 12, 0.95) 100%);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid rgba(212, 175, 55, 0.22);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        /* Elite Pearl & Gold Card Slabs */
+        .elite-card {
+            background: var(--card-pure);
+            border: 1px solid rgba(197, 160, 89, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(197, 160, 89, 0.1);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .elite-card:hover {
+            border-color: rgba(197, 160, 89, 0.7);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(197, 160, 89, 0.18);
         }
 
-        .gold-glow {
-            border-color: rgba(212, 175, 55, 0.6) !important;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25), inset 0 1px 2px rgba(243, 229, 171, 0.4);
+        .btn-champagne {
+            background: linear-gradient(135deg, #d4af37 0%, #c5a059 50%, #997a36 100%);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(197, 160, 89, 0.35);
+            transition: all 0.25s ease;
         }
-
-        .btn-lux-gold {
-            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
-            color: #050507;
-            font-weight: 800;
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.8);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-lux-gold:active { transform: scale(0.95); }
-
-        @keyframes skeletonPulse {
-            0% { opacity: 0.4; }
-            50% { opacity: 0.8; }
-            100% { opacity: 0.4; }
-        }
-        .skeleton { animation: skeletonPulse 1.5s infinite ease-in-out; background: rgba(255, 255, 255, 0.08); }
+        .btn-champagne:active { transform: scale(0.95); }
 
         @keyframes flyToCart {
             0% { transform: scale(1) translate(0, 0); opacity: 1; }
@@ -95,8 +86,7 @@
     </style>
 </head>
 <body>
-    <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
-    <div id="root" class="relative z-10"></div>
+    <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef } = React;
@@ -111,8 +101,8 @@
                     const osc = ctx.createOscillator();
                     const gain = ctx.createGain();
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(340, now);
-                    osc.frequency.exponentialRampToValueAtTime(140, now + 0.04);
+                    osc.frequency.setValueAtTime(350, now);
+                    osc.frequency.exponentialRampToValueAtTime(150, now + 0.04);
                     gain.gain.setValueAtTime(0.06, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
                     osc.connect(gain);
@@ -128,7 +118,7 @@
                 id: 1,
                 name: "Royal Wagyu Gold Burger",
                 code: "VIP-01",
-                tagline: "A5 Wagyu Kotlet • 24K Tilla Bargi",
+                tagline: "A5 Wagyu Kotlet • Tilla Bargi",
                 description: "A5 darajadagi Wagyu go'shti kotleti, 24 karatli edible tilla bargi, 36 oy yetilgan parmesan va truffel sousi.",
                 image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=90",
                 oldPrice: 95000,
@@ -328,47 +318,12 @@
             const tgUser = tg?.initDataUnsafe?.user || { id: ADMIN_TELEGRAM_ID, first_name: "Ozodbek" };
 
             useEffect(() => {
-                const canvas = document.getElementById('bg-canvas');
-                if (!canvas) return;
-                const ctx = canvas.getContext('2d');
-                let w = canvas.width = window.innerWidth;
-                let h = canvas.height = window.innerHeight;
-
-                const particles = Array.from({ length: 25 }, () => ({
-                    x: Math.random() * w,
-                    y: Math.random() * h,
-                    r: Math.random() * 2 + 0.5,
-                    vy: -(Math.random() * 0.3 + 0.1),
-                    alpha: Math.random() * 0.5 + 0.2
-                }));
-
-                let raf;
-                const draw = () => {
-                    ctx.clearRect(0, 0, w, h);
-                    particles.forEach(p => {
-                        p.y += p.vy;
-                        if (p.y < 0) { p.y = h; p.x = Math.random() * w; }
-                        ctx.beginPath();
-                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                        ctx.fillStyle = '#f3e5ab';
-                        ctx.globalAlpha = p.alpha;
-                        ctx.shadowBlur = 10;
-                        ctx.shadowColor = '#d4af37';
-                        ctx.fill();
-                    });
-                    raf = requestAnimationFrame(draw);
-                };
-                draw();
-                return () => cancelAnimationFrame(raf);
-            }, []);
-
-            useEffect(() => {
                 if (tg) {
                     tg.ready();
                     tg.expand();
                     try {
-                        tg.setHeaderColor('#050507');
-                        tg.setBackgroundColor('#050507');
+                        tg.setHeaderColor('#f8f7f4');
+                        tg.setBackgroundColor('#f8f7f4');
                     } catch (e) {}
                 }
                 fetchProducts();
@@ -451,7 +406,7 @@
                     const ty = window.innerHeight - rect.top - 40;
                     const flying = document.createElement('img');
                     flying.src = product.image;
-                    flying.className = 'flying-orb w-12 h-12 rounded-full object-cover border-2 border-[#d4af37] shadow-[0_0_20px_#f3e5ab]';
+                    flying.className = 'flying-orb w-12 h-12 rounded-full object-cover border-2 border-[#c5a059] shadow-[0_0_20px_#f3e5ab]';
                     flying.style.left = `${rect.left}px`;
                     flying.style.top = `${rect.top}px`;
                     flying.style.setProperty('--tx', `${tx}px`);
@@ -535,28 +490,28 @@
 
             if (viewMode === 'admin') {
                 return (
-                    <div className="min-h-screen bg-[#050507] text-white p-4 sm:p-8 max-w-[1150px] mx-auto">
-                        <div className="lux-glass rounded-3xl p-6 mb-6 flex flex-wrap items-center justify-between gap-4 gold-glow">
+                    <div className="min-h-screen bg-[#f8f7f4] text-[#1a1a1a] p-4 sm:p-8 max-w-[1150px] mx-auto">
+                        <div className="elite-card rounded-3xl p-6 mb-6 flex flex-wrap items-center justify-between gap-4">
                             <div>
-                                <span className="font-mono-tech text-[10px] text-[#f3e5ab] uppercase tracking-widest block">ADMIN OS</span>
-                                <h1 className="font-sync text-xl font-extrabold text-[#f3e5ab]">THE FAST FOOD</h1>
+                                <span className="text-[10px] text-[#c5a059] font-bold uppercase tracking-widest block">ADMIN OS</span>
+                                <h1 className="font-playfair text-2xl font-bold">THE FAST FOOD</h1>
                             </div>
                             <div className="flex items-center gap-2">
-                                <button onClick={() => setAdminTab('orders')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'orders' ? 'btn-lux-gold' : 'bg-white/5'}`}>
+                                <button onClick={() => setAdminTab('orders')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'orders' ? 'btn-champagne' : 'bg-gray-100'}`}>
                                     Buyurtmalar ({adminOrders.length})
                                 </button>
-                                <button onClick={() => setAdminTab('add')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'add' ? 'btn-lux-gold' : 'bg-white/5'}`}>
+                                <button onClick={() => setAdminTab('add')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'add' ? 'btn-champagne' : 'bg-gray-100'}`}>
                                     + Yangi Taom
                                 </button>
-                                <button onClick={() => setViewMode('client')} className="px-4 py-2.5 rounded-xl text-xs font-bold bg-white/10">
+                                <button onClick={() => setViewMode('client')} className="px-4 py-2.5 rounded-xl text-xs font-bold bg-gray-200">
                                     ← Vitrinaga
                                 </button>
                             </div>
                         </div>
 
                         {adminTab === 'add' ? (
-                            <div className="lux-glass rounded-3xl p-6">
-                                <h2 className="font-sync text-lg font-bold mb-4 text-[#f3e5ab]">Yangi Taom Qo'shish</h2>
+                            <div className="elite-card rounded-3xl p-6">
+                                <h2 className="font-playfair text-xl font-bold mb-4">Yangi Taom Qo'shish</h2>
                                 <form onSubmit={async (e) => {
                                     e.preventDefault();
                                     const created = {
@@ -579,8 +534,8 @@
                                     setNewProd({ name: '', description: '', image: '', oldPrice: '', newPrice: '', category: 'Burgerlar' });
                                     showToast("Taom qo'shildi!");
                                 }} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <input type="text" placeholder="Taom Nomi" value={newProd.name} onChange={e => setNewProd({...newProd, name: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs text-white" required />
-                                    <select value={newProd.category} onChange={e => setNewProd({...newProd, category: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs font-bold text-[#f3e5ab]">
+                                    <input type="text" placeholder="Taom Nomi" value={newProd.name} onChange={e => setNewProd({...newProd, name: e.target.value})} className="p-3.5 rounded-xl border border-[#c5a059]/30 text-xs bg-white" required />
+                                    <select value={newProd.category} onChange={e => setNewProd({...newProd, category: e.target.value})} className="p-3.5 rounded-xl border border-[#c5a059]/30 text-xs font-bold bg-white">
                                         <option value="Burgerlar">Burgerlar</option>
                                         <option value="Hot-Doglar">Hot-Doglar</option>
                                         <option value="Lavash">Lavash</option>
@@ -588,26 +543,26 @@
                                         <option value="Sneklar">Sneklar</option>
                                         <option value="Ichimliklar">Ichimliklar</option>
                                     </select>
-                                    <input type="number" placeholder="Eski Narxi" value={newProd.oldPrice} onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs text-white" required />
-                                    <input type="number" placeholder="Yangi Narxi" value={newProd.newPrice} onChange={e => setNewProd({...newProd, newPrice: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs text-white" required />
-                                    <input type="url" placeholder="Rasm URL" value={newProd.image} onChange={e => setNewProd({...newProd, image: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs text-white" required />
-                                    <textarea placeholder="Ta'rifi..." value={newProd.description} onChange={e => setNewProd({...newProd, description: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs text-white" rows="3" required />
-                                    <button type="submit" className="sm:col-span-2 btn-lux-gold py-4 rounded-xl text-xs font-extrabold uppercase">Saqlash</button>
+                                    <input type="number" placeholder="Eski Narxi" value={newProd.oldPrice} onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} className="p-3.5 rounded-xl border border-[#c5a059]/30 text-xs bg-white" required />
+                                    <input type="number" placeholder="Yangi Narxi" value={newProd.newPrice} onChange={e => setNewProd({...newProd, newPrice: e.target.value})} className="p-3.5 rounded-xl border border-[#c5a059]/30 text-xs bg-white" required />
+                                    <input type="url" placeholder="Rasm URL" value={newProd.image} onChange={e => setNewProd({...newProd, image: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl border border-[#c5a059]/30 text-xs bg-white" required />
+                                    <textarea placeholder="Ta'rifi..." value={newProd.description} onChange={e => setNewProd({...newProd, description: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl border border-[#c5a059]/30 text-xs bg-white" rows="3" required />
+                                    <button type="submit" className="sm:col-span-2 btn-champagne py-4 rounded-xl text-xs font-extrabold uppercase">Saqlash</button>
                                 </form>
                             </div>
                         ) : (
                             <div className="space-y-3">
                                 {adminOrders.length === 0 ? (
-                                    <div className="lux-glass rounded-3xl p-12 text-center text-white/40 text-xs">Buyurtmalar yo'q</div>
+                                    <div className="elite-card rounded-3xl p-12 text-center text-gray-400 text-xs">Buyurtmalar yo'q</div>
                                 ) : adminOrders.map(o => (
-                                    <div key={o.id} className="lux-glass rounded-2xl p-5 flex items-center justify-between">
+                                    <div key={o.id} className="elite-card rounded-2xl p-5 flex items-center justify-between">
                                         <div>
-                                            <span className="font-mono-tech text-xs text-[#f3e5ab] font-bold">#{o.id} — {o.name} ({o.phone})</span>
-                                            <p className="text-xs text-white/70 mt-1">📍 {o.location}</p>
+                                            <span className="text-xs text-[#c5a059] font-bold">#{o.id} — {o.name} ({o.phone})</span>
+                                            <p className="text-xs text-gray-600 mt-1">📍 {o.location}</p>
                                         </div>
                                         <div className="text-right">
-                                            <span className="font-serif-lux text-lg font-bold">{formatPrice(o.totalAmount)}</span>
-                                            <span className="block text-[10px] text-emerald-400">{o.status}</span>
+                                            <span className="font-playfair text-lg font-bold">{formatPrice(o.totalAmount)}</span>
+                                            <span className="block text-[10px] text-emerald-600">{o.status}</span>
                                         </div>
                                     </div>
                                 ))}
@@ -620,27 +575,27 @@
             return (
                 <div className="min-h-screen pb-36 relative">
                     {toast && (
-                        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 btn-lux-gold px-6 py-3 rounded-full text-xs font-extrabold shadow-2xl flex items-center gap-2">
+                        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 btn-champagne px-6 py-3 rounded-full text-xs font-extrabold shadow-2xl flex items-center gap-2 text-white">
                             <span>✨</span><span>{toast}</span>
                         </div>
                     )}
 
-                    {/* ULTRA-LUXURY HEADER */}
-                    <header className="sticky top-0 z-30 bg-[#050507]/90 backdrop-blur-2xl border-b border-[#d4af37]/25">
+                    {/* CHAMPAGNE ELITE HEADER */}
+                    <header className="sticky top-0 z-30 bg-[#f8f7f4]/90 backdrop-blur-2xl border-b border-[#c5a059]/20">
                         <div className="max-w-[1240px] mx-auto px-4 h-20 flex items-center justify-between gap-2">
                             <div className="flex items-center gap-3">
-                                <div className="w-11 h-11 rounded-2xl btn-lux-gold flex items-center justify-center font-sync font-extrabold text-lg shadow-lg">
+                                <div className="w-11 h-11 rounded-2xl btn-champagne flex items-center justify-center font-playfair font-bold text-xl shadow-lg text-white">
                                     FF
                                 </div>
                                 <div>
-                                    <span className="font-sync text-sm sm:text-base font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[#f3e5ab] via-[#d4af37] to-[#aa7c11] block">THE FAST FOOD</span>
-                                    <span className="font-mono-tech text-[9px] text-white/50 tracking-widest uppercase block">Ultimate Luxury OS</span>
+                                    <span className="font-playfair text-lg sm:text-xl font-bold tracking-wide text-gray-900 block">THE FAST FOOD</span>
+                                    <span className="text-[9px] text-gray-500 font-semibold tracking-widest uppercase block">Elite Champagne Edition</span>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-2">
                                 {(String(tgUser.id) === ADMIN_TELEGRAM_ID || isAdminAuthed) && (
-                                    <button onClick={() => { SoundFX.play('tick'); setViewMode('admin'); fetchAdminData(); }} className="btn-lux-gold px-4 py-2.5 rounded-2xl text-[11px] font-extrabold uppercase">
+                                    <button onClick={() => { SoundFX.play('tick'); setViewMode('admin'); fetchAdminData(); }} className="btn-champagne px-4 py-2.5 rounded-2xl text-[11px] font-extrabold uppercase text-white">
                                         ⚙️ Admin
                                     </button>
                                 )}
@@ -650,19 +605,19 @@
 
                     {/* HERO BANNER */}
                     <section className="max-w-[1240px] mx-auto px-4 pt-6 pb-2">
-                        <div className="relative w-full h-[360px] rounded-[34px] overflow-hidden lux-glass gold-glow flex items-end p-8">
-                            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=90" className="absolute inset-0 w-full h-full object-cover opacity-75 brightness-90" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/40 to-transparent" />
+                        <div className="relative w-full h-[360px] rounded-[34px] overflow-hidden elite-card flex items-end p-8">
+                            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=90" className="absolute inset-0 w-full h-full object-cover brightness-95" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                             <div className="relative z-10 text-white space-y-2.5 max-w-lg">
-                                <span className="bg-[#d4af37] text-[#050507] text-[10px] font-mono-tech font-extrabold uppercase px-3 py-1 rounded-full tracking-wider">100% MARMAR MOL GO'SHTI</span>
-                                <h1 className="font-serif-lux text-3xl sm:text-5xl font-bold leading-tight">Dunyodagi Eng Sersuv Va Mazali Fast-Food</h1>
-                                <p className="text-xs text-gray-300 font-mono-tech">Ochiq olovda tayyorlangan gril taomlari va eksklyuziv pitsalar.</p>
+                                <span className="bg-[#c5a059] text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full tracking-wider">100% MARMAR MOL GO'SHTI</span>
+                                <h1 className="font-playfair text-3xl sm:text-4xl font-bold leading-tight">Dunyodagi Eng Sersuv Va Mazali Fast-Food</h1>
+                                <p className="text-xs text-gray-200">Ochiq olovda tayyorlangan gril taomlari va eksklyuziv pitsalar.</p>
                             </div>
                         </div>
                     </section>
 
                     {/* CATEGORY DOCK */}
-                    <section className="max-w-[1240px] mx-auto px-4 pt-6 sticky top-20 z-20 bg-[#050507]/90 backdrop-blur-xl pb-4">
+                    <section className="max-w-[1240px] mx-auto px-4 pt-6 sticky top-20 z-20 bg-[#f8f7f4]/95 backdrop-blur-xl pb-4">
                         <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1">
                             {categories.map(cat => {
                                 const active = activeCategory === cat;
@@ -672,8 +627,8 @@
                                         onClick={() => { SoundFX.play('tick'); setActiveCategory(cat); }}
                                         className={`px-5 py-3 rounded-2xl text-xs font-bold shrink-0 transition-all ${
                                             active
-                                                ? 'btn-lux-gold shadow-lg scale-105'
-                                                : 'lux-glass text-white/80 hover:text-white border-white/10'
+                                                ? 'btn-champagne shadow-lg scale-105 text-white'
+                                                : 'elite-card text-gray-700 hover:text-black'
                                         }`}
                                     >
                                         {cat}
@@ -683,7 +638,7 @@
                         </div>
                     </section>
 
-                    {/* MENU MATRIX GRID */}
+                    {/* MENU GRID */}
                     <section className="max-w-[1240px] mx-auto px-4 py-6">
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                             {filtered.map((product) => {
@@ -692,26 +647,26 @@
                                     <div
                                         key={product.id}
                                         onClick={() => { SoundFX.play('tick'); setSelectedProduct(product); setSelectedExtras([]); }}
-                                        className="lux-glass rounded-[30px] p-4 cursor-pointer flex flex-col justify-between group hover:border-[#d4af37]/60 transition-all duration-300"
+                                        className="elite-card rounded-[30px] p-4 cursor-pointer flex flex-col justify-between group"
                                     >
                                         <div>
-                                            <div className="relative aspect-[1/0.95] rounded-[22px] overflow-hidden bg-[#0a0b10] mb-3 border border-white/10">
-                                                <img src={product.image} alt={product.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
-                                                <span className="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-md text-[#f3e5ab] text-[9px] font-mono-tech font-bold uppercase px-2.5 py-1 rounded-full border border-[#d4af37]/40">
+                                            <div className="relative aspect-[1/0.95] rounded-[22px] overflow-hidden bg-gray-100 mb-3 border border-gray-200">
+                                                <img src={product.image} alt={product.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                                                <span className="absolute top-2.5 left-2.5 bg-black/75 backdrop-blur-md text-[#f3e5ab] text-[9px] font-bold uppercase px-2.5 py-1 rounded-full border border-[#c5a059]/40">
                                                     {product.badge}
                                                 </span>
                                             </div>
-                                            <p className="font-mono-tech text-[9px] text-[#f3e5ab] uppercase tracking-wider">{product.tagline || product.category}</p>
-                                            <h3 className="font-serif-lux text-xl font-bold text-white group-hover:text-[#f3e5ab] transition-colors line-clamp-1 mt-0.5">{product.name}</h3>
-                                            <p className="text-[11px] text-white/70 mt-1 line-clamp-2 leading-relaxed">{product.description}</p>
+                                            <p className="text-[9px] text-[#c5a059] font-bold uppercase tracking-wider">{product.tagline || product.category}</p>
+                                            <h3 className="font-playfair text-xl font-bold text-gray-900 group-hover:text-[#8c6d33] transition-colors line-clamp-1 mt-0.5">{product.name}</h3>
+                                            <p className="text-[11px] text-gray-600 mt-1 line-clamp-2 leading-relaxed">{product.description}</p>
                                         </div>
 
-                                        <div className="flex items-center justify-between pt-4 mt-3 border-t border-white/10">
-                                            <span className="font-serif-lux text-lg font-extrabold text-white">{formatPrice(product.newPrice)}</span>
+                                        <div className="flex items-center justify-between pt-4 mt-3 border-t border-gray-100">
+                                            <span className="font-playfair text-lg font-bold text-gray-900">{formatPrice(product.newPrice)}</span>
                                             <button
                                                 onClick={(e) => addToCart(product, [], e)}
-                                                className={`h-10 px-4 rounded-2xl font-mono-tech font-bold text-xs transition-all ${
-                                                    qty > 0 ? 'btn-lux-gold' : 'bg-white/10 hover:bg-[#d4af37] hover:text-black text-white border border-white/15'
+                                                className={`h-10 px-4 rounded-2xl font-bold text-xs transition-all ${
+                                                    qty > 0 ? 'btn-champagne text-white' : 'bg-gray-100 hover:bg-[#c5a059] hover:text-white text-gray-800 border border-gray-200'
                                                 }`}
                                             >
                                                 {qty > 0 ? `${qty}x` : '+ QO\'SHISH'}
@@ -725,47 +680,47 @@
 
                     {/* FIXED BOTTOM DOCK (BUYURTMALAR & SAVAT) */}
                     <div className="fixed bottom-4 left-4 right-4 z-40 max-w-[820px] mx-auto">
-                        <div className="lux-glass gold-glow rounded-[30px] p-3 flex items-center gap-3 backdrop-blur-2xl">
+                        <div className="elite-card rounded-[30px] p-3 flex items-center gap-3 backdrop-blur-2xl bg-white/95 shadow-2xl">
                             <button
                                 onClick={() => { SoundFX.play('tick'); fetch(`/api/orders/${tgUser.id}`).then(r=>r.json()).then(d=>setUserOrders(Array.isArray(d)?d:[])).catch(()=>{}); setIsOrdersOpen(true); }}
-                                className="px-5 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center gap-2 shrink-0 border border-white/15"
+                                className="px-5 py-4 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs font-bold flex items-center gap-2 shrink-0 border border-gray-200"
                             >
-                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                                 <span>📦 Buyurtmalar</span>
                             </button>
 
                             <button
                                 onClick={() => { SoundFX.play('tick'); setIsCartOpen(true); }}
-                                className="flex-1 btn-lux-gold py-4 px-6 rounded-2xl flex items-center justify-between shadow-2xl"
+                                className="flex-1 btn-champagne py-4 px-6 rounded-2xl flex items-center justify-between shadow-xl text-white"
                             >
                                 <div className="flex items-center gap-2.5">
                                     <span className="text-base">🛒</span>
-                                    <span className="font-sync text-xs sm:text-sm font-extrabold uppercase tracking-wider">SAVAT</span>
+                                    <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider">SAVAT</span>
                                     {totalItems > 0 && (
-                                        <span className="bg-black text-[#f3e5ab] px-2.5 py-0.5 rounded-full text-xs font-mono-tech font-bold">
+                                        <span className="bg-white text-[#8c6d33] px-2.5 py-0.5 rounded-full text-xs font-bold">
                                             {totalItems}
                                         </span>
                                     )}
                                 </div>
-                                <span className="font-serif-lux text-lg font-extrabold">{formatPrice(totalAmount)}</span>
+                                <span className="font-playfair text-lg font-bold">{formatPrice(totalAmount)}</span>
                             </button>
                         </div>
                     </div>
 
                     {/* DISH CUSTOMIZATION MODAL */}
                     {selectedProduct && (
-                        <div onClick={() => setSelectedProduct(null)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex items-end sm:items-center justify-center p-0 sm:p-4">
-                            <div onClick={e => e.stopPropagation()} className="lux-glass gold-glow w-full max-w-lg rounded-t-[36px] sm:rounded-[36px] p-6 max-h-[90vh] overflow-y-auto">
-                                <div className="relative h-60 w-full rounded-[24px] overflow-hidden mb-4 border border-white/15">
+                        <div onClick={() => setSelectedProduct(null)} className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4">
+                            <div onClick={e => e.stopPropagation()} className="elite-card bg-white w-full max-w-lg rounded-t-[36px] sm:rounded-[36px] p-6 max-h-[90vh] overflow-y-auto shadow-2xl">
+                                <div className="relative h-60 w-full rounded-[24px] overflow-hidden mb-4 border border-gray-200">
                                     <img src={selectedProduct.image} className="w-full h-full object-cover" />
-                                    <button onClick={() => setSelectedProduct(null)} className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/70 text-white font-bold border border-white/20">✕</button>
+                                    <button onClick={() => setSelectedProduct(null)} className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/70 text-white font-bold">✕</button>
                                 </div>
 
-                                <h3 className="font-serif-lux text-3xl font-bold text-white mb-1">{selectedProduct.name}</h3>
-                                <p className="text-xs text-white/80 mb-5 leading-relaxed">{selectedProduct.description}</p>
+                                <h3 className="font-playfair text-3xl font-bold text-gray-900 mb-1">{selectedProduct.name}</h3>
+                                <p className="text-xs text-gray-600 mb-5 leading-relaxed">{selectedProduct.description}</p>
 
                                 <div className="space-y-2 mb-6">
-                                    <span className="font-mono-tech text-[10px] text-[#f3e5ab] uppercase tracking-widest block mb-2">+ GOURMET QO'SHIMCHALAR:</span>
+                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">+ QO'SHIMCHALAR:</span>
                                     {EXTRAS.map(ex => {
                                         const checked = selectedExtras.some(e => e.id === ex.id);
                                         return (
@@ -773,20 +728,20 @@
                                                 key={ex.id}
                                                 onClick={() => toggleExtra(ex)}
                                                 className={`p-3.5 rounded-2xl border cursor-pointer flex items-center justify-between transition ${
-                                                    checked ? 'border-[#d4af37] bg-[#d4af37]/20' : 'border-white/10 bg-white/[0.03]'
+                                                    checked ? 'border-[#c5a059] bg-[#f3e5ab]/25' : 'border-gray-200 bg-gray-50'
                                                 }`}
                                             >
-                                                <span className="text-xs font-bold text-white">{ex.name}</span>
-                                                <span className="font-mono-tech text-xs font-bold text-[#f3e5ab]">+{formatPrice(ex.price)}</span>
+                                                <span className="text-xs font-bold text-gray-800">{ex.name}</span>
+                                                <span className="text-xs font-bold text-[#8c6d33]">+{formatPrice(ex.price)}</span>
                                             </div>
                                         );
                                     })}
                                 </div>
 
-                                <div className="flex items-center justify-between pt-4 border-t border-white/15">
+                                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                                     <div>
-                                        <span className="font-mono-tech text-[10px] text-white/50 block">JAMI NARX</span>
-                                        <span className="font-serif-lux text-2xl font-bold text-white">
+                                        <span className="text-[10px] text-gray-400 uppercase block font-semibold">Jami Narx</span>
+                                        <span className="font-playfair text-2xl font-bold text-gray-900">
                                             {formatPrice(Number(selectedProduct.newPrice) + selectedExtras.reduce((s, e) => s + e.price, 0))}
                                         </span>
                                     </div>
@@ -795,7 +750,7 @@
                                             addToCart(selectedProduct, selectedExtras, e);
                                             setSelectedProduct(null);
                                         }}
-                                        className="btn-lux-gold px-7 py-4 rounded-2xl text-xs font-extrabold uppercase tracking-wider"
+                                        className="btn-champagne px-7 py-4 rounded-2xl text-xs font-extrabold uppercase tracking-wider text-white shadow-lg"
                                     >
                                         + Savatga Qo'shish
                                     </button>
@@ -806,37 +761,37 @@
 
                     {/* CHECKOUT VAULT (SAVAT) */}
                     {isCartOpen && (
-                        <div onClick={() => setIsCartOpen(false)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex justify-end">
-                            <div onClick={e => e.stopPropagation()} className="lux-glass w-full max-w-md h-full p-6 flex flex-col justify-between overflow-y-auto border-l border-[#d4af37]/30">
+                        <div onClick={() => setIsCartOpen(false)} className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex justify-end">
+                            <div onClick={e => e.stopPropagation()} className="elite-card bg-white w-full max-w-md h-full p-6 flex flex-col justify-between overflow-y-auto shadow-2xl border-l border-[#c5a059]/30">
                                 <div>
-                                    <div className="flex items-center justify-between pb-4 border-b border-white/15">
+                                    <div className="flex items-center justify-between pb-4 border-b border-gray-100">
                                         <div>
-                                            <span className="font-mono-tech text-[10px] text-[#f3e5ab]">VIP RASMIYLASHTIRISH</span>
-                                            <h2 className="font-sync text-lg font-extrabold text-white">SAVATCHA</h2>
+                                            <span className="text-[10px] text-[#c5a059] font-bold uppercase tracking-widest">RASMIYLASHTIRISH</span>
+                                            <h2 className="font-playfair text-2xl font-bold">SAVATCHA</h2>
                                         </div>
-                                        <button onClick={() => setIsCartOpen(false)} className="w-9 h-9 rounded-full bg-white/10 text-white font-bold">✕</button>
+                                        <button onClick={() => setIsCartOpen(false)} className="w-9 h-9 rounded-full bg-gray-100 text-gray-800 font-bold">✕</button>
                                     </div>
 
                                     {successOrder ? (
                                         <div className="py-20 text-center space-y-3">
-                                            <div className="w-20 h-20 rounded-full btn-lux-gold flex items-center justify-center text-3xl mx-auto text-black font-bold shadow-2xl">✓</div>
-                                            <h3 className="font-sync text-xl font-extrabold text-white">BUYURTMA QABUL QILINDI!</h3>
-                                            <p className="text-xs text-white/70">Oshpazlarimiz taomni tayyorlashni boshladi.</p>
+                                            <div className="w-20 h-20 rounded-full btn-champagne flex items-center justify-center text-3xl mx-auto text-white font-bold shadow-xl">✓</div>
+                                            <h3 className="font-playfair text-2xl font-bold">BUYURTMA QABUL QILINDI!</h3>
+                                            <p className="text-xs text-gray-500">Oshpazlarimiz taomni tayyorlashni boshladi.</p>
                                         </div>
                                     ) : cart.length === 0 ? (
-                                        <p className="text-center py-20 text-xs text-white/50 font-mono-tech">SAVATCHANGIZ BO'SH</p>
+                                        <p className="text-center py-20 text-xs text-gray-400 font-semibold">SAVATCHANGIZ BO'SH</p>
                                     ) : (
                                         <div className="mt-4 space-y-3">
                                             {cart.map(item => (
-                                                <div key={item.cartItemId} className="flex items-center gap-3 p-3 rounded-2xl bg-white/[0.04] border border-white/10">
+                                                <div key={item.cartItemId} className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 border border-gray-200">
                                                     <img src={item.image} className="w-14 h-14 rounded-xl object-cover shrink-0" />
                                                     <div className="flex-1 min-w-0">
-                                                        <h4 className="text-xs font-bold text-white truncate">{item.name}</h4>
-                                                        <p className="font-mono-tech text-xs text-[#f3e5ab] font-bold mt-0.5">{formatPrice(item.newPrice)}</p>
+                                                        <h4 className="text-xs font-bold text-gray-900 truncate">{item.name}</h4>
+                                                        <p className="font-playfair text-sm font-bold text-[#8c6d33] mt-0.5">{formatPrice(item.newPrice)}</p>
                                                     </div>
-                                                    <div className="flex items-center gap-2 bg-black/60 border border-white/15 px-3 py-1 rounded-xl">
+                                                    <div className="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1 rounded-xl shadow-sm">
                                                         <button onClick={() => updateQty(item.cartItemId, -1)} className="font-bold text-sm">−</button>
-                                                        <span className="font-mono-tech text-xs font-bold w-4 text-center">{item.qty}</span>
+                                                        <span className="text-xs font-bold w-4 text-center">{item.qty}</span>
                                                         <button onClick={() => updateQty(item.cartItemId, 1)} className="font-bold text-sm">+</button>
                                                     </div>
                                                 </div>
@@ -844,26 +799,26 @@
 
                                             <form onSubmit={submitOrder} className="pt-4 space-y-4">
                                                 <div>
-                                                    <label className="block font-mono-tech text-[10px] uppercase text-white/80 mb-1">Telefon raqam</label>
-                                                    <input type="tel" required value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="w-full bg-black/60 border border-white/15 rounded-xl p-3.5 text-xs font-bold text-white focus:outline-none focus:border-[#d4af37]" />
+                                                    <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Telefon raqam</label>
+                                                    <input type="tel" required value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-xs font-semibold focus:outline-none focus:border-[#c5a059]" />
                                                 </div>
 
                                                 <div>
                                                     <div className="flex items-center justify-between mb-1">
-                                                        <label className="font-mono-tech text-[10px] uppercase text-white/80">Yetkazib berish manzili</label>
-                                                        <button type="button" onClick={detectGpsAddress} className="text-[10px] font-mono-tech font-bold text-[#f3e5ab] hover:underline">
+                                                        <label className="text-[10px] font-bold text-gray-500 uppercase">Yetkazib berish manzili</label>
+                                                        <button type="button" onClick={detectGpsAddress} className="text-[10px] font-bold text-[#8c6d33] hover:underline">
                                                             📍 GPS orqali aniqlash
                                                         </button>
                                                     </div>
-                                                    <textarea required rows="2" value={customerLocation} onChange={e => setCustomerLocation(e.target.value)} placeholder="Toshkent sh., ko'cha, uy..." className="w-full bg-black/60 border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#d4af37]" />
+                                                    <textarea required rows="2" value={customerLocation} onChange={e => setCustomerLocation(e.target.value)} placeholder="Toshkent sh., ko'cha, uy..." className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-xs focus:outline-none focus:border-[#c5a059]" />
                                                 </div>
 
-                                                <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 flex justify-between items-center">
-                                                    <span className="text-xs text-white/80">Jami to'lov:</span>
-                                                    <span className="font-serif-lux text-xl font-bold text-[#f3e5ab]">{formatPrice(totalAmount)}</span>
+                                                <div className="p-4 rounded-2xl bg-[#f3e5ab]/20 border border-[#c5a059]/30 flex justify-between items-center">
+                                                    <span className="text-xs font-semibold text-gray-700">Jami to'lov:</span>
+                                                    <span className="font-playfair text-xl font-bold text-[#8c6d33]">{formatPrice(totalAmount)}</span>
                                                 </div>
 
-                                                <button type="submit" disabled={submitting} className="w-full btn-lux-gold py-4 rounded-2xl text-xs font-extrabold uppercase tracking-widest shadow-2xl">
+                                                <button type="submit" disabled={submitting} className="w-full btn-champagne py-4 rounded-2xl text-xs font-extrabold uppercase tracking-widest text-white shadow-xl">
                                                     {submitting ? "Yuborilmoqda..." : "Buyurtmani Tasdiqlash 🔥"}
                                                 </button>
                                             </form>
@@ -876,23 +831,23 @@
 
                     {/* BUYURTMALAR TARIXI */}
                     {isOrdersOpen && (
-                        <div onClick={() => setIsOrdersOpen(false)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex justify-start">
-                            <div onClick={e => e.stopPropagation()} className="lux-glass w-full max-w-md h-full p-6 overflow-y-auto border-r border-[#d4af37]/30">
-                                <div className="flex items-center justify-between pb-4 border-b border-white/15">
-                                    <h2 className="font-sync text-lg font-extrabold text-white">BUYURTMALARIM</h2>
-                                    <button onClick={() => setIsOrdersOpen(false)} className="w-9 h-9 rounded-full bg-white/10 text-white font-bold">✕</button>
+                        <div onClick={() => setIsOrdersOpen(false)} className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex justify-start">
+                            <div onClick={e => e.stopPropagation()} className="elite-card bg-white w-full max-w-md h-full p-6 overflow-y-auto shadow-2xl border-r border-[#c5a059]/30">
+                                <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+                                    <h2 className="font-playfair text-2xl font-bold">BUYURTMALARIM</h2>
+                                    <button onClick={() => setIsOrdersOpen(false)} className="w-9 h-9 rounded-full bg-gray-100 text-gray-800 font-bold">✕</button>
                                 </div>
                                 <div className="mt-4 space-y-3">
                                     {userOrders.length === 0 ? (
-                                        <p className="text-center py-20 text-xs text-white/50 font-mono-tech">FAOL BUYURTMALAR YO'Q</p>
+                                        <p className="text-center py-20 text-xs text-gray-400 font-semibold">FAOL BUYURTMALAR YO'Q</p>
                                     ) : userOrders.map(o => (
-                                        <div key={o.id} className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 space-y-1">
+                                        <div key={o.id} className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-1">
                                             <div className="flex justify-between items-center">
-                                                <span className="font-mono-tech text-xs font-bold text-[#f3e5ab]">#{o.id}</span>
-                                                <span className="text-[10px] font-bold text-emerald-400">{o.status}</span>
+                                                <span className="text-xs font-bold text-[#8c6d33]">#{o.id}</span>
+                                                <span className="text-[10px] font-bold text-emerald-600">{o.status}</span>
                                             </div>
-                                            <p className="text-xs text-white/80">📍 {o.location}</p>
-                                            <p className="font-serif-lux text-base font-bold text-white pt-1">{formatPrice(o.totalAmount)}</p>
+                                            <p className="text-xs text-gray-600">📍 {o.location}</p>
+                                            <p className="font-playfair text-base font-bold text-gray-900 pt-1">{formatPrice(o.totalAmount)}</p>
                                         </div>
                                     ))}
                                 </div>
