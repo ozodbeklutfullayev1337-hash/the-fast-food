@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
-    <title>THE FAST FOOD // Holographic Luxury OS</title>
+    <title>THE FAST FOOD // Ultimate Luxury Edition</title>
 
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -17,18 +17,17 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Avant-Garde Fonts -->
+    <!-- Luxury Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syncopate:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --space-black: #030305;
-            --cyber-dark: #0a0b10;
-            --liquid-gold: #ffd700;
-            --champagne: #f3e5ab;
-            --neon-amber: #ffaa00;
+            --bg-deep: #050507;
+            --gold-base: #f3e5ab;
+            --gold-accent: #d4af37;
+            --gold-dark: #aa7c11;
         }
 
         * {
@@ -38,8 +37,8 @@
         }
 
         body {
-            background-color: var(--space-black);
-            color: #f8fafc;
+            background-color: var(--bg-deep);
+            color: #ffffff;
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             margin: 0;
@@ -52,34 +51,35 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Holographic Glassmorphism Slabs */
-        .holo-slab {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
-            backdrop-filter: blur(30px) saturate(200%);
-            -webkit-backdrop-filter: blur(30px) saturate(200%);
-            border: 1px solid rgba(255, 215, 0, 0.18);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        /* Ultimate Luxury Glassmorphism & Gold Glow */
+        .lux-glass {
+            background: linear-gradient(135deg, rgba(20, 20, 26, 0.85) 0%, rgba(8, 8, 12, 0.95) 100%);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid rgba(212, 175, 55, 0.22);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
 
-        .gold-border-glow {
-            border-color: rgba(255, 215, 0, 0.55) !important;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.25), inset 0 1px 2px rgba(255, 215, 0, 0.3);
+        .gold-glow {
+            border-color: rgba(212, 175, 55, 0.6) !important;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25), inset 0 1px 2px rgba(243, 229, 171, 0.4);
         }
 
-        .btn-liquid-gold {
-            background: linear-gradient(135deg, #ffe066 0%, #ffd700 50%, #cca100 100%);
-            color: #030305;
+        .btn-lux-gold {
+            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+            color: #050507;
             font-weight: 800;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.8);
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .btn-liquid-gold:active { transform: scale(0.94); }
+        .btn-lux-gold:active { transform: scale(0.95); }
 
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
+        @keyframes skeletonPulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.4; }
         }
-        .anim-pulse { animation: pulseGlow 3s infinite ease-in-out; }
+        .skeleton { animation: skeletonPulse 1.5s infinite ease-in-out; background: rgba(255, 255, 255, 0.08); }
 
         @keyframes flyToCart {
             0% { transform: scale(1) translate(0, 0); opacity: 1; }
@@ -92,14 +92,10 @@
             pointer-events: none;
             animation: flyToCart 0.6s cubic-bezier(0.2, 0.85, 0.4, 1) forwards;
         }
-
-        .photo-vignette {
-            background: radial-gradient(circle at 50% 35%, rgba(255, 215, 0, 0.12) 0%, rgba(3, 3, 5, 0.95) 80%);
-        }
     </style>
 </head>
 <body>
-    <canvas id="luxury-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+    <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
     <div id="root" class="relative z-10"></div>
 
     <script type="text/babel">
@@ -115,9 +111,9 @@
                     const osc = ctx.createOscillator();
                     const gain = ctx.createGain();
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(320, now);
-                    osc.frequency.exponentialRampToValueAtTime(120, now + 0.04);
-                    gain.gain.setValueAtTime(0.08, now);
+                    osc.frequency.setValueAtTime(340, now);
+                    osc.frequency.exponentialRampToValueAtTime(140, now + 0.04);
+                    gain.gain.setValueAtTime(0.06, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
                     osc.connect(gain);
                     gain.connect(ctx.destination);
@@ -332,32 +328,32 @@
             const tgUser = tg?.initDataUnsafe?.user || { id: ADMIN_TELEGRAM_ID, first_name: "Ozodbek" };
 
             useEffect(() => {
-                const canvas = document.getElementById('luxury-canvas');
+                const canvas = document.getElementById('bg-canvas');
                 if (!canvas) return;
                 const ctx = canvas.getContext('2d');
                 let w = canvas.width = window.innerWidth;
                 let h = canvas.height = window.innerHeight;
 
-                const stars = Array.from({ length: 30 }, () => ({
+                const particles = Array.from({ length: 25 }, () => ({
                     x: Math.random() * w,
                     y: Math.random() * h,
-                    r: Math.random() * 1.8 + 0.3,
-                    vy: -(Math.random() * 0.4 + 0.1),
-                    alpha: Math.random() * 0.6 + 0.2
+                    r: Math.random() * 2 + 0.5,
+                    vy: -(Math.random() * 0.3 + 0.1),
+                    alpha: Math.random() * 0.5 + 0.2
                 }));
 
                 let raf;
                 const draw = () => {
                     ctx.clearRect(0, 0, w, h);
-                    stars.forEach(s => {
-                        s.y += s.vy;
-                        if (s.y < 0) { s.y = h; s.x = Math.random() * w; }
+                    particles.forEach(p => {
+                        p.y += p.vy;
+                        if (p.y < 0) { p.y = h; p.x = Math.random() * w; }
                         ctx.beginPath();
-                        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-                        ctx.fillStyle = '#ffd700';
-                        ctx.globalAlpha = s.alpha;
-                        ctx.shadowBlur = 12;
-                        ctx.shadowColor = '#ffd700';
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fillStyle = '#f3e5ab';
+                        ctx.globalAlpha = p.alpha;
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = '#d4af37';
                         ctx.fill();
                     });
                     raf = requestAnimationFrame(draw);
@@ -371,8 +367,8 @@
                     tg.ready();
                     tg.expand();
                     try {
-                        tg.setHeaderColor('#030305');
-                        tg.setBackgroundColor('#030305');
+                        tg.setHeaderColor('#050507');
+                        tg.setBackgroundColor('#050507');
                     } catch (e) {}
                 }
                 fetchProducts();
@@ -453,10 +449,9 @@
                     const rect = e.currentTarget.getBoundingClientRect();
                     const tx = (window.innerWidth / 2) - rect.left;
                     const ty = window.innerHeight - rect.top - 40;
-                    const orbId = Date.now() + Math.random();
                     const flying = document.createElement('img');
                     flying.src = product.image;
-                    flying.className = 'flying-orb w-12 h-12 rounded-full object-cover border-2 border-yellow-400 shadow-[0_0_20px_#ffd700]';
+                    flying.className = 'flying-orb w-12 h-12 rounded-full object-cover border-2 border-[#d4af37] shadow-[0_0_20px_#f3e5ab]';
                     flying.style.left = `${rect.left}px`;
                     flying.style.top = `${rect.top}px`;
                     flying.style.setProperty('--tx', `${tx}px`);
@@ -540,17 +535,17 @@
 
             if (viewMode === 'admin') {
                 return (
-                    <div className="min-h-screen bg-[#030305] text-white p-4 sm:p-8 max-w-[1150px] mx-auto">
-                        <div className="holo-slab rounded-3xl p-6 mb-6 flex flex-wrap items-center justify-between gap-4 gold-border-glow">
+                    <div className="min-h-screen bg-[#050507] text-white p-4 sm:p-8 max-w-[1150px] mx-auto">
+                        <div className="lux-glass rounded-3xl p-6 mb-6 flex flex-wrap items-center justify-between gap-4 gold-glow">
                             <div>
-                                <span className="font-mono-tech text-[10px] text-[#ffd700] uppercase tracking-widest block">ADMIN OS</span>
-                                <h1 className="font-sync text-xl font-extrabold text-[#ffd700]">THE FAST FOOD</h1>
+                                <span className="font-mono-tech text-[10px] text-[#f3e5ab] uppercase tracking-widest block">ADMIN OS</span>
+                                <h1 className="font-sync text-xl font-extrabold text-[#f3e5ab]">THE FAST FOOD</h1>
                             </div>
                             <div className="flex items-center gap-2">
-                                <button onClick={() => setAdminTab('orders')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'orders' ? 'btn-liquid-gold' : 'bg-white/5'}`}>
+                                <button onClick={() => setAdminTab('orders')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'orders' ? 'btn-lux-gold' : 'bg-white/5'}`}>
                                     Buyurtmalar ({adminOrders.length})
                                 </button>
-                                <button onClick={() => setAdminTab('add')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'add' ? 'btn-liquid-gold' : 'bg-white/5'}`}>
+                                <button onClick={() => setAdminTab('add')} className={`px-4 py-2.5 rounded-xl text-xs font-bold ${adminTab === 'add' ? 'btn-lux-gold' : 'bg-white/5'}`}>
                                     + Yangi Taom
                                 </button>
                                 <button onClick={() => setViewMode('client')} className="px-4 py-2.5 rounded-xl text-xs font-bold bg-white/10">
@@ -560,8 +555,8 @@
                         </div>
 
                         {adminTab === 'add' ? (
-                            <div className="holo-slab rounded-3xl p-6">
-                                <h2 className="font-sync text-lg font-bold mb-4 text-[#ffd700]">Yangi Taom Qo'shish</h2>
+                            <div className="lux-glass rounded-3xl p-6">
+                                <h2 className="font-sync text-lg font-bold mb-4 text-[#f3e5ab]">Yangi Taom Qo'shish</h2>
                                 <form onSubmit={async (e) => {
                                     e.preventDefault();
                                     const created = {
@@ -584,8 +579,8 @@
                                     setNewProd({ name: '', description: '', image: '', oldPrice: '', newPrice: '', category: 'Burgerlar' });
                                     showToast("Taom qo'shildi!");
                                 }} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <input type="text" placeholder="Taom Nomi" value={newProd.name} onChange={e => setNewProd({...newProd, name: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#ffd700]/30 text-xs text-white" required />
-                                    <select value={newProd.category} onChange={e => setNewProd({...newProd, category: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#ffd700]/30 text-xs font-bold text-[#ffd700]">
+                                    <input type="text" placeholder="Taom Nomi" value={newProd.name} onChange={e => setNewProd({...newProd, name: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs text-white" required />
+                                    <select value={newProd.category} onChange={e => setNewProd({...newProd, category: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs font-bold text-[#f3e5ab]">
                                         <option value="Burgerlar">Burgerlar</option>
                                         <option value="Hot-Doglar">Hot-Doglar</option>
                                         <option value="Lavash">Lavash</option>
@@ -593,21 +588,21 @@
                                         <option value="Sneklar">Sneklar</option>
                                         <option value="Ichimliklar">Ichimliklar</option>
                                     </select>
-                                    <input type="number" placeholder="Eski Narxi" value={newProd.oldPrice} onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#ffd700]/30 text-xs text-white" required />
-                                    <input type="number" placeholder="Yangi Narxi" value={newProd.newPrice} onChange={e => setNewProd({...newProd, newPrice: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#ffd700]/30 text-xs text-white" required />
-                                    <input type="url" placeholder="Rasm URL" value={newProd.image} onChange={e => setNewProd({...newProd, image: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl bg-black/60 border border-[#ffd700]/30 text-xs text-white" required />
-                                    <textarea placeholder="Ta'rifi..." value={newProd.description} onChange={e => setNewProd({...newProd, description: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl bg-black/60 border border-[#ffd700]/30 text-xs text-white" rows="3" required />
-                                    <button type="submit" className="sm:col-span-2 btn-liquid-gold py-4 rounded-xl text-xs font-extrabold uppercase">Saqlash</button>
+                                    <input type="number" placeholder="Eski Narxi" value={newProd.oldPrice} onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs text-white" required />
+                                    <input type="number" placeholder="Yangi Narxi" value={newProd.newPrice} onChange={e => setNewProd({...newProd, newPrice: e.target.value})} className="p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs text-white" required />
+                                    <input type="url" placeholder="Rasm URL" value={newProd.image} onChange={e => setNewProd({...newProd, image: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs text-white" required />
+                                    <textarea placeholder="Ta'rifi..." value={newProd.description} onChange={e => setNewProd({...newProd, description: e.target.value})} className="sm:col-span-2 p-3.5 rounded-xl bg-black/60 border border-[#d4af37]/30 text-xs text-white" rows="3" required />
+                                    <button type="submit" className="sm:col-span-2 btn-lux-gold py-4 rounded-xl text-xs font-extrabold uppercase">Saqlash</button>
                                 </form>
                             </div>
                         ) : (
                             <div className="space-y-3">
                                 {adminOrders.length === 0 ? (
-                                    <div className="holo-slab rounded-3xl p-12 text-center text-white/40 text-xs">Buyurtmalar yo'q</div>
+                                    <div className="lux-glass rounded-3xl p-12 text-center text-white/40 text-xs">Buyurtmalar yo'q</div>
                                 ) : adminOrders.map(o => (
-                                    <div key={o.id} className="holo-slab rounded-2xl p-5 flex items-center justify-between">
+                                    <div key={o.id} className="lux-glass rounded-2xl p-5 flex items-center justify-between">
                                         <div>
-                                            <span className="font-mono-tech text-xs text-[#ffd700] font-bold">#{o.id} — {o.name} ({o.phone})</span>
+                                            <span className="font-mono-tech text-xs text-[#f3e5ab] font-bold">#{o.id} — {o.name} ({o.phone})</span>
                                             <p className="text-xs text-white/70 mt-1">📍 {o.location}</p>
                                         </div>
                                         <div className="text-right">
@@ -625,27 +620,27 @@
             return (
                 <div className="min-h-screen pb-36 relative">
                     {toast && (
-                        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 btn-liquid-gold px-6 py-3 rounded-full text-xs font-extrabold shadow-2xl flex items-center gap-2">
+                        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 btn-lux-gold px-6 py-3 rounded-full text-xs font-extrabold shadow-2xl flex items-center gap-2">
                             <span>✨</span><span>{toast}</span>
                         </div>
                     )}
 
                     {/* ULTRA-LUXURY HEADER */}
-                    <header className="sticky top-0 z-30 bg-[#030305]/85 backdrop-blur-2xl border-b border-[#ffd700]/20">
+                    <header className="sticky top-0 z-30 bg-[#050507]/90 backdrop-blur-2xl border-b border-[#d4af37]/25">
                         <div className="max-w-[1240px] mx-auto px-4 h-20 flex items-center justify-between gap-2">
                             <div className="flex items-center gap-3">
-                                <div className="w-11 h-11 rounded-2xl btn-liquid-gold flex items-center justify-center font-sync font-extrabold text-lg shadow-lg">
+                                <div className="w-11 h-11 rounded-2xl btn-lux-gold flex items-center justify-center font-sync font-extrabold text-lg shadow-lg">
                                     FF
                                 </div>
                                 <div>
-                                    <span className="font-sync text-sm sm:text-base font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[#ffe066] via-[#ffd700] to-[#cca100] block">THE FAST FOOD</span>
-                                    <span className="font-mono-tech text-[9px] text-white/45 tracking-widest uppercase block">Holographic Gourmet OS</span>
+                                    <span className="font-sync text-sm sm:text-base font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[#f3e5ab] via-[#d4af37] to-[#aa7c11] block">THE FAST FOOD</span>
+                                    <span className="font-mono-tech text-[9px] text-white/50 tracking-widest uppercase block">Ultimate Luxury OS</span>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-2">
                                 {(String(tgUser.id) === ADMIN_TELEGRAM_ID || isAdminAuthed) && (
-                                    <button onClick={() => { SoundFX.play('tick'); setViewMode('admin'); fetchAdminData(); }} className="btn-liquid-gold px-4 py-2.5 rounded-2xl text-[11px] font-extrabold uppercase">
+                                    <button onClick={() => { SoundFX.play('tick'); setViewMode('admin'); fetchAdminData(); }} className="btn-lux-gold px-4 py-2.5 rounded-2xl text-[11px] font-extrabold uppercase">
                                         ⚙️ Admin
                                     </button>
                                 )}
@@ -655,11 +650,11 @@
 
                     {/* HERO BANNER */}
                     <section className="max-w-[1240px] mx-auto px-4 pt-6 pb-2">
-                        <div className="relative w-full h-[360px] rounded-[34px] overflow-hidden holo-slab gold-border-glow flex items-end p-8">
+                        <div className="relative w-full h-[360px] rounded-[34px] overflow-hidden lux-glass gold-glow flex items-end p-8">
                             <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=90" className="absolute inset-0 w-full h-full object-cover opacity-75 brightness-90" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#030305] via-[#030305]/40 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/40 to-transparent" />
                             <div className="relative z-10 text-white space-y-2.5 max-w-lg">
-                                <span className="bg-[#ffd700] text-[#030305] text-[10px] font-mono-tech font-extrabold uppercase px-3 py-1 rounded-full tracking-wider">100% MARMAR MOL GO'SHTI</span>
+                                <span className="bg-[#d4af37] text-[#050507] text-[10px] font-mono-tech font-extrabold uppercase px-3 py-1 rounded-full tracking-wider">100% MARMAR MOL GO'SHTI</span>
                                 <h1 className="font-serif-lux text-3xl sm:text-5xl font-bold leading-tight">Dunyodagi Eng Sersuv Va Mazali Fast-Food</h1>
                                 <p className="text-xs text-gray-300 font-mono-tech">Ochiq olovda tayyorlangan gril taomlari va eksklyuziv pitsalar.</p>
                             </div>
@@ -667,7 +662,7 @@
                     </section>
 
                     {/* CATEGORY DOCK */}
-                    <section className="max-w-[1240px] mx-auto px-4 pt-6 sticky top-20 z-20 bg-[#030305]/90 backdrop-blur-xl pb-4">
+                    <section className="max-w-[1240px] mx-auto px-4 pt-6 sticky top-20 z-20 bg-[#050507]/90 backdrop-blur-xl pb-4">
                         <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1">
                             {categories.map(cat => {
                                 const active = activeCategory === cat;
@@ -677,8 +672,8 @@
                                         onClick={() => { SoundFX.play('tick'); setActiveCategory(cat); }}
                                         className={`px-5 py-3 rounded-2xl text-xs font-bold shrink-0 transition-all ${
                                             active
-                                                ? 'btn-liquid-gold shadow-lg scale-105'
-                                                : 'holo-slab text-white/70 hover:text-white border-white/10'
+                                                ? 'btn-lux-gold shadow-lg scale-105'
+                                                : 'lux-glass text-white/80 hover:text-white border-white/10'
                                         }`}
                                     >
                                         {cat}
@@ -697,19 +692,18 @@
                                     <div
                                         key={product.id}
                                         onClick={() => { SoundFX.play('tick'); setSelectedProduct(product); setSelectedExtras([]); }}
-                                        className="holo-slab rounded-[30px] p-4 cursor-pointer flex flex-col justify-between group hover:border-[#ffd700]/50 transition-all duration-300"
+                                        className="lux-glass rounded-[30px] p-4 cursor-pointer flex flex-col justify-between group hover:border-[#d4af37]/60 transition-all duration-300"
                                     >
                                         <div>
                                             <div className="relative aspect-[1/0.95] rounded-[22px] overflow-hidden bg-[#0a0b10] mb-3 border border-white/10">
-                                                <div className="absolute inset-0 photo-vignette" />
-                                                <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
-                                                <span className="absolute top-2.5 left-2.5 bg-black/75 backdrop-blur-md text-[#ffd700] text-[9px] font-mono-tech font-bold uppercase px-2.5 py-1 rounded-full border border-[#ffd700]/30">
+                                                <img src={product.image} alt={product.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
+                                                <span className="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-md text-[#f3e5ab] text-[9px] font-mono-tech font-bold uppercase px-2.5 py-1 rounded-full border border-[#d4af37]/40">
                                                     {product.badge}
                                                 </span>
                                             </div>
-                                            <p className="font-mono-tech text-[9px] text-[#ffd700] uppercase tracking-wider">{product.tagline || product.category}</p>
-                                            <h3 className="font-serif-lux text-lg font-bold text-white group-hover:text-[#ffd700] transition-colors line-clamp-1 mt-0.5">{product.name}</h3>
-                                            <p className="text-[11px] text-white/50 mt-1 line-clamp-2 leading-relaxed">{product.description}</p>
+                                            <p className="font-mono-tech text-[9px] text-[#f3e5ab] uppercase tracking-wider">{product.tagline || product.category}</p>
+                                            <h3 className="font-serif-lux text-xl font-bold text-white group-hover:text-[#f3e5ab] transition-colors line-clamp-1 mt-0.5">{product.name}</h3>
+                                            <p className="text-[11px] text-white/70 mt-1 line-clamp-2 leading-relaxed">{product.description}</p>
                                         </div>
 
                                         <div className="flex items-center justify-between pt-4 mt-3 border-t border-white/10">
@@ -717,7 +711,7 @@
                                             <button
                                                 onClick={(e) => addToCart(product, [], e)}
                                                 className={`h-10 px-4 rounded-2xl font-mono-tech font-bold text-xs transition-all ${
-                                                    qty > 0 ? 'btn-liquid-gold' : 'bg-white/10 hover:bg-[#ffd700] hover:text-black text-white border border-white/15'
+                                                    qty > 0 ? 'btn-lux-gold' : 'bg-white/10 hover:bg-[#d4af37] hover:text-black text-white border border-white/15'
                                                 }`}
                                             >
                                                 {qty > 0 ? `${qty}x` : '+ QO\'SHISH'}
@@ -731,7 +725,7 @@
 
                     {/* FIXED BOTTOM DOCK (BUYURTMALAR & SAVAT) */}
                     <div className="fixed bottom-4 left-4 right-4 z-40 max-w-[820px] mx-auto">
-                        <div className="holo-slab gold-border-glow rounded-[30px] p-3 flex items-center gap-3 backdrop-blur-2xl">
+                        <div className="lux-glass gold-glow rounded-[30px] p-3 flex items-center gap-3 backdrop-blur-2xl">
                             <button
                                 onClick={() => { SoundFX.play('tick'); fetch(`/api/orders/${tgUser.id}`).then(r=>r.json()).then(d=>setUserOrders(Array.isArray(d)?d:[])).catch(()=>{}); setIsOrdersOpen(true); }}
                                 className="px-5 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center gap-2 shrink-0 border border-white/15"
@@ -742,36 +736,36 @@
 
                             <button
                                 onClick={() => { SoundFX.play('tick'); setIsCartOpen(true); }}
-                                className="flex-1 btn-liquid-gold py-4 px-6 rounded-2xl flex items-center justify-between shadow-2xl"
+                                className="flex-1 btn-lux-gold py-4 px-6 rounded-2xl flex items-center justify-between shadow-2xl"
                             >
                                 <div className="flex items-center gap-2.5">
                                     <span className="text-base">🛒</span>
                                     <span className="font-sync text-xs sm:text-sm font-extrabold uppercase tracking-wider">SAVAT</span>
                                     {totalItems > 0 && (
-                                        <span className="bg-black text-[#ffd700] px-2.5 py-0.5 rounded-full text-xs font-mono-tech font-bold">
+                                        <span className="bg-black text-[#f3e5ab] px-2.5 py-0.5 rounded-full text-xs font-mono-tech font-bold">
                                             {totalItems}
                                         </span>
                                     )}
                                 </div>
-                                <span className="font-serif-lux text-base font-extrabold">{formatPrice(totalAmount)}</span>
+                                <span className="font-serif-lux text-lg font-extrabold">{formatPrice(totalAmount)}</span>
                             </button>
                         </div>
                     </div>
 
                     {/* DISH CUSTOMIZATION MODAL */}
                     {selectedProduct && (
-                        <div onClick={() => setSelectedProduct(null)} className="fixed inset-0 z-50 bg-black/80 backdrop-blur-2xl flex items-end sm:items-center justify-center p-0 sm:p-4">
-                            <div onClick={e => e.stopPropagation()} className="holo-slab gold-border-glow w-full max-w-lg rounded-t-[36px] sm:rounded-[36px] p-6 max-h-[90vh] overflow-y-auto">
+                        <div onClick={() => setSelectedProduct(null)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex items-end sm:items-center justify-center p-0 sm:p-4">
+                            <div onClick={e => e.stopPropagation()} className="lux-glass gold-glow w-full max-w-lg rounded-t-[36px] sm:rounded-[36px] p-6 max-h-[90vh] overflow-y-auto">
                                 <div className="relative h-60 w-full rounded-[24px] overflow-hidden mb-4 border border-white/15">
                                     <img src={selectedProduct.image} className="w-full h-full object-cover" />
                                     <button onClick={() => setSelectedProduct(null)} className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/70 text-white font-bold border border-white/20">✕</button>
                                 </div>
 
                                 <h3 className="font-serif-lux text-3xl font-bold text-white mb-1">{selectedProduct.name}</h3>
-                                <p className="text-xs text-white/70 mb-5 leading-relaxed">{selectedProduct.description}</p>
+                                <p className="text-xs text-white/80 mb-5 leading-relaxed">{selectedProduct.description}</p>
 
                                 <div className="space-y-2 mb-6">
-                                    <span className="font-mono-tech text-[10px] text-[#ffd700] uppercase tracking-widest block mb-2">+ GOURMET QO'SHIMCHALAR:</span>
+                                    <span className="font-mono-tech text-[10px] text-[#f3e5ab] uppercase tracking-widest block mb-2">+ GOURMET QO'SHIMCHALAR:</span>
                                     {EXTRAS.map(ex => {
                                         const checked = selectedExtras.some(e => e.id === ex.id);
                                         return (
@@ -779,11 +773,11 @@
                                                 key={ex.id}
                                                 onClick={() => toggleExtra(ex)}
                                                 className={`p-3.5 rounded-2xl border cursor-pointer flex items-center justify-between transition ${
-                                                    checked ? 'border-[#ffd700] bg-[#ffd700]/15' : 'border-white/10 bg-white/[0.03]'
+                                                    checked ? 'border-[#d4af37] bg-[#d4af37]/20' : 'border-white/10 bg-white/[0.03]'
                                                 }`}
                                             >
                                                 <span className="text-xs font-bold text-white">{ex.name}</span>
-                                                <span className="font-mono-tech text-xs font-bold text-[#ffd700]">+{formatPrice(ex.price)}</span>
+                                                <span className="font-mono-tech text-xs font-bold text-[#f3e5ab]">+{formatPrice(ex.price)}</span>
                                             </div>
                                         );
                                     })}
@@ -791,7 +785,7 @@
 
                                 <div className="flex items-center justify-between pt-4 border-t border-white/15">
                                     <div>
-                                        <span className="font-mono-tech text-[10px] text-white/40 block">JAMI NARX</span>
+                                        <span className="font-mono-tech text-[10px] text-white/50 block">JAMI NARX</span>
                                         <span className="font-serif-lux text-2xl font-bold text-white">
                                             {formatPrice(Number(selectedProduct.newPrice) + selectedExtras.reduce((s, e) => s + e.price, 0))}
                                         </span>
@@ -801,7 +795,7 @@
                                             addToCart(selectedProduct, selectedExtras, e);
                                             setSelectedProduct(null);
                                         }}
-                                        className="btn-liquid-gold px-7 py-4 rounded-2xl text-xs font-extrabold uppercase tracking-wider"
+                                        className="btn-lux-gold px-7 py-4 rounded-2xl text-xs font-extrabold uppercase tracking-wider"
                                     >
                                         + Savatga Qo'shish
                                     </button>
@@ -812,12 +806,12 @@
 
                     {/* CHECKOUT VAULT (SAVAT) */}
                     {isCartOpen && (
-                        <div onClick={() => setIsCartOpen(false)} className="fixed inset-0 z-50 bg-black/80 backdrop-blur-2xl flex justify-end">
-                            <div onClick={e => e.stopPropagation()} className="holo-slab w-full max-w-md h-full p-6 flex flex-col justify-between overflow-y-auto border-l border-[#ffd700]/30">
+                        <div onClick={() => setIsCartOpen(false)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex justify-end">
+                            <div onClick={e => e.stopPropagation()} className="lux-glass w-full max-w-md h-full p-6 flex flex-col justify-between overflow-y-auto border-l border-[#d4af37]/30">
                                 <div>
                                     <div className="flex items-center justify-between pb-4 border-b border-white/15">
                                         <div>
-                                            <span className="font-mono-tech text-[10px] text-[#ffd700]">VIP RASMIYLASHTIRISH</span>
+                                            <span className="font-mono-tech text-[10px] text-[#f3e5ab]">VIP RASMIYLASHTIRISH</span>
                                             <h2 className="font-sync text-lg font-extrabold text-white">SAVATCHA</h2>
                                         </div>
                                         <button onClick={() => setIsCartOpen(false)} className="w-9 h-9 rounded-full bg-white/10 text-white font-bold">✕</button>
@@ -825,12 +819,12 @@
 
                                     {successOrder ? (
                                         <div className="py-20 text-center space-y-3">
-                                            <div className="w-20 h-20 rounded-full btn-liquid-gold flex items-center justify-center text-3xl mx-auto text-black font-bold shadow-2xl">✓</div>
+                                            <div className="w-20 h-20 rounded-full btn-lux-gold flex items-center justify-center text-3xl mx-auto text-black font-bold shadow-2xl">✓</div>
                                             <h3 className="font-sync text-xl font-extrabold text-white">BUYURTMA QABUL QILINDI!</h3>
-                                            <p className="text-xs text-white/60">Oshpazlarimiz taomni tayyorlashni boshladi.</p>
+                                            <p className="text-xs text-white/70">Oshpazlarimiz taomni tayyorlashni boshladi.</p>
                                         </div>
                                     ) : cart.length === 0 ? (
-                                        <p className="text-center py-20 text-xs text-white/40 font-mono-tech">SAVATCHANGIZ BO'SH</p>
+                                        <p className="text-center py-20 text-xs text-white/50 font-mono-tech">SAVATCHANGIZ BO'SH</p>
                                     ) : (
                                         <div className="mt-4 space-y-3">
                                             {cart.map(item => (
@@ -838,7 +832,7 @@
                                                     <img src={item.image} className="w-14 h-14 rounded-xl object-cover shrink-0" />
                                                     <div className="flex-1 min-w-0">
                                                         <h4 className="text-xs font-bold text-white truncate">{item.name}</h4>
-                                                        <p className="font-mono-tech text-xs text-[#ffd700] font-bold mt-0.5">{formatPrice(item.newPrice)}</p>
+                                                        <p className="font-mono-tech text-xs text-[#f3e5ab] font-bold mt-0.5">{formatPrice(item.newPrice)}</p>
                                                     </div>
                                                     <div className="flex items-center gap-2 bg-black/60 border border-white/15 px-3 py-1 rounded-xl">
                                                         <button onClick={() => updateQty(item.cartItemId, -1)} className="font-bold text-sm">−</button>
@@ -850,26 +844,26 @@
 
                                             <form onSubmit={submitOrder} className="pt-4 space-y-4">
                                                 <div>
-                                                    <label className="block font-mono-tech text-[10px] uppercase text-white/60 mb-1">Telefon raqam</label>
-                                                    <input type="tel" required value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="w-full bg-black/60 border border-white/15 rounded-xl p-3.5 text-xs font-bold text-white focus:outline-none focus:border-[#ffd700]" />
+                                                    <label className="block font-mono-tech text-[10px] uppercase text-white/80 mb-1">Telefon raqam</label>
+                                                    <input type="tel" required value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="w-full bg-black/60 border border-white/15 rounded-xl p-3.5 text-xs font-bold text-white focus:outline-none focus:border-[#d4af37]" />
                                                 </div>
 
                                                 <div>
                                                     <div className="flex items-center justify-between mb-1">
-                                                        <label className="font-mono-tech text-[10px] uppercase text-white/60">Yetkazib berish manzili</label>
-                                                        <button type="button" onClick={detectGpsAddress} className="text-[10px] font-mono-tech font-bold text-[#ffd700] hover:underline">
+                                                        <label className="font-mono-tech text-[10px] uppercase text-white/80">Yetkazib berish manzili</label>
+                                                        <button type="button" onClick={detectGpsAddress} className="text-[10px] font-mono-tech font-bold text-[#f3e5ab] hover:underline">
                                                             📍 GPS orqali aniqlash
                                                         </button>
                                                     </div>
-                                                    <textarea required rows="2" value={customerLocation} onChange={e => setCustomerLocation(e.target.value)} placeholder="Toshkent sh., ko'cha, uy..." className="w-full bg-black/60 border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#ffd700]" />
+                                                    <textarea required rows="2" value={customerLocation} onChange={e => setCustomerLocation(e.target.value)} placeholder="Toshkent sh., ko'cha, uy..." className="w-full bg-black/60 border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#d4af37]" />
                                                 </div>
 
                                                 <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 flex justify-between items-center">
-                                                    <span className="text-xs text-white/70">Jami to'lov:</span>
-                                                    <span className="font-serif-lux text-xl font-bold text-[#ffd700]">{formatPrice(totalAmount)}</span>
+                                                    <span className="text-xs text-white/80">Jami to'lov:</span>
+                                                    <span className="font-serif-lux text-xl font-bold text-[#f3e5ab]">{formatPrice(totalAmount)}</span>
                                                 </div>
 
-                                                <button type="submit" disabled={submitting} className="w-full btn-liquid-gold py-4 rounded-2xl text-xs font-extrabold uppercase tracking-widest shadow-2xl">
+                                                <button type="submit" disabled={submitting} className="w-full btn-lux-gold py-4 rounded-2xl text-xs font-extrabold uppercase tracking-widest shadow-2xl">
                                                     {submitting ? "Yuborilmoqda..." : "Buyurtmani Tasdiqlash 🔥"}
                                                 </button>
                                             </form>
@@ -882,22 +876,22 @@
 
                     {/* BUYURTMALAR TARIXI */}
                     {isOrdersOpen && (
-                        <div onClick={() => setIsOrdersOpen(false)} className="fixed inset-0 z-50 bg-black/80 backdrop-blur-2xl flex justify-start">
-                            <div onClick={e => e.stopPropagation()} className="holo-slab w-full max-w-md h-full p-6 overflow-y-auto border-r border-[#ffd700]/30">
+                        <div onClick={() => setIsOrdersOpen(false)} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex justify-start">
+                            <div onClick={e => e.stopPropagation()} className="lux-glass w-full max-w-md h-full p-6 overflow-y-auto border-r border-[#d4af37]/30">
                                 <div className="flex items-center justify-between pb-4 border-b border-white/15">
                                     <h2 className="font-sync text-lg font-extrabold text-white">BUYURTMALARIM</h2>
                                     <button onClick={() => setIsOrdersOpen(false)} className="w-9 h-9 rounded-full bg-white/10 text-white font-bold">✕</button>
                                 </div>
                                 <div className="mt-4 space-y-3">
                                     {userOrders.length === 0 ? (
-                                        <p className="text-center py-20 text-xs text-white/40 font-mono-tech">FAOL BUYURTMALAR YO'Q</p>
+                                        <p className="text-center py-20 text-xs text-white/50 font-mono-tech">FAOL BUYURTMALAR YO'Q</p>
                                     ) : userOrders.map(o => (
                                         <div key={o.id} className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 space-y-1">
                                             <div className="flex justify-between items-center">
-                                                <span className="font-mono-tech text-xs font-bold text-[#ffd700]">#{o.id}</span>
+                                                <span className="font-mono-tech text-xs font-bold text-[#f3e5ab]">#{o.id}</span>
                                                 <span className="text-[10px] font-bold text-emerald-400">{o.status}</span>
                                             </div>
-                                            <p className="text-xs text-white/70">📍 {o.location}</p>
+                                            <p className="text-xs text-white/80">📍 {o.location}</p>
                                             <p className="font-serif-lux text-base font-bold text-white pt-1">{formatPrice(o.totalAmount)}</p>
                                         </div>
                                     ))}
