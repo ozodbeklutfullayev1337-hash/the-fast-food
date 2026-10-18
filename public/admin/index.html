@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
+    <title>THE FAST FOOD — Sweetgreen Admin OS</title>
+    
+    <!-- React & Babel -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Anton (Display), Plus Jakarta Sans (Body), Instrument Serif (Editorial) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-deep-forest: #00473c;
+            --color-lime-glow: #e6ff55;
+            --color-sage-mist: #d8e5d6;
+            --color-warm-sand: #e8dcc6;
+            --color-cream-canvas: #f4f3e7;
+            --color-forest-shadow: #0e150e;
+            --color-warm-gray: #8c8c82;
+            --shadow-xl: rgba(14, 21, 14, 0.35) 3px 10px 32px -10px;
+        }
+
+        body {
+            background-color: var(--color-cream-canvas);
+            color: var(--color-forest-shadow);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: 0.01em;
+            overflow-x: hidden;
+        }
+
+        .font-display {
+            font-family: 'Anton', sans-serif;
+            line-height: 0.9;
+            letter-spacing: 0.015em;
+            text-transform: uppercase;
+        }
+
+        .font-editorial {
+            font-family: 'Instrument Serif', serif;
+            line-height: 0.95;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .pill-lime {
+            background-color: var(--color-lime-glow);
+            color: var(--color-forest-shadow);
+            border-radius: 9999px;
+            font-weight: 800;
+            box-shadow: var(--shadow-xl);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .pill-lime:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.03);
+        }
+        .pill-lime:active {
+            transform: scale(0.96);
+        }
+
+        .food-card-img {
+            aspect-ratio: 1 / 1;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: var(--color-warm-sand);
+            position: relative;
+        }
+        .food-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .food-card:hover .food-card-img img {
+            transform: scale(1.07);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // 1-Click Tayyor Fast Food Shablonlari (Admin tez qo'shishi uchun)
+        const QUICK_PRESETS = [
+            {
+                label: "🍔 Double Smash Burger",
+                name: "Double Smash Cheeseburger",
+                category: "Burgerlar",
+                oldPrice: 65000,
+                newPrice: 52000,
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=85",
+                description: "Ikki qavatli 100% marmar mol go'shti kotleti, eritilgan Amerika cheddar pishlog'i, karamel piyoz, tuzlangan bodring va maxsus burger sousi briosh nonida."
+            },
+            {
+                label: "🌭 NY Chili Hot-Dog",
+                name: "New York Chili Cheese Hot-Dog",
+                category: "Hot-Doglar",
+                oldPrice: 45000,
+                newPrice: 36000,
+                image: "https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=1000&q=85",
+                description: "Grilda qizartirilgan 22 sm lik dudlangan kolbasa, ustidan quyilgan issiq cheddar pishloq sousi, mol go'shtli chili, xalapenyo va qarsildoq piyoz."
+            },
+            {
+                label: "🌯 Tandirli Lavash",
+                name: "Tandirli Pishloqli Lavash",
+                category: "Lavash & Sendvich",
+                oldPrice: 46000,
+                newPrice: 38000,
+                image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=1000&q=85",
+                description: "Yupqa qarsildoq xamir ichida sersuv mol go'shti doneri, yangi pomidor, bodring, chipslar, maxsus oq sous va mo'l-ko'l eritilgan pishloq."
+            },
+            {
+                label: "🍟 Pishloqli Fri",
+                name: "Loaded Cheese & Jalapeño Fries",
+                category: "Fri & Sneklar",
+                oldPrice: 35000,
+                newPrice: 26000,
+                image: "https://images.unsplash.com/photo-1576107232684-1279f3908594?auto=format&fit=crop&w=1000&q=85",
+                description: "Tashqarisi qarsildoq, ichi yumshoq oltinrang kartoshka fri, ustidan issiq cheddar pishloq sousi va xalapenyo bo'laklari quyilgan."
+            }
+        ];
+
+        function AdminApp() {
+            const [tab, setTab] = useState('products');
+            const [orders, setOrders] = useState([]);
+            const [products, setProducts] = useState([]);
+            const [filterCategory, setFilterCategory] = useState('Barchasi');
+            const [toast, setToast] = useState(null);
+            const [loading, setLoading] = useState(false);
+
+            const [newProd, setNewProd] = useState({
+                name: '',
+                description: '',
+                image: '',
+                oldPrice: '',
+                newPrice: '',
+                category: 'Burgerlar'
+            });
+
+            const showToast = (msg) => {
+                setToast(msg);
+                setTimeout(() => setToast(null), 2500);
+            };
+
+            const loadData = async () => {
+                try {
+                    const [ordRes, prodRes] = await Promise.all([
+                        fetch('/api/admin/orders'),
+                        fetch('/api/admin/products')
+                    ]);
+                    const ordData = await ordRes.json();
+                    const prodData = await prodRes.json();
+                    setOrders(Array.isArray(ordData) ? ordData : []);
+                    setProducts(Array.isArray(prodData) ? prodData : []);
+                } catch (e) {
+                    console.error("Ma'lumotlarni yuklashda xatolik:", e);
+                }
+            };
+
+            useEffect(() => {
+                loadData();
+                const interval = setInterval(loadData, 10000); // Har 10 soniyada yangi buyurtmalarni tekshiradi
+                return () => clearInterval(interval);
+            }, []);
+
+            const addProduct = async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                try {
+                    const res = await fetch('/api/admin/products', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            ...newProd,
+                            oldPrice: Number(newProd.oldPrice),
+                            newPrice: Number(newProd.newPrice)
+                        })
+                    });
+                    if (res.ok) {
+                        setNewProd({
+                            name: '',
+                            description: '',
+                            image: '',
+                            oldPrice: '',
+                            newPrice: '',
+                            category: 'Burgerlar'
+                        });
+                        showToast("Yangi taom menyuga muvaffaqiyatli qo'shildi!");
+                        loadData();
+                    }
+                } catch (err) {
+                    alert("Xatolik yuz berdi");
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const deleteProduct = async (id, name) => {
+                if (!confirm(`"${name}" taomini menyudan o'chirishni tasdiqlaysizmi?`)) return;
+                await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
+                showToast("Taom menyudan o'chirildi");
+                loadData();
+            };
+
+            const updateStatus = async (id, status) => {
+                await fetch(`/api/admin/orders/${id}/status`, {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ status })
+                });
+                showToast(`Buyurtma #${id} holati "${status}" ga o'zgartirildi!`);
+                loadData();
+            };
+
+            const applyPreset = (preset) => {
+                setNewProd({
+                    name: preset.name,
+                    category: preset.category,
+                    oldPrice: preset.oldPrice,
+                    newPrice: preset.newPrice,
+                    image: preset.image,
+                    description: preset.description
+                });
+                showToast(`${preset.label} shabloni yuklandi!`);
+            };
+
+            const filteredProducts = useMemo(() => {
+                if (filterCategory === 'Barchasi') return products;
+                return products.filter(p => (p.category || 'Burgerlar') === filterCategory);
+            }, [products, filterCategory]);
+
+            const totalRevenue = orders.reduce((acc, o) => acc + (Number(o.totalAmount) || 0), 0);
+            const pendingOrdersCount = orders.filter(o => o.status === 'kutilmoqda').length;
+
+            const formatPrice = (p) => Number(p || 0).toLocaleString('uz-UZ') + " so'm";
+
+            return (
+                <div className="min-h-screen flex flex-col lg:flex-row">
+                    {/* TOAST NOTIFICATION */}
+                    {toast && (
+                        <div className="fixed top-6 right-6 z-50 bg-[#00473c] text-[#e6ff55] px-6 py-3.5 rounded-full text-xs font-extrabold uppercase tracking-wider shadow-2xl border-2 border-[#e6ff55] animate-fade flex items-center gap-2">
+                            <span>✓</span>
+                            <span>{toast}</span>
+                        </div>
+                    )}
+
+                    {/* LEFT SIDEBAR — DEEP FOREST (#00473c) */}
+                    <aside className="w-full lg:w-80 bg-[#00473c] text-[#f4f3e7] p-7 lg:p-8 flex flex-col justify-between shrink-0 lg:sticky lg:top-0 lg:h-screen">
+                        <div>
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="w-2.5 h-2.5 rounded-full bg-[#e6ff55] animate-ping"></span>
+                                <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#e6ff55]">
+                                    SWEETGREEN ADMIN OS
+                                </span>
+                            </div>
+                            <h1 className="font-display text-4xl tracking-wide text-[#f4f3e7] mb-10">
+                                THE FAST FOOD.
+                            </h1>
+
+                            <nav className="space-y-3">
+                                <button 
+                                    onClick={() => setTab('products')} 
+                                    className={`w-full text-left px-6 py-4 rounded-full font-extrabold text-sm transition-all flex items-center justify-between ${
+                                        tab === 'products' 
+                                            ? 'bg-[#e6ff55] text-[#0e150e] shadow-lg' 
+                                            : 'text-[#f4f3e7]/80 hover:bg-white/10'
+                                    }`}
+                                >
+                                    <span>🍔 Menyu & Taomlar</span>
+                                    <span className={`text-xs px-2.5 py-0.5 rounded-full font-extrabold ${
+                                        tab === 'products' ? 'bg-[#0e150e] text-[#e6ff55]' : 'bg-white/15 text-white'
+                                    }`}>
+                                        {products.length}
+                                    </span>
+                                </button>
+
+                                <button 
+                                    onClick={() => setTab('orders')} 
+                                    className={`w-full text-left px-6 py-4 rounded-full font-extrabold text-sm transition-all flex items-center justify-between ${
+                                        tab === 'orders' 
+                                            ? 'bg-[#e6ff55] text-[#0e150e] shadow-lg' 
+                                            : 'text-[#f4f3e7]/80 hover:bg-white/10'
+                                    }`}
+                                >
+                                    <span>📦 Buyurtmalar</span>
+                                    <span className={`text-xs px-2.5 py-0.5 rounded-full font-extrabold ${
+                                        tab === 'orders' ? 'bg-[#0e150e] text-[#e6ff55]' : 'bg-[#e6ff55] text-[#0e150e]'
+                                    }`}>
+                                        {orders.length}
+                                    </span>
+                                </button>
+                            </nav>
+
+                            {/* Quick Summary Box inside Sidebar */}
+                            <div className="mt-10 bg-white/10 rounded-[20px] p-5 border border-white/10 space-y-3">
+                                <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#e6ff55] block">
+                                    TEZKOR HOLAT
+                                </span>
+                                <div className="flex justify-between text-xs">
+                                    <span className="text-white/75">Yangi buyurtmalar:</span>
+                                    <span className="font-extrabold text-[#e6ff55]">{pendingOrdersCount} ta</span>
+                                </div>
+                                <div className="flex justify-between text-xs">
+                                    <span className="text-white/75">Aktiv taomlar:</span>
+                                    <span className="font-extrabold text-white">{products.length} xil</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 pt-6 border-t border-white/15 space-y-3">
+                            <a 
+                                href="/mini-app" 
+                                target="_blank" 
+                                className="w-full bg-[#e6ff55] text-[#0e150e] hover:brightness-105 transition py-3.5 px-5 rounded-full font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg"
+                            >
+                                <span>Mijoz Mini App'ini ochish</span>
+                                <span>↗</span>
+                            </a>
+                            <button 
+                                onClick={loadData}
+                                className="w-full border border-white/30 text-white/80 hover:text-white hover:border-white py-2.5 rounded-full text-xs font-bold transition"
+                            >
+                                ↻ Ma'lumotlarni yangilash
+                            </button>
+                        </div>
+                    </aside>
+
+                    {/* MAIN WORKSPACE CANVAS (#f4f3e7) */}
+                    <main className="flex-1 p-6 md:p-12 max-w-[1300px] mx-auto w-full">
+                        {/* TOP KPI METRICS BAND */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+                            <div className="bg-[#d8e5d6] p-7 rounded-[24px] border border-[#0e150e]/10">
+                                <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-[#00473c]">
+                                    JAMI SAVDO TUSHUMI
+                                </span>
+                                <p className="font-display text-4xl text-[#0e150e] mt-2">
+                                    {formatPrice(totalRevenue)}
+                                </p>
+                                <span className="text-xs text-[#0e150e]/70 font-medium mt-1 block">
+                                    Barcha buyurtmalar bo'yicha
+                                </span>
+                            </div>
+
+                            <div className="bg-[#e8dcc6] p-7 rounded-[24px] border border-[#0e150e]/10">
+                                <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-[#00473c]">
+                                    MENYUDAGI TAOMLAR
+                                </span>
+                                <p className="font-display text-4xl text-[#0e150e] mt-2">
+                                    {products.length} XIL TAOM
+                                </p>
+                                <span className="text-xs text-[#0e150e]/70 font-medium mt-1 block">
+                                    Burgerlar, Hot-Doglar, Pitsa va Sneklar
+                                </span>
+                            </div>
+
+                            <div className="bg-[#00473c] text-[#f4f3e7] p-7 rounded-[24px] shadow-xl">
+                                <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-[#e6ff55]">
+                                    JAMI BUYURTMALAR
+                                </span>
+                                <p className="font-display text-4xl text-[#f4f3e7] mt-2">
+                                    {orders.length} TA BUYURTMA
+                                </p>
+                                <span className="text-xs text-[#e6ff55] font-bold mt-1 block">
+                                    {pendingOrdersCount} tasi tayyorlanishni kutmoqda
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* TAB 1: ORDERS MANAGEMENT */}
+                        {tab === 'orders' && (
+                            <div className="animate-fade">
+                                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+                                    <div>
+                                        <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-[#00473c]">
+                                            LIVE DISPATCH • YETKAZIB BERISH
+                                        </span>
+                                        <h2 className="font-display text-4xl md:text-5xl text-[#0e150e] mt-1">
+                                            KELIB TUSHGAN BUYURTMALAR
+                                        </h2>
+                                    </div>
+                                    <button onClick={loadData} className="pill-lime px-6 py-3 text-xs uppercase tracking-wider">
+                                        ↻ Ro'yxatni yangilash
+                                    </button>
+                                </div>
+
+                                <div className="bg-white/90 rounded-[24px] border border-[#0e150e]/15 overflow-hidden shadow-sm">
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr className="border-b border-[#0e150e]/10 bg-[#e8dcc6]/60 text-[11px] font-extrabold text-[#0e150e] uppercase tracking-wider">
+                                                    <th className="p-5">ID</th>
+                                                    <th className="p-5">Mijoz</th>
+                                                    <th className="p-5">Buyurtma tarkibi</th>
+                                                    <th className="p-5">Yetkazish Manzili</th>
+                                                    <th className="p-5">Jami Summa</th>
+                                                    <th className="p-5">Holati (Status)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-[#0e150e]/10 text-sm">
+                                                {orders.length === 0 ? (
+                                                    <tr>
+                                                        <td colSpan="6" className="p-14 text-center">
+                                                            <p className="font-editorial italic text-3xl text-[#8c8c82] mb-2">Hozircha buyurtmalar yo'q</p>
+                                                            <p className="text-xs text-[#8c8c82]">Mini App orqali test buyurtma berib ko'ring!</p>
+                                                        </td>
+                                                    </tr>
+                                                ) : orders.map(o => {
+                                                    let parsedItems = [];
+                                                    try {
+                                                        parsedItems = typeof o.items === 'string' ? JSON.parse(o.items) : (Array.isArray(o.items) ? o.items : []);
+                                                    } catch (e) {}
+
+                                                    return (
+                                                        <tr key={o.id} className="hover:bg-[#d8e5d6]/35 transition">
+                                                            <td className="p-5 font-extrabold text-base text-[#00473c]">#{o.id}</td>
+                                                            <td className="p-5">
+                                                                <p className="font-extrabold text-[#0e150e]">{o.user?.name || "Hurmatli Mijoz"}</p>
+                                                                <p className="text-xs text-[#8c8c82]">{o.user?.phone || "Telegram orqali"}</p>
+                                                            </td>
+                                                            <td className="p-5">
+                                                                {parsedItems.length > 0 ? (
+                                                                    <div className="space-y-1">
+                                                                        {parsedItems.map((it, idx) => (
+                                                                            <div key={idx} className="text-xs font-bold text-[#0e150e] bg-[#f4f3e7] px-2.5 py-1 rounded-md inline-block mr-1.5 mb-1 border border-[#0e150e]/10">
+                                                                                {it.name} × {it.qty}
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                ) : (
+                                                                    <span className="text-xs text-[#8c8c82]">Standart buyurtma</span>
+                                                                )}
+                                                            </td>
+                                                            <td className="p-5 text-xs font-semibold text-[#0e150e]/85 max-w-xs">
+                                                                📍 {o.location}
+                                                            </td>
+                                                            <td className="p-5 font-extrabold text-base text-[#00473c]">
+                                                                {formatPrice(o.totalAmount)}
+                                                            </td>
+                                                            <td className="p-5">
+                                                                <select 
+                                                                    value={o.status} 
+                                                                    onChange={(e) => updateStatus(o.id, e.target.value)} 
+                                                                    className={`px-4 py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider cursor-pointer focus:outline-none border-2 ${
+                                                                        o.status === 'yetkazildi' 
+                                                                            ? 'bg-[#00473c] text-[#e6ff55] border-[#00473c]' 
+                                                                            : o.status === 'tayyorlanmoqda'
+                                                                            ? 'bg-[#e6ff55] text-[#0e150e] border-[#0e150e]'
+                                                                            : 'bg-[#e8dcc6] text-[#0e150e] border-[#0e150e]/20'
+                                                                    }`}
+                                                                >
+                                                                    <option value="kutilmoqda">⏳ Kutilmoqda</option>
+                                                                    <option value="tayyorlanmoqda">🔥 Tayyorlanmoqda</option>
+                                                                    <option value="yetkazildi">✅ Yetkazildi</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* TAB 2: PRODUCTS & MENU MANAGEMENT */}
+                        {tab === 'products' && (
+                            <div className="animate-fade">
+                                {/* ADD NEW PRODUCT SECTION + LIVE PREVIEW */}
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-14">
+                                    <div className="lg:col-span-2 bg-[#d8e5d6] p-7 md:p-9 rounded-[24px] border border-[#0e150e]/10">
+                                        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                                            <div>
+                                                <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-[#00473c]">
+                                                    OSHXONA KONSTRUKTORI
+                                                </span>
+                                                <h2 className="font-display text-3xl md:text-4xl text-[#0e150e] mt-1">
+                                                    YANGI FAST FOOD QO'SHISH
+                                                </h2>
+                                            </div>
+                                        </div>
+
+                                        {/* 1-Click Quick Templates */}
+                                        <div className="mb-6">
+                                            <span className="text-[11px] font-bold uppercase tracking-wider text-[#00473c] block mb-2">
+                                                ⚡ 1-BOSISHDA TAYYOR SHABLONLARNI YUKLASH:
+                                            </span>
+                                            <div className="flex flex-wrap gap-2">
+                                                {QUICK_PRESETS.map((preset, i) => (
+                                                    <button
+                                                        key={i}
+                                                        type="button"
+                                                        onClick={() => applyPreset(preset)}
+                                                        className="bg-[#f4f3e7] hover:bg-[#e6ff55] text-[#0e150e] border border-[#0e150e]/20 px-3.5 py-1.5 rounded-full text-xs font-extrabold transition"
+                                                    >
+                                                        {preset.label}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <form onSubmit={addProduct} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-[11px] font-extrabold uppercase tracking-wider text-[#0e150e] mb-1">
+                                                    Taom Nomi
+                                                </label>
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="Masalan: Double Smash Burger" 
+                                                    value={newProd.name} 
+                                                    onChange={e => setNewProd({...newProd, name: e.target.value})} 
+                                                    className="w-full p-3.5 bg-[#f4f3e7] border-2 border-[#0e150e]/15 rounded-[10px] text-sm font-semibold focus:outline-none focus:border-[#00473c]" 
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-[11px] font-extrabold uppercase tracking-wider text-[#0e150e] mb-1">
+                                                    Kategoriyasi
+                                                </label>
+                                                <select 
+                                                    value={newProd.category} 
+                                                    onChange={e => setNewProd({...newProd, category: e.target.value})}
+                                                    className="w-full p-3.5 bg-[#f4f3e7] border-2 border-[#0e150e]/15 rounded-[10px] text-sm font-extrabold text-[#00473c] focus:outline-none focus:border-[#00473c]"
+                                                >
+                                                    <option value="Burgerlar">🍔 Burgerlar</option>
+                                                    <option value="Hot-Doglar">🌭 Hot-Doglar</option>
+                                                    <option value="Lavash & Sendvich">🌯 Lavash & Sendvich</option>
+                                                    <option value="Pitsa">🍕 Pitsa</option>
+                                                    <option value="Fri & Sneklar">🍟 Fri & Sneklar</option>
+                                                    <option value="Ichimliklar">🥤 Ichimliklar</option>
+                                                </select>
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-[11px] font-extrabold uppercase tracking-wider text-[#0e150e] mb-1">
+                                                    Eski Narxi (so'm)
+                                                </label>
+                                                <input 
+                                                    type="number" 
+                                                    placeholder="Masalan: 65000" 
+                                                    value={newProd.oldPrice} 
+                                                    onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} 
+                                                    className="w-full p-3.5 bg-[#f4f3e7] border-2 border-[#0e150e]/15 rounded-[10px] text-sm font-semibold focus:outline-none focus:border-[#00473c]" 
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-[11px] font-extrabold uppercase tracking-wider text-[#0e150e] mb-1">
+                                                    Sotuvdagi Yangi Narxi (so'm)
+                                                </label>
+                                                <input 
+                                                    type="number" 
+                                                    placeholder="Masalan: 52000" 
+                                                    value={newProd.newPrice} 
+                                                    onChange={e => setNewProd({...newProd, newPrice: e.target.value})} 
+                                                    className="w-full p-3.5 bg-[#f4f3e7] border-2 border-[#0e150e]/15 rounded-[10px] text-sm font-extrabold text-[#00473c] focus:outline-none focus:border-[#00473c]" 
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div className="sm:col-span-2">
+                                                <label className="block text-[11px] font-extrabold uppercase tracking-wider text-[#0e150e] mb-1">
+                                                    HD Rasm URL Manzili
+                                                </label>
+                                                <input 
+                                                    type="url" 
+                                                    placeholder="https://images.unsplash.com/..." 
+                                                    value={newProd.image} 
+                                                    onChange={e => setNewProd({...newProd, image: e.target.value})} 
+                                                    className="w-full p-3.5 bg-[#f4f3e7] border-2 border-[#0e150e]/15 rounded-[10px] text-sm font-medium focus:outline-none focus:border-[#00473c]" 
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div className="sm:col-span-2">
+                                                <label className="block text-[11px] font-extrabold uppercase tracking-wider text-[#0e150e] mb-1">
+                                                    Ishtahani ochuvchi tarkibi va ta'rifi
+                                                </label>
+                                                <textarea 
+                                                    placeholder="Marmar mol go'shti, cheddar pishlog'i, maxsus sous..." 
+                                                    value={newProd.description} 
+                                                    onChange={e => setNewProd({...newProd, description: e.target.value})} 
+                                                    className="w-full p-3.5 bg-[#f4f3e7] border-2 border-[#0e150e]/15 rounded-[10px] text-sm font-medium focus:outline-none focus:border-[#00473c]" 
+                                                    rows="3"
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div className="sm:col-span-2 pt-2">
+                                                <button 
+                                                    type="submit" 
+                                                    disabled={loading}
+                                                    className="w-full pill-lime py-4 px-8 text-base flex items-center justify-center gap-2"
+                                                >
+                                                    <span>{loading ? "Saqlanmoqda..." : "+ Menyuga Taomni Qo'shish"}</span>
+                                                    <span>→</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    {/* LIVE SWEETGREEN CARD PREVIEW */}
+                                    <div className="bg-[#e8dcc6] p-7 rounded-[24px] border border-[#0e150e]/10 flex flex-col justify-between">
+                                        <div>
+                                            <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-[#00473c] block mb-4">
+                                                JONLI KO'RINISH (LIVE PREVIEW)
+                                            </span>
+
+                                            <div className="food-card">
+                                                <div className="food-card-img shadow-md">
+                                                    <img 
+                                                        src={newProd.image || "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80"} 
+                                                        alt="Preview"
+                                                        onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80"; }}
+                                                    />
+                                                    <span className="absolute top-3 left-3 bg-[#e6ff55] text-[#0e150e] text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full">
+                                                        {newProd.category || "Burgerlar"}
+                                                    </span>
+                                                </div>
+                                                <div className="pt-5">
+                                                    <h3 className="text-xl font-extrabold text-[#0e150e]">
+                                                        {newProd.name || "Taom Nomi Shu Yerda Chiqadi"}
+                                                    </h3>
+                                                    <p className="text-xs text-[#0e150e]/75 mt-1.5 line-clamp-2 leading-relaxed">
+                                                        {newProd.description || "Taomning tarkibi va ishtahani ochuvchi ta'rifi mijozlarga shu ko'rinishda chiqadi."}
+                                                    </p>
+                                                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#0e150e]/10">
+                                                        <span className="text-lg font-extrabold text-[#00473c]">
+                                                            {formatPrice(newProd.newPrice || 52000)}
+                                                        </span>
+                                                        <span className="text-xs font-extrabold text-[#0e150e]">
+                                                            Order now →
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* EXISTING MENU CATALOG */}
+                                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 pt-6 border-t border-[#0e150e]/15">
+                                    <div>
+                                        <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-[#00473c]">
+                                            FAOL MENYU VITRINASI
+                                        </span>
+                                        <h3 className="font-display text-4xl text-[#0e150e] mt-1">
+                                            MAVJUD TAOMLAR ({filteredProducts.length})
+                                        </h3>
+                                    </div>
+
+                                    {/* Category Filter Pills */}
+                                    <div className="flex flex-wrap gap-2">
+                                        {['Barchasi', 'Burgerlar', 'Hot-Doglar', 'Lavash & Sendvich', 'Pitsa', 'Fri & Sneklar'].map(cat => (
+                                            <button
+                                                key={cat}
+                                                onClick={() => setFilterCategory(cat)}
+                                                className={`px-4 py-2 rounded-full text-xs font-extrabold uppercase tracking-wider transition ${
+                                                    filterCategory === cat 
+                                                        ? 'bg-[#00473c] text-[#e6ff55]' 
+                                                        : 'bg-[#d8e5d6] text-[#0e150e] hover:bg-[#e8dcc6]'
+                                                }`}
+                                            >
+                                                {cat}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+                                    {filteredProducts.map(p => (
+                                        <div key={p.id} className="food-card group flex flex-col justify-between">
+                                            <div>
+                                                <div className="food-card-img shadow-sm">
+                                                    <img 
+                                                        src={p.image} 
+                                                        alt={p.name}
+                                                        onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80"; }}
+                                                    />
+                                                    <span className="absolute top-4 left-4 bg-[#e6ff55] text-[#0e150e] text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow">
+                                                        {p.category || "Fast Food"}
+                                                    </span>
+                                                </div>
+                                                <div className="pt-5 px-1">
+                                                    <h4 className="text-[20px] font-extrabold text-[#0e150e] leading-snug">
+                                                        {p.name}
+                                                    </h4>
+                                                    <p className="text-sm text-[#0e150e]/75 mt-1.5 line-clamp-2 leading-relaxed">
+                                                        {p.description}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center justify-between mt-4 pt-3 px-1 border-t border-[#0e150e]/10">
+                                                <div>
+                                                    <span className="text-lg font-extrabold text-[#00473c]">
+                                                        {formatPrice(p.newPrice)}
+                                                    </span>
+                                                    {p.oldPrice > p.newPrice && (
+                                                        <span className="text-xs text-[#8c8c82] line-through ml-2">
+                                                            {formatPrice(p.oldPrice)}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <button 
+                                                    onClick={() => deleteProduct(p.id, p.name)} 
+                                                    className="border-2 border-red-800/80 text-red-900 hover:bg-red-800 hover:text-white transition px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider"
+                                                >
+                                                    O'chirish
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </main>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<AdminApp />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
+    <title>THE FAST FOOD — Luxury OS Edition</title>
+    
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- React & Babel -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-deep-forest: #00473c;
+            --color-lime-glow: #e6ff55;
+            --color-sage-mist: #d8e5d6;
+            --color-warm-sand: #e8dcc6;
+            --color-cream-canvas: #f4f3e7;
+            --color-forest-shadow: #0e150e;
+            --shadow-lux: rgba(14, 21, 14, 0.25) 0px 20px 40px -12px;
+            --shadow-hover: rgba(0, 71, 60, 0.3) 0px 30px 60px -15px;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--color-cream-canvas);
+            color: var(--color-forest-shadow);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        .font-display { font-family: 'Anton', sans-serif; letter-spacing: 0.015em; text-transform: uppercase; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .food-stage {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 18px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #e8dcc6 0%, #d8e5d6 100%);
+        }
+        .food-stage img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .btn-lime-lux {
+            background-color: var(--color-lime-glow);
+            color: var(--color-forest-shadow);
+            border-radius: 9999px;
+            font-weight: 800;
+            box-shadow: var(--shadow-lux);
+            transition: all 0.25s ease;
+        }
+        .btn-lime-lux:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        const ADMIN_TELEGRAM_ID = "6515742580";
+        const ADMIN_SECRET_PIN = "7777";
+
+        // TO'LIQ VA KENGAYTIRILGAN MASSIV MENYU (KO'PLAB GAMBURGER VA HOT-DOGLAR)
+        const MASSIVE_MENU = [
+            // 🍔 GAMBURGERLAR
+            {
+                id: 1,
+                name: "Double Smash Cheeseburger",
+                description: "Ikki qavatli marmar mol go'shti kotleti, cheddar pishlog'i, karamelizatsiya qilingan piyoz va maxsus burger sousi briosh nonida.",
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 65000,
+                newPrice: 52000,
+                category: "Burgerlar",
+                badge: "BESTSELLER 🔥",
+                prepTime: "12 daq"
+            },
+            {
+                id: 2,
+                name: "Black Angus Truffle Burger",
+                description: "Qora kunjutli yumshoq non, qalin Angus kotleti, qo'ziqorinli julen va ikki hissa gouda pishlog'i.",
+                image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 78000,
+                newPrice: 64000,
+                category: "Burgerlar",
+                badge: "CHEF'S SPECIAL",
+                prepTime: "15 daq"
+            },
+            {
+                id: 3,
+                name: "Crispy Chicken & Cheese Burger",
+                description: "Qarsildoq panirovkadagi tovuq filesi, aysberg salati, cheddar pishlog'i va sarimsoqli ranch sousi.",
+                image: "https://images.unsplash.com/photo-1615297928064-24977384d0da?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 55000,
+                newPrice: 44000,
+                category: "Burgerlar",
+                badge: "CRISPY",
+                prepTime: "10 daq"
+            },
+            {
+                id: 4,
+                name: "Mega Double Beef Burger",
+                description: "Katta hajmhdagi ikkita mol go'shti kotleti, qo'shma pishloq, tuzlangan bodring va barbekyu sousi.",
+                image: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 72000,
+                newPrice: 59000,
+                category: "Burgerlar",
+                badge: "MEGA SIZE",
+                prepTime: "14 daq"
+            },
+            {
+                id: 5,
+                name: "Jalapeño Spicy Burger",
+                description: "Mol go'shti kotleti, o'tkir xalapenyo qalampiri, habanero sousi va eritilgan cheddar.",
+                image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 60000,
+                newPrice: 49000,
+                category: "Burgerlar",
+                badge: "SPICY 🔥",
+                prepTime: "12 daq"
+            },
+
+            // 🌭 HOT-DOGLAR
+            {
+                id: 6,
+                name: "New York Chili Cheese Hot-Dog",
+                description: "Grilda qizartirilgan 22 sm lik dudlangan kolbasa, issiq cheddar pishloq sousi, mol go'shtli chili va xalapenyo.",
+                image: "https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 45000,
+                newPrice: 36000,
+                category: "Hot-Doglar",
+                badge: "ONLINE ONLY",
+                prepTime: "8 daq"
+            },
+            {
+                id: 7,
+                name: "Royal Double Sausage Hot-Dog",
+                description: "Sutli baget ichida ikki dona maxsus sosiska, shirin xantal, ketchup, mayonez va mozzarella pishlog'i.",
+                image: "https://images.unsplash.com/photo-1541214113241-21578d2d9b62?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 42000,
+                newPrice: 33000,
+                category: "Hot-Doglar",
+                badge: "HOT & SPICY",
+                prepTime: "8 daq"
+            },
+            {
+                id: 8,
+                name: "BBQ Crispy Bacon Hot-Dog",
+                description: "Bavariya kolbasasi, qarsildoq halol kurka bekoni va tutunli barbekyu sousi.",
+                image: "https://images.unsplash.com/photo-1627054245708-29c06640d50f?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 48000,
+                newPrice: 39000,
+                category: "Hot-Doglar",
+                badge: "NEW",
+                prepTime: "9 daq"
+            },
+            {
+                id: 9,
+                name: "Frankfurt Jumbo Hot-Dog",
+                description: "Haqiqiy frankfurt sosiskasi, maxsus non, xantal, ketchup va qarsildoq piyoz.",
+                image: "https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 40000,
+                newPrice: 32000,
+                category: "Hot-Doglar",
+                badge: "CLASSIC",
+                prepTime: "7 daq"
+            },
+
+            // 🌯 LAVASH & SENDVICH
+            {
+                id: 10,
+                name: "Tandirli Pishloqli Lavash",
+                description: "Yupqa qarsildoq xamir ichida sersuv mol go'shti doneri, yangi pomidor, chipslar va mo'l-ko'l pishloq.",
+                image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 46000,
+                newPrice: 38000,
+                category: "Lavash",
+                badge: "TOP RATED",
+                prepTime: "10 daq"
+            },
+            {
+                id: 11,
+                name: "Triple Club Sandwich",
+                description: "Uch qavatli tost noni, grilda pishgan tovuq filesi, dudlangan kurka, pishloq va fri garniri bilan.",
+                image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 52000,
+                newPrice: 43000,
+                category: "Lavash",
+                badge: "COMBO",
+                prepTime: "12 daq"
+            },
+
+            // 🍕 PITSA
+            {
+                id: 12,
+                name: "Super Pepperoni Pizza",
+                description: "Mozzarella pishlog'i, ikki hissa dudlangan peperoni kolbasalari va oregano pomidor sousi.",
+                image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 95000,
+                newPrice: 79000,
+                category: "Pitsa",
+                badge: "POPULAR",
+                prepTime: "18 daq"
+            },
+            {
+                id: 13,
+                name: "Meat Lovers Pizza (4 xil go'sht)",
+                description: "Qazi, mol go'shti qiymasi, tovuq filesi va peperoni kolbasasi bilan boyitilgan to'yimli pitsa.",
+                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 115000,
+                newPrice: 94000,
+                category: "Pitsa",
+                badge: "XL SIZE",
+                prepTime: "20 daq"
+            },
+
+            // 🍟 FRI & SNEKLAR
+            {
+                id: 14,
+                name: "Loaded Cheese & Jalapeño Fries",
+                description: "Oltinrang kartoshka fri, ustidan issiq cheddar pishloq sousi va xalapenyo bo'laklari.",
+                image: "https://images.unsplash.com/photo-1576107232684-1279f3908594?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 35000,
+                newPrice: 26000,
+                category: "Sneklar",
+                badge: "CHEESY",
+                prepTime: "6 daq"
+            },
+            {
+                id: 15,
+                name: "Crispy Buffalo Wings (8 dona)",
+                description: "Qarsildoq panirovkadagi tovuq qanotchalari va shirin-achchiq glazur.",
+                image: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 54000,
+                newPrice: 45000,
+                category: "Sneklar",
+                badge: "SPICY 🔥",
+                prepTime: "12 daq"
+            },
+
+            // 🥤 ICHIMLIKLAR
+            {
+                id: 16,
+                name: "Coca-Cola Classic (0.5 L)",
+                description: "Muzdek salqin va tetiklashtiruvchi klassik gazlangan ichimlik.",
+                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 12000,
+                newPrice: 9000,
+                category: "Ichimliklar",
+                badge: "ICED",
+                prepTime: "1 daq"
+            },
+            {
+                id: 17,
+                name: "Fresh Strawberry Lemonade",
+                description: "Yangi uzilgan qulupnay, limon sharbati, yalpiz barglari va muz bo'laklari bilan.",
+                image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1000&q=85",
+                oldPrice: 25000,
+                newPrice: 18000,
+                category: "Ichimliklar",
+                badge: "FRESH",
+                prepTime: "3 daq"
+            }
+        ];
+
+        const EXTRAS = [
+            { id: 'cheese', name: "Qo'shimcha Cheddar Pishloq", price: 6000 },
+            { id: 'jalapeno', name: "Achchiq Xalapenyo", price: 4000 },
+            { id: 'sauce', name: "Maxsus Pishloqli Sous", price: 5000 }
+        ];
+
+        function App() {
+            const [viewMode, setViewMode] = useState('client');
+            const [isAdminAuthed, setIsAdminAuthed] = useState(false);
+            const [pinInput, setPinInput] = useState("");
+            const [pinError, setPinError] = useState(false);
+
+            const [products, setProducts] = useState(MASSIVE_MENU);
+            const [activeCategory, setActiveCategory] = useState("Barchasi");
+            const [search, setSearch] = useState("");
+            const [cart, setCart] = useState([]);
+            const [selectedProduct, setSelectedProduct] = useState(null);
+            const [selectedExtras, setSelectedExtras] = useState([]);
+            const [isCartOpen, setIsCartOpen] = useState(false);
+            const [isOrdersOpen, setIsOrdersOpen] = useState(false);
+            const [userOrders, setUserOrders] = useState([]);
+            const [adminOrders, setAdminOrders] = useState([]);
+            
+            const [customerPhone, setCustomerPhone] = useState("+998 ");
+            const [customerLocation, setCustomerLocation] = useState("");
+
+            const [successOrder, setSuccessOrder] = useState(false);
+            const [submitting, setSubmitting] = useState(false);
+            const [toast, setToast] = useState(null);
+
+            const [newProd, setNewProd] = useState({
+                name: '', description: '', image: '', oldPrice: '', newPrice: '', category: 'Burgerlar'
+            });
+
+            const tg = window.Telegram?.WebApp;
+            const tgUser = tg?.initDataUnsafe?.user || { id: ADMIN_TELEGRAM_ID, first_name: "Ozodbek" };
+
+            useEffect(() => {
+                if (tg) {
+                    tg.ready();
+                    tg.expand();
+                }
+                fetchProducts();
+
+                if (tgUser && String(tgUser.id) === ADMIN_TELEGRAM_ID) {
+                    setIsAdminAuthed(true);
+                } else if (localStorage.getItem('admin_auth') === 'true') {
+                    setIsAdminAuthed(true);
+                }
+            }, []);
+
+            const showToast = (msg) => {
+                setToast(msg);
+                setTimeout(() => setToast(null), 2000);
+            };
+
+            const fetchProducts = async () => {
+                try {
+                    const res = await fetch('/api/products');
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length >= 6) {
+                        setProducts(data);
+                    }
+                } catch (e) {}
+            };
+
+            const fetchAdminData = async () => {
+                try {
+                    const [ordRes, prodRes] = await Promise.all([
+                        fetch('/api/admin/orders'),
+                        fetch('/api/admin/products')
+                    ]);
+                    const ordData = await ordRes.json();
+                    const prodData = await prodRes.json();
+                    setAdminOrders(Array.isArray(ordData) ? ordData : []);
+                    if (Array.isArray(prodData) && prodData.length > 0) setProducts(prodData);
+                } catch (e) {}
+            };
+
+            const categories = useMemo(() => {
+                return ["Barchasi", ...new Set(products.map(p => p.category || "Fast Food"))];
+            }, [products]);
+
+            const filtered = useMemo(() => {
+                return products.filter(p => {
+                    const matchCat = activeCategory === "Barchasi" || (p.category || "Fast Food") === activeCategory;
+                    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase());
+                    return matchCat && matchSearch;
+                });
+            }, [products, activeCategory, search]);
+
+            const addToCart = (product, extras = [], e) => {
+                if (e) e.stopPropagation();
+                if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+
+                const extrasPrice = extras.reduce((s, x) => s + x.price, 0);
+                const extrasText = extras.length > 0 ? ` (+ ${extras.map(x => x.name).join(', ')})` : '';
+                const cartItemId = `${product.id}-${extras.map(x => x.id).join('_')}`;
+                const finalPrice = Number(product.newPrice) + extrasPrice;
+
+                setCart(prev => {
+                    const existing = prev.find(i => i.cartItemId === cartItemId);
+                    if (existing) {
+                        return prev.map(i => i.cartItemId === cartItemId ? { ...i, qty: i.qty + 1 } : i);
+                    }
+                    return [...prev, { ...product, cartItemId, name: product.name + extrasText, newPrice: finalPrice, qty: 1 }];
+                });
+                showToast(`${product.name} savatga qo'shildi!`);
+            };
+
+            const updateQty = (cartItemId, delta) => {
+                if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+                setCart(prev => prev.map(i => {
+                    if (i.cartItemId === cartItemId) {
+                        const newQ = i.qty + delta;
+                        return newQ > 0 ? { ...i, qty: newQ } : null;
+                    }
+                    return i;
+                }).filter(Boolean));
+            };
+
+            const toggleExtra = (ex) => {
+                setSelectedExtras(prev => prev.some(e => e.id === ex.id) ? prev.filter(e => e.id !== ex.id) : [...prev, ex]);
+            };
+
+            const totalAmount = cart.reduce((s, i) => s + (i.newPrice * i.qty), 0);
+            const totalItems = cart.reduce((s, i) => s + i.qty, 0);
+
+            const submitOrder = async (e) => {
+                e.preventDefault();
+                if (!customerLocation.trim() || cart.length === 0) return;
+                setSubmitting(true);
+                try {
+                    const res = await fetch('/api/orders', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            telegramId: String(tgUser.id),
+                            name: tgUser.first_name,
+                            phone: customerPhone,
+                            location: customerLocation,
+                            totalAmount,
+                            items: cart.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.newPrice }))
+                        })
+                    });
+                    if (res.ok) {
+                        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                        setCart([]);
+                        setSuccessOrder(true);
+                        setTimeout(() => { setSuccessOrder(false); setIsCartOpen(false); }, 3000);
+                    }
+                } catch (err) {
+                    alert("Xatolik yuz berdi");
+                } finally {
+                    setSubmitting(false);
+                }
+            };
+
+            const formatPrice = (p) => Number(p).toLocaleString('uz-UZ') + " so'm";
+
+            // ADMIN PANEL
+            if (viewMode === 'admin') {
+                return (
+                    <div className="min-h-screen flex flex-col lg:flex-row bg-[#f4f3e7]">
+                        {toast && <div className="fixed top-4 right-4 z-50 bg-[#00473c] text-[#e6ff55] px-5 py-2.5 rounded-full text-xs font-bold shadow-xl">✓ {toast}</div>}
+                        <aside className="w-full lg:w-72 bg-[#00473c] text-[#f4f3e7] p-5 flex flex-col justify-between shrink-0">
+                            <div>
+                                <span className="text-[10px] font-extrabold uppercase text-[#e6ff55]">ADMIN OS</span>
+                                <h1 className="font-display text-2xl text-[#f4f3e7] mb-6 mt-1">THE FAST FOOD.</h1>
+                                <button onClick={() => setViewMode('client')} className="w-full text-left px-4 py-3 rounded-full font-bold text-xs bg-white/10 text-white">🛍️ Mijoz Rejimi</button>
+                            </div>
+                        </aside>
+                        <main className="flex-1 p-4 md:p-8 max-w-[1200px] mx-auto w-full overflow-y-auto">
+                            <h2 className="font-display text-3xl text-[#0e150e] mb-4">TAOM QO'SHISH</h2>
+                            <div className="bg-[#d8e5d6] p-5 rounded-[20px] mb-8">
+                                <form onSubmit={async (e) => {
+                                    e.preventDefault();
+                                    await fetch('/api/admin/products', {
+                                        method: 'POST',
+                                        headers: {'Content-Type': 'application/json'},
+                                        body: JSON.stringify({ ...newProd, oldPrice: Number(newProd.oldPrice), newPrice: Number(newProd.newPrice) })
+                                    });
+                                    setNewProd({ name: '', description: '', image: '', oldPrice: '', newPrice: '', category: 'Burgerlar' });
+                                    showToast("Qo'shildi!");
+                                    fetchAdminData();
+                                    fetchProducts();
+                                }} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <input type="text" placeholder="Taom Nomi" value={newProd.name} onChange={e => setNewProd({...newProd, name: e.target.value})} className="p-3 bg-[#f4f3e7] border rounded-lg text-xs font-semibold" required />
+                                    <select value={newProd.category} onChange={e => setNewProd({...newProd, category: e.target.value})} className="p-3 bg-[#f4f3e7] border rounded-lg text-xs font-bold">
+                                        <option value="Burgerlar">Burgerlar</option>
+                                        <option value="Hot-Doglar">Hot-Doglar</option>
+                                        <option value="Lavash & Sendvich">Lavash</option>
+                                        <option value="Pitsa">Pitsa</option>
+                                        <option value="Fri & Sneklar">Sneklar</option>
+                                        <option value="Ichimliklar">Ichimliklar</option>
+                                    </select>
+                                    <input type="number" placeholder="Eski Narx" value={newProd.oldPrice} onChange={e => setNewProd({...newProd, oldPrice: e.target.value})} className="p-3 bg-[#f4f3e7] border rounded-lg text-xs" required />
+                                    <input type="number" placeholder="Yangi Narx" value={newProd.newPrice} onChange={e => setNewProd({...newProd, newPrice: e.target.value})} className="p-3 bg-[#f4f3e7] border rounded-lg text-xs" required />
+                                    <input type="url" placeholder="Rasm URL" value={newProd.image} onChange={e => setNewProd({...newProd, image: e.target.value})} className="sm:col-span-2 p-3 bg-[#f4f3e7] border rounded-lg text-xs" required />
+                                    <textarea placeholder="Ta'rifi..." value={newProd.description} onChange={e => setNewProd({...newProd, description: e.target.value})} className="sm:col-span-2 p-3 bg-[#f4f3e7] border rounded-lg text-xs" rows="2" required></textarea>
+                                    <button type="submit" className="sm:col-span-2 btn-lime-lux py-3 text-xs">Qo'shish</button>
+                                </form>
+                            </div>
+                        </main>
+                    </div>
+                );
+            }
+
+            // MIJOZ QISMI
+            return (
+                <div className="min-h-screen pb-32 relative">
+                    {toast && (
+                        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-[#00473c] text-[#e6ff55] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase shadow-xl flex items-center gap-1.5">
+                            <span>✓</span><span>{toast}</span>
+                        </div>
+                    )}
+
+                    <header className="sticky top-0 z-30 bg-[#f4f3e7]/95 backdrop-blur-md border-b border-[#0e150e]/10">
+                        <div className="max-w-[1200px] mx-auto px-3 h-16 flex items-center justify-between gap-1">
+                            <button 
+                                onClick={() => {
+                                    fetch(`/api/orders/${tgUser.id}`).then(r=>r.json()).then(d=>setUserOrders(Array.isArray(d)?d:[])).catch(()=>{});
+                                    setIsOrdersOpen(true);
+                                }}
+                                className="text-[10px] font-extrabold uppercase text-[#0e150e] tracking-tight shrink-0 py-1 px-2 bg-[#d8e5d6]/70 rounded-full"
+                            >
+                                📦 Buyurtmalar
+                            </button>
+
+                            <a href="#" className="text-[17px] font-extrabold text-[#00473c] font-display tracking-tight shrink-0">
+                                the fast food.
+                            </a>
+
+                            <div className="flex items-center gap-1 shrink-0">
+                                {String(tgUser.id) === ADMIN_TELEGRAM_ID && (
+                                    <button 
+                                        onClick={() => { setViewMode('admin'); fetchAdminData(); }}
+                                        className="bg-[#00473c] text-[#e6ff55] px-2.5 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-tight shadow-sm"
+                                    >
+                                        ⚙️ Admin
+                                    </button>
+                                )}
+
+                                <button 
+                                    onClick={() => setIsCartOpen(true)}
+                                    className="bg-[#e6ff55] text-[#0e150e] border border-[#0e150e]/20 px-3 py-1.5 rounded-full text-[11px] font-extrabold uppercase tracking-tight flex items-center gap-1"
+                                >
+                                    <span>Savat</span>
+                                    {totalItems > 0 && <span className="bg-[#0e150e] text-[#e6ff55] px-1.5 py-0.2 rounded-full text-[10px]">{totalItems}</span>}
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <section className="relative w-full h-[360px] bg-[#0e150e] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=80" className="w-full h-full object-cover opacity-85" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0e150e]/85 via-transparent to-transparent"></div>
+                        <div className="absolute bottom-4 left-3 right-3 bg-[#f4f3e7]/95 backdrop-blur-md p-5 rounded-[20px] shadow-xl">
+                            <span className="bg-[#e6ff55] text-[#0e150e] text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full inline-block mb-2">100% MARMAR MOL GO'SHTI</span>
+                            <h1 className="font-display text-[28px] text-[#0e150e] mb-2 leading-[0.9]">ENG SERSUV BURGER VA HOT-DOGLAR</h1>
+                            <p className="text-xs text-[#0e150e]/80 mb-4">Ochiq olovda tayyorlangan gril taomlari. Issiq holda yetkazamiz.</p>
+                            <button onClick={() => document.getElementById('menu-section').scrollIntoView({ behavior: 'smooth' })} className="btn-lime-lux px-5 py-3 text-xs w-full text-center">
+                                Menyuni ko'rish →
+                            </button>
+                        </div>
+                    </section>
+
+                    <section id="menu-section" className="max-w-[1200px] mx-auto px-3 pt-8">
+                        <div className="flex items-baseline gap-5 overflow-x-auto no-scrollbar pb-3 border-b border-[#0e150e]/15">
+                            {categories.map(cat => {
+                                const isActive = activeCategory === cat;
+                                return (
+                                    <button key={cat} onClick={() => setActiveCategory(cat)} className="group relative flex flex-col items-center shrink-0">
+                                        <span className={`font-display text-[22px] transition ${isActive ? 'text-[#0e150e]' : 'text-[#8c8c82]'}`}>{cat}</span>
+                                        <span className={`mt-1 w-2 h-2 rounded-full bg-[#00473c] transition ${isActive ? 'opacity-100' : 'opacity-0'}`}></span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </section>
+
+                    <section className="max-w-[1200px] mx-auto px-3 py-6">
+                        <div className="grid grid-cols-2 gap-3 sm:gap-6">
+                            {filtered.map((product, index) => {
+                                const qty = cart.filter(i => i.id === product.id).reduce((s, i) => s + i.qty, 0);
+                                return (
+                                    <div key={product.id} onClick={() => { setSelectedProduct(product); setSelectedExtras([]); }} className="food-item-card cursor-pointer group bg-white/40 p-2.5 rounded-[18px] border border-[#0e150e]/10 flex flex-col justify-between">
+                                        <div>
+                                            <div className="food-stage shadow-sm mb-2.5">
+                                                <img src={product.image} alt={product.name} />
+                                                {product.badge && <span className="absolute top-2 left-2 bg-[#e6ff55] text-[#0e150e] text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full shadow">{product.badge}</span>}
+                                            </div>
+                                            <h3 className="text-[14px] font-extrabold text-[#0e150e] leading-tight line-clamp-1">{product.name}</h3>
+                                            <p className="text-[11px] text-[#0e150e]/75 mt-1 line-clamp-2 leading-tight">{product.description}</p>
+                                        </div>
+                                        <div className="flex items-center justify-between pt-3 mt-2 border-t border-[#0e150e]/10">
+                                            <span className="text-[13px] font-extrabold text-[#00473c]">{formatPrice(product.newPrice)}</span>
+                                            <button onClick={(e) => addToCart(product, [], e)} className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition ${qty > 0 ? 'bg-[#e6ff55] text-[#0e150e]' : 'bg-[#00473c] text-[#f4f3e7]'}`}>
+                                                {qty > 0 ? qty : '+'}
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </section>
+
+                    {totalItems > 0 && !isCartOpen && (
+                        <div className="fixed bottom-4 left-3 right-3 z-40">
+                            <button onClick={() => setIsCartOpen(true)} className="w-full bg-[#00473c] text-[#f4f3e7] p-2 pl-4 rounded-full flex items-center justify-between shadow-xl border border-[#e6ff55]">
+                                <div className="flex items-center gap-2">
+                                    <span className="bg-[#e6ff55] text-[#0e150e] w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-extrabold">{totalItems}</span>
+                                    <span className="text-sm font-extrabold">{formatPrice(totalAmount)}</span>
+                                </div>
+                                <div className="bg-[#e6ff55] text-[#0e150e] px-4 py-2.5 rounded-full font-extrabold text-xs">Savatga o'tish →</div>
+                            </button>
+                        </div>
+                    )}
+
+                    {/* SAVATCHA VA FORMA */}
+                    {isCartOpen && (
+                        <div onClick={() => setIsCartOpen(false)} className="fixed inset-0 z-50 bg-[#0e150e]/70 backdrop-blur-sm flex justify-end">
+                            <div onClick={e => e.stopPropagation()} className="bg-[#f4f3e7] w-full max-w-md h-full flex flex-col justify-between p-5 overflow-y-auto">
+                                <div>
+                                    <div className="flex justify-between pb-3 border-b border-[#0e150e]/15">
+                                        <h2 className="font-display text-2xl text-[#0e150e]">SAVATCHA</h2>
+                                        <button onClick={() => setIsCartOpen(false)} className="font-bold">✕</button>
+                                    </div>
+
+                                    {successOrder ? (
+                                        <div className="py-12 text-center">
+                                            <div className="w-14 h-14 rounded-full bg-[#e6ff55] text-[#0e150e] flex items-center justify-center text-2xl mx-auto mb-3 font-bold">✓</div>
+                                            <h3 className="font-display text-xl text-[#00473c] mb-1">BUYURTMA QABUL QILINDI!</h3>
+                                            <p className="text-xs text-[#0e150e]/80">Kuryerimiz tez orada siz bilan bog'lanadi.</p>
+                                        </div>
+                                    ) : cart.length === 0 ? (
+                                        <p className="text-center py-12 text-xs text-[#8c8c82]">Savatchangiz bo'sh</p>
+                                    ) : (
+                                        <div className="mt-4 space-y-3">
+                                            {cart.map(item => (
+                                                <div key={item.cartItemId} className="flex items-center gap-2 pb-2.5 border-b border-[#0e150e]/10">
+                                                    <img src={item.image} className="w-12 h-12 rounded-[10px] object-cover bg-[#e8dcc6]" />
+                                                    <div className="flex-1 min-w-0">
+                                                        <h4 className="font-bold text-xs text-[#0e150e] truncate">{item.name}</h4>
+                                                        <p className="text-[11px] font-extrabold text-[#00473c]">{formatPrice(item.newPrice)}</p>
+                                                    </div>
+                                                    <div className="flex items-center gap-1.5 bg-[#d8e5d6] px-2.5 py-1 rounded-full shrink-0">
+                                                        <button onClick={() => updateQty(item.cartItemId, -1)} className="font-bold text-xs">−</button>
+                                                        <span className="text-[11px] font-extrabold w-3 text-center">{item.qty}</span>
+                                                        <button onClick={() => updateQty(item.cartItemId, 1)} className="font-bold text-xs">+</button>
+                                                    </div>
+                                                </div>
+                                            ))}
+
+                                            <form onSubmit={submitOrder} className="pt-2 space-y-2.5">
+                                                <div>
+                                                    <label className="block text-[10px] font-extrabold uppercase text-[#0e150e] mb-1">Telefon raqam</label>
+                                                    <input 
+                                                        type="tel" 
+                                                        required 
+                                                        value={customerPhone} 
+                                                        onChange={e => setCustomerPhone(e.target.value)} 
+                                                        className="w-full bg-white border rounded-[8px] p-2.5 text-xs font-semibold focus:outline-none focus:border-[#00473c]" 
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-[10px] font-extrabold uppercase text-[#0e150e] mb-1">Yetkazib berish manzili</label>
+                                                    <textarea 
+                                                        required 
+                                                        rows="2" 
+                                                        value={customerLocation} 
+                                                        onChange={e => setCustomerLocation(e.target.value)} 
+                                                        placeholder="Masalan: Yunusobod, 4-kvartal..." 
+                                                        className="w-full bg-white border rounded-[8px] p-2.5 text-xs font-medium focus:outline-none focus:border-[#00473c]"
+                                                    ></textarea>
+                                                </div>
+                                                <div className="bg-[#d8e5d6] p-2.5 rounded-[10px] flex justify-between font-extrabold text-xs">
+                                                    <span>Jami to'lov:</span>
+                                                    <span>{formatPrice(totalAmount)}</span>
+                                                </div>
+                                                <button type="submit" disabled={submitting} className="w-full btn-lime-lux py-3 text-xs">
+                                                    {submitting ? "Yuborilmoqda..." : "Buyurtmani tasdiqlash →"}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* MODAL */}
+                    {selectedProduct && (
+                        <div onClick={() => setSelectedProduct(null)} className="fixed inset-0 z-50 bg-[#0e150e]/70 backdrop-blur-sm flex items-end justify-center p-0">
+                            <div onClick={e => e.stopPropagation()} className="bg-[#f4f3e7] w-full max-w-lg rounded-t-[28px] overflow-hidden p-5 max-h-[85vh] overflow-y-auto">
+                                <div className="relative h-48 w-full bg-[#e8dcc6] rounded-[16px] overflow-hidden mb-3">
+                                    <img src={selectedProduct.image} className="w-full h-full object-cover" />
+                                </div>
+                                <h3 className="font-display text-2xl text-[#0e150e] mb-1">{selectedProduct.name}</h3>
+                                <p className="text-xs text-[#0e150e]/80 mb-4">{selectedProduct.description}</p>
+                                
+                                <div className="mb-5 space-y-2">
+                                    <p className="text-[11px] font-extrabold uppercase text-[#0e150e] mb-1">QO'SHIMCHALAR:</p>
+                                    {EXTRAS.map(ex => {
+                                        const checked = selectedExtras.some(e => e.id === ex.id);
+                                        return (
+                                            <div key={ex.id} onClick={() => toggleExtra(ex)} className={`p-2.5 rounded-[10px] border-2 cursor-pointer flex justify-between items-center text-xs ${checked ? 'border-[#00473c] bg-[#d8e5d6]' : 'border-[#0e150e]/15'}`}>
+                                                <span className="font-bold">{ex.name}</span>
+                                                <span className="font-extrabold text-[#00473c]">+{formatPrice(ex.price)}</span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className="flex items-center justify-between pt-3 border-t border-[#0e150e]/15">
+                                    <span className="text-xl font-extrabold text-[#00473c]">{formatPrice(Number(selectedProduct.newPrice) + selectedExtras.reduce((s,e)=>s+e.price,0))}</span>
+                                    <button onClick={() => { addToCart(selectedProduct, selectedExtras); setSelectedProduct(null); }} className="btn-lime-lux px-6 py-3 text-xs">Savatga qo'shish</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* BUYURTMALAR TARIXI */}
+                    {isOrdersOpen && (
+                        <div onClick={() => setIsOrdersOpen(false)} className="fixed inset-0 z-50 bg-[#0e150e]/70 backdrop-blur-sm flex justify-start">
+                            <div onClick={e => e.stopPropagation()} className="bg-[#f4f3e7] w-full max-w-md h-full p-5 overflow-y-auto">
+                                <div className="flex justify-between pb-3 border-b border-[#0e150e]/15">
+                                    <h2 className="font-display text-2xl text-[#0e150e]">BUYURTMALAR</h2>
+                                    <button onClick={() => setIsOrdersOpen(false)} className="font-bold">✕</button>
+                                </div>
+                                <div className="mt-4 space-y-2.5">
+                                    {userOrders.length === 0 ? <p className="text-xs text-[#8c8c82] py-8 text-center">Buyurtmalar yo'q</p> : userOrders.main(o => (
+                                        <div key={o.id} className="bg-[#d8e5d6] p-3.5 rounded-[14px]">
+                                            <div className="flex justify-between font-bold text-xs mb-1 text-[#00473c]"><span>#{o.id}</span><span>{o.status}</span></div>
+                                            <p className="text-[11px] text-[#0e150e]/75 mb-1">📍 {o.location}</p>
+                                            <div className="font-extrabold text-xs">{formatPrice(o.totalAmount)}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
